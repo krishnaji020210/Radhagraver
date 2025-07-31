@@ -1,33 +1,19 @@
 import asyncio
 import logging
 from pyrogram import Client
-from pytgcalls import PyTgCalls
-from config import API_ID, API_HASH, BOT_TOKEN, SESSION_STRING
+from telethon import TelegramClient
+from config import API_ID, API_HASH, BOT_TOKEN
 
 
 loop = asyncio.get_event_loop()
 
-app = Client(
-    ":MusicBot:",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    bot_token=BOT_TOKEN,
-)
+app = Client(":PyroGrabber:", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+tele = TelegramClient(":TeleGrabber:", API_ID, API_HASH) 
 
-userbot = Client(
-    ":userbot:",
-    api_id=API_ID,
-    api_hash=API_HASH,
-    session_string=SESSION_STRING,
-)
-
-pytgcalls = PyTgCalls(userbot)
-
-async def Info_Music():
+async def Info_Grabber():
     global BOT_ID, BOT_NAME, BOT_USERNAME
     await app.start()
-    await userbot.start()
-    await pytgcalls.start()
+    await tele.start(bot_token=BOT_TOKEN)
     getme = await app.get_me()
     BOT_ID = getme.id
     BOT_USERNAME = getme.username
@@ -37,6 +23,6 @@ async def Info_Music():
         BOT_NAME = getme.first_name
 
 
-loop.run_until_complete(Info_Music())
+loop.run_until_complete(Info_Grabber())
 
 
