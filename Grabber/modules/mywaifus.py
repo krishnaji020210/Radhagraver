@@ -1,25 +1,12 @@
 from telethon import events, Button
-from Grabber import tele
+from Grabber.core.mongo.waifusdb import getUser_Waifus
 from collections import Counter
-from Grabber.core.mongo import waifusdb  
-
-waifu_per_page = 10
-
-@tele.on(events.NewMessage(pattern="/mywaifus"))
-async def my_waifus_handler(event):
-    user_id = event.sender_id
-    waifus = await waifusdb.getUser_Waifus(user_id)
-
-    if not waifus:
-        await event.reply("You don't own any waifus yet.")
-        return
-
-    await send_waifu_page(event, waifus, page=0)
 
 
-def group_waifus(waifu_list):
+# Group waifus by ID, name, etc.
+def group_waifus(waifus):
     grouped = {}
-    for w in waifu_list:
+    for w in waifus:
         key = (w["waifu_id"], w["name"], w["anime"], w["level"], w["image"])
         if key in grouped:
             grouped[key] += 1
@@ -28,62 +15,73 @@ def group_waifus(waifu_list):
     return grouped
 
 
-async def send_waifu_page(event, waifus, page=0):
-    total = len(waifus)
-    start = page * waifu_per_page
-    end = start + waifu_per_page
-    waifu_slice = waifus[start:end]
+# Format waifus list for display
+def format_waifus(grouped, page=0, per_page=10):
+    grouped_items = list(grouped.items())
+    total = len(grouped_items)
+    start = page * per_page
+    end = start + per_page
+    page_items = grouped_items[start:end]
 
-    if not waifu_slice:
-        await event.reply("No waifus on this page.")
-        return
+    text = f"\ud83d\udce6 <b>Your Waifus</b>\n\n<b>Showing</b>: {min(end, total)}/{total}\n\n"
 
-    grouped = group_waifus(waifu_slice)
-    caption = f"📦 **Your Waifus**\n**Showing**: {min(end, total)}/{total}\n\n"
+    for (waifu_id, name, anime, level, image), count in page_items:
+        text += f"\ud83d\udc64 <b>{name} \u00d7 {count}</b>\n\ud83d\udcbc <b>Anime</b>: {anime}\n\u2b50 <b>Level</b>: {level}\n\ud83c\udd1a <code>{waifu_id}</code>\n"
+        text += "- - - - - - - - - - - -\n"
 
-    for (waifu_id, name, anime, level, image), count in grouped.items():
-        caption += (
-            f"👤 **{name} × {count}**\n"
-            f"📺 **Anime**: {anime}\n"
-            f"⭐ **Level**: {level}\n"
-            f"🆔 `{waifu_id}`\n"
-            f"- - - - - - - - - - - -\n"
-        )
+    return text
 
+
+# Create inline buttons for pagination
+def waifu_buttons(page, total, per_page=10):
+    max_pages = (total - 1) // per_page
+    buttons = []
+
+    if page > 0:
+        buttons.append(Button.inline("\u2b05\ufe0f Prev", f"waifus_prev_{page-1}"))
+    if page < max_pages:
+        buttons.append(Button.inline("Next \u27a1\ufe0f", f"waifus_next_{page+1}"))
+
+    buttons.append(Button.inline("\u274c Close", "waifus_close"))
+    return buttons
+
+
+# Command: /mywaifus
+@bot.on(events.NewMessage(pattern="/mywaifus"))
+async def show_mywaifus(event):
+    user_id = event.sender_id
+    waifus = await getUser_Waifus(user_id)
+
+    if not waifus:
+        return await event.reply("\ud83d\ude97 You don't own any waifus yet.")
+
+    grouped = group_waifus(waifus)
+    text = format_waifus(grouped, page=0)
+    total = len(grouped)
+    buttons = waifu_buttons(0, total)
     top_image = list(grouped.keys())[0][4]
 
-    buttons = []
-    if page > 0:
-        buttons.append(Button.inline("⏪ Prev", data=f"prev_{page}"))
-    if end < total:
-        buttons.append(Button.inline("⏩ Next", data=f"next_{page}"))
-    buttons.append(Button.inline("✖ Close", data="close"))
-
-    await event.respond(
-        file=top_image,
-        message=caption,
-        buttons=[buttons],
-        parse_mode="md"
-    )
+    await event.reply(text, file=top_image, buttons=buttons)
 
 
-@tele.on(events.CallbackQuery(pattern=r"(next|prev)_(\d+)"))
+# Callback: next/prev
+@bot.on(events.CallbackQuery(pattern=r"waifus_(next|prev)_(\d+)"))
 async def paginate_waifus(event):
-    action, page = event.pattern_match.group(1), int(event.pattern_match.group(2))
+    _, direction, page = event.pattern_match.string.split("_")
+    page = int(page)
     user_id = event.sender_id
+    waifus = await getUser_Waifus(user_id)
 
-    waifus = await waifusdb.getUser_Waifus(user_id)
-    if not waifus:
-        await event.answer("No waifus found.")
-        return
+    grouped = group_waifus(waifus)
+    total = len(grouped)
+    text = format_waifus(grouped, page=page)
+    buttons = waifu_buttons(page, total)
+    image = list(grouped.keys())[page * 10][4] if total > page * 10 else None
 
-    new_page = page + 1 if action == "next" else page - 1
+    await event.edit(text, file=image, buttons=buttons)
+
+
+# Callback: close
+@bot.on(events.CallbackQuery(pattern="waifus_close"))
+async def close(event):
     await event.delete()
-    await send_waifu_page(event, waifus, new_page)
-
-
-@tele.on(events.CallbackQuery(pattern="close"))
-async def close_page(event):
-    await event.delete()
-
-
