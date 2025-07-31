@@ -1,5 +1,5 @@
 pyrogram
-telethon
+pyromod
 tgcrypto
 requests
 motor
