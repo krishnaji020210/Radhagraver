@@ -2,5 +2,4 @@ pyrogram
 telethon
 tgcrypto
 requests
-yt-dlp
 motor
