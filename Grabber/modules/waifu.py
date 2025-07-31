@@ -1,5 +1,5 @@
-import requests, os 
-from pyrogram import filters
+import requests, os, asyncio 
+from pyrogram import filters, enums
 from Grabber import app
 from Grabber.core.mongo import waifusdb
 
@@ -29,7 +29,8 @@ def upload_photo(file_path):
 @app.on_message(filters.command("addwaifu"))
 async def add_waifus(_, message):
     user_id = message.from_user.id
-
+    if message.chat.type != enums.ChatType.PRIVATE:
+        return await message.reply_text("This command work in private.")
     msg = await message.reply_text("📸 Please send a waifu photo within 30 seconds...")
 
     try:
@@ -39,10 +40,9 @@ async def add_waifus(_, message):
 
     if input1.photo:
         file_name = f"{user_id}_waifu_thumb.jpg"
-        photo_path = await app.download_media(input1.photo.file_id, file_name=file_name)
+        photo_path = await asyncio.create_task(app.download_media(input1.photo.file_id, file_name=file_name))
 
         url = upload_photo(photo_path)
-        os.remove(file_name)
         await input1.delete()
 
         if not url:
