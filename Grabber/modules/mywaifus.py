@@ -1,3 +1,4 @@
+from Grabber import tele as bot
 from telethon import events, Button
 from Grabber.core.mongo.waifusdb import getUser_Waifus
 from collections import Counter
