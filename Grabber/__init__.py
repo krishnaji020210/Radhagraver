@@ -1,19 +1,18 @@
 import asyncio
 import logging
 from pyrogram import Client
-from telethon import TelegramClient
+from pyromod import listen
 from config import API_ID, API_HASH, BOT_TOKEN
 
 
 loop = asyncio.get_event_loop()
 
-app = Client(":PyroGrabber:", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
-tele = TelegramClient(":TeleGrabber:", API_ID, API_HASH) 
+
+app = Client(":Grabber:", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 async def Info_Grabber():
     global BOT_ID, BOT_NAME, BOT_USERNAME
     await app.start()
-    await tele.start(bot_token=BOT_TOKEN)
     getme = await app.get_me()
     BOT_ID = getme.id
     BOT_USERNAME = getme.username
