@@ -9,7 +9,7 @@ user_collection = db.user_waifus
 
 # ------------------------ Add New Waifu ------------------------ #
 
-async def addWaifu(name: str, image: str, anime: str, level: str) -> dict:
+async def addWaifu(name: str, image: str, anime: str, rank: str) -> dict:
     last = await waifu_collection.find().sort("_id", -1).limit(1).to_list(1)
     new_id = str(int(last[0]['_id']) + 1).zfill(3) if last else "001"
 
@@ -58,7 +58,7 @@ async def removeAllWaifus() -> int:
 
 # ------------------------ Add User Waifu  ------------------------ #
 
-async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, image: str, level: str):
+async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, image: str, rank: str):
     query = {"_id": str(user_id), "waifus.waifu_id": waifu_id}
     existing = await user_collection.find_one(query)
     if existing:
