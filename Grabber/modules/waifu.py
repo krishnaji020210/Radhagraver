@@ -121,14 +121,14 @@ async def _watcher(client, message):
         anime = waifu_data["anime"]
         rank = waifu_data["rank"]
         
-        await message.reply_photo(photo=image, caption=random.choice(script.SPAWN_TEXT).format(rank))   
+        await message.reply_photo(photo=image, caption=random.choice(script.SPAWN_TEXT).format(rank=rank))   
         spawn[chat_id]["_id"] = _id
         spawn[chat_id]["name"] = name
         spawn[chat_id]["image"] = image
         spawn[chat_id]["anime"] = anime
         spawn[chat_id]["rank"] = rank
         asyncio.sleep(5)
-        await message.reply_text(random.choice(scrip.MISSED_GRAB_TEXT).format(name))
+        await message.reply_text(random.choice(scrip.MISSED_GRAB_TEXT).format(name=name))
         spawn[chat_id] = 0
         
 
