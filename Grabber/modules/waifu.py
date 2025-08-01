@@ -5,7 +5,8 @@ from pyrogram import filters, enums
 from Grabber import app
 from Grabber.core.mongo import waifusdb
 
-# ------------------------- Image Host
+# ------------------------- Image Host ------------------------- #
+
 def upload_photo(file_path):
     api_url = "https://media.animerealms.org/upload"    
     with open(file_path, "rb") as file:
@@ -28,6 +29,7 @@ def upload_photo(file_path):
 
 
 
+# ------------------------- Add Waifu ------------------------- #
 
 @app.on_message(filters.command("addwaifu"))
 async def add_waifus(_, message):
@@ -98,6 +100,8 @@ async def add_waifus(_, message):
 
 
 
+# ------------------------- Waifu Watcher ------------------------- #
+
 spawn = {}
 
 @app.on_message(filters.group, group=11)
@@ -129,7 +133,7 @@ async def _watcher(client, message):
         spawn[chat_id]["rank"] = rank
         asyncio.sleep(5)
         await message.reply_text(random.choice(script.MISSED_GRAB_TEXT).format(name=name))
-        spawn[chat_id] = 0
+        spawn[chat_id]["count"] = 0
         
 
 
