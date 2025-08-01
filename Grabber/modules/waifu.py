@@ -69,14 +69,14 @@ async def add_waifus(_, message):
         anime = input3.text.strip()
         await input3.delete()
 
-        await msg.edit_text("💠 Now send the **waifu level**.\n\nExamples:\n`Common`, `Rare`, `Epic`, `Legendary`, `Mythic`")
+        await msg.edit_text("💠 Now send the **waifu rank**.\n\nExamples:\n`Common`, `Rare`, `Epic`, `Legendary`, `Mythic`")
 
         try:
             input4 = await app.listen(user_id=user_id, timeout=30)
         except:
             return await msg.edit_text("❌ Timeout! You didn't send the level in time.")
 
-        level = input4.text.strip()
+        rank = input4.text.strip()
         await input4.delete()
 
         await waifusdb.addWaifu(name, url, anime, rank)
