@@ -128,7 +128,7 @@ async def _watcher(client, message):
         spawn[chat_id]["anime"] = anime
         spawn[chat_id]["rank"] = rank
         asyncio.sleep(5)
-        await message.reply_text(random.choice(scrip.MISSED_GRAB_TEXT).format(name=name))
+        await message.reply_text(random.choice(script.MISSED_GRAB_TEXT).format(name=name))
         spawn[chat_id] = 0
         
 
