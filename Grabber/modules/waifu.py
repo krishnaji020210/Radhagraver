@@ -1,5 +1,5 @@
 import random
-import Grabber.core import script
+from Grabber.core import script
 import requests, os, asyncio 
 from pyrogram import filters, enums
 from Grabber import app
