@@ -37,8 +37,9 @@ async def getWaifu(waifu_id: str = None) -> dict | None:
 # ------------------------ Get All Waifus ------------------------ # 
 
 async def getAllWaifus() -> list:
-    return await waifu_collection.find().to_list(length=0)
-
+    cursor = waifu_collection.find({})
+    waifus = await cursor.to_list(length=1000000)
+    return waifus
 
 # ------------------------ Remove a Waifu by ID ------------------------ #
 
