@@ -93,3 +93,29 @@ async def add_waifus(_, message):
 
 
 
+@app.on_message(filters.group, group=11)
+async def _watcher(client, message):
+    chat_id = message.chat.id
+    if not message.from_user:
+        return
+    if chat_id not in spawn:
+        spawn[chat_id] = {"count": 0, "_id": None, "name": None,  "image": None,  "anime": None,  "rank": None}
+    spawn[chat_id]["count"] += 1
+
+    if spawn[chat_id]["count"] == 100:
+        waifus = await waifusdb.getAllWaifu()
+        waifu_data = random.choice(waifus)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
