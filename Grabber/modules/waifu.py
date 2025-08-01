@@ -78,9 +78,9 @@ async def add_waifus(_, message):
         level = input4.text.strip()
         await input4.delete()
 
-        await waifusdb.addWaifu(name, image, anime, rank)
+        await waifusdb.addWaifu(name, url, anime, rank)
         await msg.delete()
-        await message.reply_photo(photo=image,
+        await message.reply_photo(photo=url,
             caption=f"""
 ✅ Waifu added successfully!
 
