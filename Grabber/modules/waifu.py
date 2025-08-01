@@ -109,14 +109,14 @@ async def _watcher(client, message):
     if not message.from_user:
         return
 
-    if chat_id not in spawn:
+    if chat_id not in spawn or not isinstance(spawn[chat_id], dict):
         spawn[chat_id] = {
-            "count": 0,
-            "_id": None,
-            "name": None,
-            "image": None,
-            "anime": None,
-            "rank": None
+           "count": 0,
+           "_id": None,
+           "name": None,
+           "image": None,
+           "anime": None,
+           "rank": None
         }
 
     spawn[chat_id]["count"] += 1
