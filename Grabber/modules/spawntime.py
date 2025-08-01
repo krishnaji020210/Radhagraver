@@ -4,7 +4,7 @@ from Grabber.core.mongo import settingsdb
 
 
 @app.on_message(filters.command("changetime"))
-async def change_spawn_time(_, message):
+async def change_time(_, message):
     chat_id = message.chat.id
 
     if message.chat.type == enums.ChatType.PRIVATE:
