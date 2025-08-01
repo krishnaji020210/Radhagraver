@@ -108,7 +108,9 @@ async def _watcher(client, message):
     spawn[chat_id]["count"] += 1
 
     if spawn[chat_id]["count"] == 10:
-        waifus = await waifusdb.getAllWaifu()
+        waifus = await waifusdb.getAllWaifus()
+        if not waifus:
+            return 
         waifu_data = random.choice(waifus)
         await message.reply_text(waifu_data)
         spawn[chat_id]["count"] = 0
