@@ -139,12 +139,13 @@ async def _watcher(client, message):
             "grabbed": False,
         })
 
-        await message.reply_photo(
+        msg = await message.reply_photo(
             photo=waifu_data["image"],
             caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"])
         )
 
         await asyncio.sleep(10)
+        await msg.delete()
         if spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
             await message.reply_text(
                 random.choice(script.MISSED_GRAB_TEXT).format(name=spawn[chat_id]["name"])
@@ -152,6 +153,8 @@ async def _watcher(client, message):
             spawn[chat_id]["count"] = 0
             spawn[chat_id]["spawned"] = False
 
+
+# ------------------------- Waifu Grab ------------------------- #
 
 @app.on_message(filters.command("grab"))
 async def grab_waifu(_, message):
