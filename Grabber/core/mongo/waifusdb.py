@@ -18,7 +18,7 @@ async def addWaifu(name: str, image: str, anime: str, rank: str) -> dict:
         "name": name,
         "image": image,
         "anime": anime,
-        "rank": level
+        "rank": rank
     }
 
     await waifu_collection.insert_one(waifu_data)
@@ -72,7 +72,7 @@ async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, imag
             "name": name,
             "anime": anime,
             "image": image,
-            "rank": level,
+            "rank": rank,
             "grab_count": 1
         }
         await user_collection.update_one(
