@@ -109,15 +109,8 @@ async def _watcher(client, message):
     if not message.from_user:
         return
 
-    if chat_id not in spawn or not isinstance(spawn[chat_id], dict):
-        spawn[chat_id] = {
-           "count": 0,
-           "_id": None,
-           "name": None,
-           "image": None,
-           "anime": None,
-           "rank": None
-        }
+    if chat_id not in spawn:
+        spawn[chat_id] = {"count": 0, "_id": None, "name": None, "image": None, "anime": None, "rank": None}
 
     spawn[chat_id]["count"] += 1
 
@@ -132,14 +125,7 @@ async def _watcher(client, message):
         anime = waifu_data["anime"]
         rank = waifu_data["rank"]
 
-        spawn[chat_id].update({
-            "_id": _id,
-            "name": name,
-            "image": image,
-            "anime": anime,
-            "rank": rank
-        })
-
+        spawn[chat_id].update({"_id": _id, "name": name, "image": image, "anime": anime, "rank": rank})
         await message.reply_photo(photo=image,
             caption=random.choice(script.SPAWN_TEXT).format(rank=rank))
 
