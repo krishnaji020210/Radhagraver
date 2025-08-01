@@ -25,3 +25,18 @@ MISSED_GRAB_TEXT = [
     "😶 **{name}** ʟᴇғᴛ ʏᴏᴜ ʙᴇʜɪɴᴅ ᴡɪᴛʜ ɴᴏ ᴡᴏʀᴅs... ʏᴏᴜ ᴡᴇʀᴇɴ’ᴛ ʙʀᴀᴠᴇ ᴇɴᴏᴜɢʜ~",
     "🌫️ sᴏ ᴄʟᴏsᴇ, sᴏ ғᴀʀ... **{name}** sʟɪᴘᴘᴇᴅ ᴏᴜᴛ ᴏғ ʀᴇᴀʟɪᴛʏ~"
 ]
+
+# ---------------------------------------------------------- #
+
+GRAB_TEXT = [
+    "You gently reached out and claimed {name} as your own 💖",
+    "Ooh~ You caught {name} just in time. She's all yours now 😘",
+    "Looks like {name} fell for your charm 😍",
+    "You tamed the untamable {name} 💘",
+    "{name} is now blushing in your arms 💞",
+    "You snatched {name} before anyone else could even blink 👀💋",
+    "{name} gave in to your boldness. Well played, darling~ 😏",
+    "She tried to resist, but {name} is yours now 💓",
+    "That move was smooth... You grabbed {name} like a true pro 🔥",
+    "Your timing was perfect. {name} belongs to you now 💝"
+]
