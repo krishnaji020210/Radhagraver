@@ -18,7 +18,7 @@ async def addWaifu(name: str, image: str, anime: str, level: str) -> dict:
         "name": name,
         "image": image,
         "anime": anime,
-        "level": level
+        "rank": level
     }
 
     await waifu_collection.insert_one(waifu_data)
@@ -72,7 +72,7 @@ async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, imag
             "name": name,
             "anime": anime,
             "image": image,
-            "level": level,
+            "rank": level,
             "grab_count": 1
         }
         await user_collection.update_one(
@@ -104,7 +104,7 @@ async def getUserWaifu(user_id: int, waifu_id: str) -> dict | None:
 async def removeUserWaifu(user_id: int, waifu_id: str) -> str:
     data = await user_collection.find_one({"_id": str(user_id)})
     if not data:
-        return "❌ User data not found"
+        return False
 
     waifus = data.get("waifus", [])
     updated_waifus = []
