@@ -78,13 +78,16 @@ async def add_waifus(_, message):
         level = input4.text.strip()
         await input4.delete()
 
-        await msg.edit_text(f"""
+        await waifusdb.addWaifu(name, image, anime, rank)
+        await msg.delete()
+        await message.reply_photo(photo=image,
+            caption=f"""
 ✅ Waifu added successfully!
 
 📸 Photo: [Hosted Link]({url})
 👧 Name: {name}
 🎬 Anime: {anime}
-💠 Level: {level}
+💠 Rank: {level}
         """, disable_web_page_preview=True)
 
     else:
@@ -92,19 +95,24 @@ async def add_waifus(_, message):
 
 
 
+spawn = {}
 
 @app.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
     if not message.from_user:
         return
+        
     if chat_id not in spawn:
         spawn[chat_id] = {"count": 0, "_id": None, "name": None,  "image": None,  "anime": None,  "rank": None}
     spawn[chat_id]["count"] += 1
 
-    if spawn[chat_id]["count"] == 100:
+    if spawn[chat_id]["count"] == 10:
         waifus = await waifusdb.getAllWaifu()
         waifu_data = random.choice(waifus)
+        await message.reply_text(waifu_data)
+        spawn[chat_id]["count"] = 0
+        
 
 
 
