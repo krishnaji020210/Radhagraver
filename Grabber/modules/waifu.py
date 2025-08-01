@@ -88,7 +88,7 @@ async def add_waifus(_, message):
 📸 Photo: [Hosted Link]({url})
 👧 Name: {name}
 🎬 Anime: {anime}
-💠 Rank: {level}
+💠 Rank: {rank}
         """, disable_web_page_preview=True)
 
     else:
