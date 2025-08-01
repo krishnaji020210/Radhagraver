@@ -3,7 +3,7 @@ from Grabber.core import script
 import requests, os, asyncio 
 from pyrogram import filters, enums
 from Grabber import app
-from Grabber.core.mongo import waifusdb
+from Grabber.core.mongo import waifusdb, settingsdb
 
 # ------------------------- Image Host ------------------------- #
 
@@ -106,6 +106,7 @@ spawn = {}
 @app.on_message(filters.group, group=11)
 async def _watcher(client, message):
     chat_id = message.chat.id
+    spawn_count = await settingsdb.get_spawn_time(chat_id)
     if not message.from_user:
         return
 
@@ -123,7 +124,7 @@ async def _watcher(client, message):
 
     spawn[chat_id]["count"] += 1
 
-    if spawn[chat_id]["count"] == 10:
+    if spawn[chat_id]["count"] == spawn_count:
         waifus = await waifusdb.getAllWaifus()
         if not waifus:
             return
