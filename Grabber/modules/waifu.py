@@ -110,7 +110,16 @@ async def _watcher(client, message):
         return
 
     if chat_id not in spawn:
-        spawn[chat_id] = {"count": 0, "_id": None, "name": None, "image": None, "anime": None, "rank": None}
+        spawn[chat_id] = {
+            "count": 0,
+            "_id": None,
+            "name": None,
+            "image": None,
+            "anime": None,
+            "rank": None,
+            "spawned": False,
+            "grabbed": False,
+        }
 
     spawn[chat_id]["count"] += 1
 
@@ -118,25 +127,32 @@ async def _watcher(client, message):
         waifus = await waifusdb.getAllWaifus()
         if not waifus:
             return
-        waifu_data = random.choice(waifus)
-        _id = waifu_data["_id"]
-        name = waifu_data["name"]
-        image = waifu_data["image"]
-        anime = waifu_data["anime"]
-        rank = waifu_data["rank"]
 
-        spawn[chat_id].update({"_id": _id, "name": name, "image": image, "anime": anime, "rank": rank})
-        await message.reply_photo(photo=image,
-            caption=random.choice(script.SPAWN_TEXT).format(rank=rank))
+        waifu_data = random.choice(waifus)
+        spawn[chat_id].update({
+            "_id": waifu_data["_id"],
+            "name": waifu_data["name"],
+            "image": waifu_data["image"],
+            "anime": waifu_data["anime"],
+            "rank": waifu_data["rank"],
+            "spawned": True,
+            "grabbed": False,
+        })
+
+        await message.reply_photo(
+            photo=waifu_data["image"],
+            caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"])
+        )
 
         await asyncio.sleep(5)
 
-        if spawn[chat_id]["count"] == 10:
-            await message.reply_text(random.choice(script.MISSED_GRAB_TEXT).format(name=name))
+        if spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
+            await message.reply_text(
+                random.choice(script.MISSED_GRAB_TEXT).format(name=spawn[chat_id]["name"])
+            )
             spawn[chat_id]["count"] = 0
+            spawn[chat_id]["spawned"] = False
 
-
-# ------------------------- Grab Waifu ------------------------- #
 
 @app.on_message(filters.command("grab"))
 async def grab_waifu(_, message):
@@ -148,20 +164,23 @@ async def grab_waifu(_, message):
 
     name = message.text.split(" ", maxsplit=1)[1]
 
-    if chat_id not in spawn or spawn[chat_id]["count"] != 10:
-        return await message.reply_text("No waifu is available to grab right now. Be patient, darling~ 💋")
+    if chat_id not in spawn or not spawn[chat_id]["spawned"]:
+        return await message.reply_text("No waifu has spawned in this group yet~ Wait for her appearance~ 😚")
 
     if spawn[chat_id]["name"].lower() == name.lower():
-        _id = spawn[chat_id]["_id"]
-        image = spawn[chat_id]["image"]
-        anime = spawn[chat_id]["anime"]
-        rank = spawn[chat_id]["rank"]
-
-        await waifusdb.addUser_Waifu(user_id, _id, name, anime, image, rank)
+        await waifusdb.addUser_Waifu(
+            user_id=user_id,
+            waifu_id=spawn[chat_id]["_id"],
+            name=spawn[chat_id]["name"],
+            anime=spawn[chat_id]["anime"],
+            image=spawn[chat_id]["image"],
+            rank=spawn[chat_id]["rank"]
+        )
         await message.reply_text(random.choice(script.GRAB_TEXT).format(name=name))
 
+        spawn[chat_id]["grabbed"] = True
+        spawn[chat_id]["spawned"] = False
         spawn[chat_id]["count"] = 0
-    else:
-        await message.reply_text("Wrong name! You missed that beauty... 😏")
+    
 
 
