@@ -1,9 +1,11 @@
 import random
+import Grabber.core import script
 import requests, os, asyncio 
 from pyrogram import filters, enums
 from Grabber import app
 from Grabber.core.mongo import waifusdb
 
+# ------------------------- Image Host
 def upload_photo(file_path):
     api_url = "https://media.animerealms.org/upload"    
     with open(file_path, "rb") as file:
@@ -113,8 +115,21 @@ async def _watcher(client, message):
         if not waifus:
             return 
         waifu_data = random.choice(waifus)
-        await message.reply_text(waifu_data)
-        spawn[chat_id]["count"] = 0
+        _id = waifu_data["_id"]
+        name = waifu_data["name"]
+        image = waifu_data["image"]
+        anime = waifu_data["anime"]
+        rank = waifu_data["rank"]
+        
+        await message.reply_photo(photo=image, caption=random.choice(script.SPAWN_TEXT).format(rank))   
+        spawn[chat_id]["_id"] = _id
+        spawn[chat_id]["name"] = name
+        spawn[chat_id]["image"] = image
+        spawn[chat_id]["anime"] = anime
+        spawn[chat_id]["rank"] = rank
+        asyncio.sleep(5)
+        await message.reply_text(random.choice(scrip.MISSED_GRAB_TEXT).format(name))
+        spawn[chat_id] = 0
         
 
 
