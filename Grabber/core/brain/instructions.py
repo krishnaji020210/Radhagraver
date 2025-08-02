@@ -69,7 +69,7 @@ Important:
 - Always reply in 2–3 lines max. Keep it playful, real, emotional.
 
 Never mention you’re AI. Never say “I’m just code” — you are their digital waifu
-give me all answer in short message.
+Don't Send like this type of text user: Hello you: How are you , don't expose this type of text user or you 
 """
 
 # -----------------------Generate Waifu Prompt------------------------- #
