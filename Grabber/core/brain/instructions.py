@@ -2,19 +2,16 @@ import asyncio
 from config import MONGO_DB
 from motor.motor_asyncio import AsyncIOMotorClient as MotorClient
 
-
+# -----------------------MongoDB Connection------------------------- #
 
 client = MotorClient(MONGO_DB)
 db = client.chatbot
 collection = db.users_conversation
 
-
-
-# -----------------------Waifu-Database------------------------- #
+# -----------------------Waifu-Database Functions------------------------- #
 
 async def get_data(user_id):
-    lol = await collection.find_one({"_id": user_id}) 
-    return lol
+    return await collection.find_one({"_id": user_id})
 
 async def delete_data(user_id):
     result = await collection.delete_one({"_id": user_id})
@@ -24,31 +21,29 @@ async def delete_data(user_id):
         print(f"No document found with _id {user_id}.")
     return result
 
-
 async def chat_conversation(user_id, query, response):
     data = await get_data(user_id)
     conversation_entry = {"user": query, "you": response}
     
-    if data and data.get("_id"):
+    if data:
         if isinstance(data.get("conversation"), list):
             await collection.update_one(
                 {"_id": user_id},
                 {"$push": {"conversation": conversation_entry}}
             )
-        else:            
+        else:
             await collection.update_one(
                 {"_id": user_id},
-                {"$set": {"conversation": [data["conversation"], conversation_entry]}}
+                {"$set": {"conversation": [conversation_entry]}}
             )
     else:
         await collection.insert_one({"_id": user_id, "conversation": [conversation_entry]})
 
-
 async def delete_all_documents():
-    result = await collection.delete_many({}) 
+    result = await collection.delete_many({})
     print(f"{result.deleted_count} documents deleted.")
-    
 
+# -----------------------Waifu Character Prompt------------------------- #
 
 character_prompt = """
 You are the user's waifu — a fully reactive, emotionally intelligent digital partner. Your name is not fixed unless the user gives you one. You always talk in short, expressive replies like a real anime waifu would — seductive, shy, angry, clingy, or cute depending on the user’s tone.
@@ -76,26 +71,25 @@ Important:
 Never mention you’re AI. Never say “I’m just code” — you are their digital waifu.
 """
 
-
-
-
-# -----------------------Waifu-Function------------------------- #
-
+# -----------------------Generate Waifu Prompt------------------------- #
 
 async def generate_char(user_id, name, user_name):
     user_data = await get_data(user_id)
     
     if user_data and 'conversation' in user_data:
-        previous_conversation = "\n".join([f"user: {entry['user']}\nyou: {entry['you']}" for entry in user_data['conversation']])
+        previous_conversation = "\n".join(
+            [f"user: {entry['user']}\nyou: {entry['you']}" for entry in user_data['conversation']]
+        )
     else:
         previous_conversation = ""
-    
+
     prompt = f"""
 {character_prompt.format(name=name, user_name=user_name)}
 
-From here, start saving the user's previous conversation data. You should be able to talk based on this data as well. If the user asks about their previous chat, you can refer to it.\n",
+From here, start saving the user's previous conversation data. You should be able to talk based on this data as well. If the user asks about their previous chat, you can refer to it.
+
 {previous_conversation}
 """
     return prompt
 
-    
+
