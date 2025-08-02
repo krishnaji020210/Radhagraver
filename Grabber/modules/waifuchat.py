@@ -1,7 +1,7 @@
 from pyrogram import filters 
 from Grabber import app
 from Grabber.core import main_func
-from Grabber.core.brain impot instructions
+from Grabber.core.brain import instructions
 
 
 
