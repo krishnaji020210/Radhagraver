@@ -1,5 +1,5 @@
 from pyrogram import filters, enums
-from Grabner import app
+from Grabber import app
 from Grabber.core.mongo import settingsdb
 
 
