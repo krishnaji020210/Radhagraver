@@ -8,7 +8,6 @@ from Grabber.core.mongo import waifusdb
 async def gift_waifu(_, message: types.Message):
     sender_id = message.from_user.id
 
-    # If the user replies to someone’s message
     if message.reply_to_message:
         try:
             waifu_id = message.text.split(None, 1)[1]
@@ -41,13 +40,13 @@ async def gift_waifu(_, message: types.Message):
         ]
     ])
 
-    caption = (
-        f"🎁 <b>You received a Waifu gift!</b>\n\n"
-        f"<b>💖 Waifu:</b> <code>{waifu_name}</code>\n"
-        f"<b>🎬 Anime:</b> <code>{waifu_anime}</code>\n"
-        f"<b>🎁 From:</b> {message.from_user.mention()}\n\n"
-        f"Do you want to accept this gift?"
-    )
+    caption = f"""
+<b>You received a Waifu gift!</b>\n
+<b> ━⊱ Waifu:</b> <code>{waifu_name}</code>
+<b> ━⊱ Anime:</b> <code>{waifu_anime}</code>
+<b> ━⊱ From:</b> {message.from_user.mention()}\n\n
+Do you want to accept this gift?"
+    """
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
