@@ -48,7 +48,7 @@ Do you want to accept this gift?"
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-            await app.send_message(receiver_id, caption, reply_markup=butt ons)
+            await app.send_message(receiver_id, caption, reply_markup=buttons)
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
