@@ -4,6 +4,26 @@ from Grabber import app
 from Grabber.core.mongo import waifusdb
 
 
+async def rank_definer(rank: str) -> str:
+    rank = rank.lower()
+    
+    if rank == "common":
+        return f"⚪ Common"
+    elif rank == "rare":
+        return f"🟢 Rare"
+    elif rank == "epic":
+        return f"🔵 Epic"
+    elif rank == "legendary":
+        return f"🟡 Legendary"
+    elif rank == "mythical":
+        return f"🔴 Mythical"
+    elif rank == "dark":
+        return f"⚫ Dark"
+    else:
+        return f"🔘 Not Define"
+
+
+
 @app.on_message(filters.command("gift"))
 async def gift_waifu(_, message: types.Message):
     sender_id = message.from_user.id
@@ -30,7 +50,8 @@ async def gift_waifu(_, message: types.Message):
 
     waifu_name = waifu_data["name"]
     waifu_anime = waifu_data.get("anime", "Unknown Anime")
-
+    waifu_rank = waifu_data[rank]
+    
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("🟢 Accept", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
@@ -39,16 +60,17 @@ async def gift_waifu(_, message: types.Message):
     ])
 
     caption = f"""
-**You received a Waifu gift!**\n
+**OwO, You received a Waifu gift!**\n
 **⬤ Waifu** : <code>{waifu_name}</code>
 **⬤ Anime** : <code>{waifu_anime}</code>
-**⬤ From** : {message.from_user.mention()}\n\n
-Do you want to accept this gift?"
-    """
+**⬤ Rarity** : <code>{rank_definer(rank)}</code>
+**⬤ From** : {message.from_user.mention()}\n
+Do you want to accept this gift?
+"""
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-            await app.send_message(receiver_id, caption, reply_markup=buttons)
+          await app.send_message(receiver_id, caption, reply_markup=buttons)
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
