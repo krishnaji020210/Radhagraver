@@ -10,14 +10,14 @@ def format_waifus_list(waifus, page=0, per_page=5):
     end = start + per_page
     page_waifus = waifus[start:end]
 
-    text = f"\ud83d\udc8b <b>Waifu Grab</b> - ({min(end, total)}/{total})\n\n"
+    text = f"🧾️ <b>Waifu Grab</b> - ({min(end, total)}/{total})\n━━━━━━━━━━━━━━━━━━━━━━━━\n"
     for w in page_waifus:
         text += (
-            f"\ud83c\udd1a <b>ID</b>: <code>{w['waifu_id']}</code>\n"
-            f"\ud83d\udc64 <b>Name</b>: {w['name']}\n"
-            f"\ud83d\udcbc <b>Anime</b>: {w['anime']}\n"
-            f"\u2705 <b>Grabbed</b>: {w['grab_count']}x\n"
-            f"- - - - - - - - - - - -\n"
+            f"📑 <b>ID</b>: <code>{w['waifu_id']}</code>\n"
+            f"🧽️ <b>Name</b>: {w['name']}\n"
+            f"🧩 <b>Anime</b>: {w['anime']} - {w['grab_count']}x\n"
+            f"🎭 <b>Rarity</b>: {w['rank']}\n"
+            f"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n"
         )
     return text
 
