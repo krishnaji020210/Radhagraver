@@ -34,4 +34,25 @@ async def gemini_response(query, prompt):
         return "Bot API Dead!! Please Contact My Owner."
 
 
+# --------------------------- Rank-Definer --------------------------- #         
+
+async def rank_definer(rank: str) -> str:
+    rank = rank.lower()
+    
+    if rank == "common":
+        return f"⚪ Common"
+    elif rank == "rare":
+        return f"🟢 Rare"
+    elif rank == "epic":
+        return f"🔵 Epic"
+    elif rank == "legendary":
+        return f"🟡 Legendary"
+    elif rank == "mythical":
+        return f"🔴 Mythical"
+    elif rank == "dark":
+        return f"⚫ Dark"
+    else:
+        return f"🔘 Not Define"
+
+
 
