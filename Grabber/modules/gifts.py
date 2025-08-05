@@ -1,4 +1,4 @@
-from pyrogram import filters, Client, types
+from pyrogram import filters, Client, enums, types
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from Grabber import app
 from Grabber.core.mongo import waifusdb
@@ -8,45 +8,57 @@ from Grabber.core.mongo import waifusdb
 async def gift_waifu(_, message: types.Message):
     sender_id = message.from_user.id
 
-    # Handle two cases: reply OR manual ID entry
+    # If the user replies to someone’s message
     if message.reply_to_message:
         try:
             waifu_id = message.text.split(None, 1)[1]
         except IndexError:
-            return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
+            return await message.reply_text(
+                "💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>"
+            )
         receiver_id = message.reply_to_message.from_user.id
     else:
         try:
             _, receiver_id, waifu_id = message.text.split(None, 2)
             receiver_id = int(receiver_id)
         except ValueError:
-            return await message.reply_text("💡 <b>Use it like this:</b>\n<code>/gift receiver_id waifu_id</code>")
+            return await message.reply_text(
+                "💡 <b>Correct usage:</b>\n<code>/gift receiver_id waifu_id</code>\n"
+                "OR reply to the user with:\n<code>/gift waifu_id</code>"
+            )
 
-    # Get waifu data
     waifu_data = await waifusdb.getUserWaifu(sender_id, str(waifu_id))
     if not waifu_data or waifu_data["waifu_id"] != str(waifu_id):
-        return await message.reply_text("❌ <b>Waifu not found in your collection.</b>")
+        return await message.reply_text("❌ <b>This waifu is not in your collection.</b>")
 
     waifu_name = waifu_data["name"]
+    waifu_anime = waifu_data.get("anime", "Unknown Anime")
 
-    # Ask receiver to confirm
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("✅ Yes", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
-            InlineKeyboardButton("❌ No", callback_data="gift_no")
+            InlineKeyboardButton("✅ Accept", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
+            InlineKeyboardButton("❌ Decline", callback_data="gift_no")
         ]
     ])
 
-    await app.send_message(
-        receiver_id,
-        f"🎁 <b>You have received a Waifu gift!</b>\n\n"
-        f"<b>Waifu Name:</b> {waifu_name}\n"
-        f"<b>From:</b> {message.from_user.mention()}\n\n"
-        f"<i>Do you want to accept this gift?</i>",
-        reply_markup=buttons
+    caption = (
+        f"🎁 <b>You received a Waifu gift!</b>\n\n"
+        f"<b>💖 Waifu:</b> <code>{waifu_name}</code>\n"
+        f"<b>🎬 Anime:</b> <code>{waifu_anime}</code>\n"
+        f"<b>🎁 From:</b> {message.from_user.mention()}\n\n"
+        f"Do you want to accept this gift?"
     )
 
-    await message.reply_text("✅ <b>Gift request sent to the receiver.</b>")
+    try:
+        if message.chat.type == enums.ChatType.PRIVATE:
+            await app.send_message(receiver_id, caption, reply_markup=buttons)
+        else:
+            await message.reply_text(caption, reply_markup=buttons)
+    except Exception:
+        await message.reply_text("⚠️ <b>Couldn’t send gift. The user may have privacy settings enabled.</b>")
+
+
+    
 
 
 @app.on_callback_query(filters.regex(r"gift_yes:(\d+):(.+)"))
@@ -68,52 +80,9 @@ async def gift_confirm(_, query):
     )
 
 
-@app.on_callback_query(filters.regex("gift_no"))
-async def gift_decline(_, query):
-    await query.message.edit_text("❌ <b>Gift declined.</b>")
 
 
-@app.on_message(filters.command("trade"))
-async def trade_waifu(_, message: types.Message):
-    sender_id = message.from_user.id
 
-    if message.reply_to_message:
-        try:
-            sender_waifu_id, receiver_waifu_id = message.text.split(None, 2)[1:]
-        except ValueError:
-            return await message.reply_text("💡 <b>Reply to someone's message and use:</b>\n<code>/trade your_waifu_id their_waifu_id</code>")
-        receiver_id = message.reply_to_message.from_user.id
-    else:
-        try:
-            _, receiver_id, sender_waifu_id, receiver_waifu_id = message.text.split(None, 3)
-            receiver_id = int(receiver_id)
-        except ValueError:
-            return await message.reply_text("💡 <b>Use like:</b>\n<code>/trade receiver_id your_waifu_id their_waifu_id</code>")
-
-    your_waifu = await waifusdb.getUserWaifu(sender_id, sender_waifu_id)
-    their_waifu = await waifusdb.getUserWaifu(receiver_id, receiver_waifu_id)
-
-    if not your_waifu or not their_waifu:
-        return await message.reply_text("❌ <b>Invalid waifu IDs for trade!</b>")
-
-    btns = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("🔁 Accept Trade", callback_data=f"trade_yes:{sender_id}:{sender_waifu_id}:{receiver_waifu_id}"),
-            InlineKeyboardButton("❌ Decline", callback_data="trade_no")
-        ]
-    ])
-
-    await app.send_message(
-        receiver_id,
-        f"🔁 <b>Trade request!</b>\n\n"
-        f"<b>{message.from_user.first_name}</b> wants to trade:\n"
-        f"➡️ <b>{your_waifu['name']}</b>\n"
-        f"⬅️ For your <b>{their_waifu['name']}</b>\n\n"
-        f"Do you accept?",
-        reply_markup=btns
-    )
-
-    await message.reply_text("✅ <b>Trade request sent to the user.</b>")
 
 
 @app.on_callback_query(filters.regex(r"trade_yes:(\d+):(.+):(.+)"))
