@@ -4,7 +4,7 @@ from Grabber import app
 from Grabber.core.mongo import waifusdb
 
 
-async def rank_definer(rank: str) -> str:
+def rank_definer(rank: str) -> str:
     rank = rank.lower()
     
     if rank == "common":
@@ -63,7 +63,7 @@ async def gift_waifu(_, message: types.Message):
 **OwO, You received a Waifu gift!**\n
 **⬤ Waifu** : <code>{waifu_name}</code>
 **⬤ Anime** : <code>{waifu_anime}</code>
-**⬤ Rarity** : <code>{rank_definer(rank)}</code>
+**⬤ Rarity** : <code>{rank_definer(waifu_rank)}</code>
 **⬤ From** : {message.from_user.mention()}\n
 Do you want to accept this gift?
 """
