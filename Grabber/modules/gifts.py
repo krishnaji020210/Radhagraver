@@ -1,26 +1,8 @@
-from pyrogram import filters, enums
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from Grabber import app
+from Grabber.core import main_func
+from pyrogram import filters, enums
 from Grabber.core.mongo import waifusdb
-
-
-def rank_definer(rank: str) -> str:
-    rank = rank.lower()
-    
-    if rank == "common":
-        return f"⚪ Common"
-    elif rank == "rare":
-        return f"🟢 Rare"
-    elif rank == "epic":
-        return f"🔵 Epic"
-    elif rank == "legendary":
-        return f"🟡 Legendary"
-    elif rank == "mythical":
-        return f"🔴 Mythical"
-    elif rank == "dark":
-        return f"⚫ Dark"
-    else:
-        return f"🔘 Not Define"
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 
@@ -34,10 +16,16 @@ async def gift_waifu(_, message):
         except IndexError:
             return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
         receiver_id = message.reply_to_message.from_user.id
+        name = message.reply_to_message.from_user.mention
     else:
         try:
             _, receiver_id, waifu_id = message.text.split(None, 2)
-            receiver_id = int(receiver_id)
+            try:
+                user_data = await app.get_users(receiver_id)
+                name = user_data.mention()
+                receiver_id = user_data.id
+            except:
+                await message.reply_text("User ID Not Found!!")
         except ValueError:
             return await message.reply_text(
                 "💡 <b>Correct usage:</b>\n<code>/gift receiver_id waifu_id</code>\n"
@@ -60,12 +48,12 @@ async def gift_waifu(_, message):
     ])
 
     caption = f"""
-**OwO, You received a Waifu gift!**\n
+**OwO, {name} received a Waifu gift!**\n
 **⬤ Waifu** : <code>{waifu_name}</code>
 **⬤ Anime** : <code>{waifu_anime}</code>
-**⬤ Rarity** : <code>{rank_definer(waifu_rank)}</code>
+**⬤ Rarity** : <code>{(await main_func.rank_definer(waifu_rank))}</code>
 **⬤ From** : {message.from_user.mention()}\n
-Do you want to accept this gift?
+<i>Do you want to accept this gift?</i>
 """
 
     try:
