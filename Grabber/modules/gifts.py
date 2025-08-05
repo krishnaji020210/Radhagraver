@@ -12,9 +12,7 @@ async def gift_waifu(_, message: types.Message):
         try:
             waifu_id = message.text.split(None, 1)[1]
         except IndexError:
-            return await message.reply_text(
-                "💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>"
-            )
+            return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
         receiver_id = message.reply_to_message.from_user.id
     else:
         try:
@@ -35,22 +33,22 @@ async def gift_waifu(_, message: types.Message):
 
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("✅ Accept", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
-            InlineKeyboardButton("❌ Decline", callback_data="gift_no")
+            InlineKeyboardButton("🟢 Accept", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
+            InlineKeyboardButton("🔴 Decline", callback_data="gift_no")
         ]
     ])
 
     caption = f"""
-<b>You received a Waifu gift!</b>\n
-<b> ━⊱ Waifu:</b> <code>{waifu_name}</code>
-<b> ━⊱ Anime:</b> <code>{waifu_anime}</code>
-<b> ━⊱ From:</b> {message.from_user.mention()}\n\n
+**You received a Waifu gift!**\n
+**⬤ Waifu** : <code>{waifu_name}</code>
+**⬤ Anime** : <code>{waifu_anime}</code>
+**⬤ From** : {message.from_user.mention()}\n\n
 Do you want to accept this gift?"
     """
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-            await app.send_message(receiver_id, caption, reply_markup=buttons)
+            await app.send_message(receiver_id, caption, reply_markup=butt ons)
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
@@ -59,7 +57,7 @@ Do you want to accept this gift?"
 
     
 
-
+"""
 @app.on_callback_query(filters.regex(r"gift_yes:(\d+):(.+)"))
 async def gift_confirm(_, query):
     receiver_id = query.from_user.id
@@ -108,4 +106,4 @@ async def trade_confirm(_, query):
 async def trade_decline(_, query):
     await query.message.edit_text("❌ <b>Trade declined.</b>")
 
-
+"""
