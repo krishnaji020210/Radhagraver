@@ -71,7 +71,7 @@ async def gift_confirm(_, query):
     if not waifu_data:
         return await query.answer("❌ Waifu no longer exists!", show_alert=True)
 
-    await waifusdb.addUser_Waifu(receiver_id, waifu_data["_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
+    await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
     await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
 
     await query.message.edit_text(
