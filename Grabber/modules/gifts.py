@@ -1,4 +1,4 @@
-from pyrogram import filters, Client, enums, types
+from pyrogram import filters, enums
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from Grabber import app
 from Grabber.core.mongo import waifusdb
@@ -25,7 +25,7 @@ def rank_definer(rank: str) -> str:
 
 
 @app.on_message(filters.command("gift"))
-async def gift_waifu(_, message: types.Message):
+async def gift_waifu(_, message):
     sender_id = message.from_user.id
 
     if message.reply_to_message:
@@ -50,7 +50,7 @@ async def gift_waifu(_, message: types.Message):
 
     waifu_name = waifu_data["name"]
     waifu_anime = waifu_data.get("anime", "Unknown Anime")
-    waifu_rank = waifu_data[rank]
+    waifu_rank = waifu_data["rank"] 
     
     buttons = InlineKeyboardMarkup([
         [
@@ -70,13 +70,13 @@ Do you want to accept this gift?
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-          await app.send_message(receiver_id, caption, reply_markup=buttons)
+            await app.send_message(receiver_id, caption, reply_markup=buttons)
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
         await message.reply_text("⚠️ <b>Couldn’t send gift. The user may have privacy settings enabled.</b>")
 
-
+    
     
 
 """
