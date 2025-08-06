@@ -44,7 +44,7 @@ async def gift_waifu(_, message):
     buttons = InlineKeyboardMarkup([
         [
             InlineKeyboardButton("🟢 Accept", callback_data=f"gift_yes:{sender_id}:{receiver_id}:{waifu_id}"),
-            InlineKeyboardButton("🔴 Decline", callback_data=f"gift_no:{receiver_id")
+            InlineKeyboardButton("🔴 Decline", callback_data=f"gift_no:{receiver_id}")
         ]
     ])
 
