@@ -5,6 +5,7 @@ from Grabber.core.mongo import waifusdb
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
+# ------------------------ Gift Command ------------------------ #
 
 @app.on_message(filters.command("gift"))
 async def gift_waifu(_, message):
@@ -59,7 +60,7 @@ async def gift_waifu(_, message):
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
             await app.send_message(receiver_id, caption, reply_markup=buttons)
-            await message.reply_text("Requests sending to gift waifu like this text likh do yha")
+            await message.reply_text("Your gift request has been sent to the receiver.")
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
@@ -67,6 +68,7 @@ async def gift_waifu(_, message):
 
     
     
+# ------------------------ Gift Regex Callback ------------------------ #
 
 @app.on_callback_query(filters.regex(r"gift_yes:(\d+):(.+)"))
 async def gift_confirm(_, query):
@@ -83,8 +85,8 @@ async def gift_confirm(_, query):
     await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
 
     await query.message.edit_text(
-        f"🎉 <b>Gift accepted!</b>\n\n"
-        f"Now <b>{waifu_data['name']}</b> belongs to <b>{query.from_user.first_name}</b> ❤️"
+        f"🎉 <b>Gift Accepted!</b>\n\n"
+        f"<i>Now {waifu_data['name']} belongs to {query.from_user.first_name}</i> ❤️"
     )
 
 
@@ -94,5 +96,12 @@ async def gift_confirm(_, query):
     sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
-    await query.message.edit_text(f"{name} aapka gift accept nhi krna chahte vo aapka gift lene me interested nhi hai ")
+    await query.message.edit_text(f"{name} does not want to accept your gift. They are not interested in receiving your gift.")
+
+
+
+
+# ------------------------ Trade Command ------------------------ #
+
+
 
