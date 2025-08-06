@@ -1,0 +1,103 @@
+from pyrogram import filters
+from Grabber import app
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
+from Grabber.core.mongo.waifusdb import getAllWaifus
+
+
+@app.on_message(filters.command("animes"))
+async def anime_alphabets(_, message):
+    row1 = [InlineKeyboardButton(str(i), callback_data=f"anime_letter_{i}") for i in range(1, 6)]
+    row2 = [InlineKeyboardButton(str(i), callback_data=f"anime_letter_{i}") for i in range(6, 10)]
+
+    alpha_rows = [
+        ["A", "B", "C", "D"],
+        ["E", "F", "G", "H"],
+        ["I", "J", "K", "L"],
+        ["M", "N", "O", "P"],
+        ["Q", "R", "S", "T"],
+        ["U", "V", "W", "X"],
+        ["Y", "Z"]
+    ]
+    alpha_buttons = [[InlineKeyboardButton(letter, callback_data=f"anime_letter_{letter}") for letter in row] for row in alpha_rows]
+    close_btn = [InlineKeyboardButton("🔴 Close", callback_data="close_data")]
+
+    keyboard = [row1, row2] + alpha_buttons + [close_btn]
+
+    await message.reply(
+        "**📚 Choose starting number or letter of anime name:**",
+        reply_markup=InlineKeyboardMarkup(keyboard)
+    )
+
+
+@app.on_callback_query(filters.regex(r"anime_letter_(.+)"))
+async def handle_letter_click(_, query: CallbackQuery):
+    letter = query.data.split("_")[2].upper()
+    await show_anime_page(query, letter, 0)
+
+@app.on_callback_query(filters.regex(r"anime_list_(.+)_(\d+)"))
+async def handle_anime_page(_, query: CallbackQuery):
+    letter = query.data.split("_")[2].upper()
+    page = int(query.data.split("_")[3])
+    await show_anime_page(query, letter, page)
+
+
+async def show_anime_page(query: CallbackQuery, letter: str, page: int):
+    await query.answer()
+    all_waifus = await getAllWaifus()
+
+    anime_names = sorted(set(
+        w["anime"] for w in all_waifus if w["anime"].upper().startswith(letter)
+    ))
+
+    if not anime_names:
+        await query.message.edit(f"❌ No animes starting with `{letter}` found.")
+        return
+
+    per_page = 10
+    start = page * per_page
+    end = start + per_page
+    total = len(anime_names)
+    total_pages = (total - 1) // per_page + 1
+
+    shown_animes = anime_names[start:end]
+
+    buttons = [[InlineKeyboardButton(anime, callback_data=f"anime_click_{anime}")]
+               for anime in shown_animes]
+
+    nav_row = []
+
+    if page > 0:
+        nav_row.append(InlineKeyboardButton("⬅️ Prev", callback_data=f"anime_list_{letter}_{page - 1}"))
+
+    if end < total:
+        nav_row.append(InlineKeyboardButton("➡️ Next", callback_data=f"anime_list_{letter}_{page + 1}"))
+
+    nav_row.append(InlineKeyboardButton("🔴 Close", callback_data="close_data"))
+
+    if nav_row:
+        buttons.append(nav_row)
+
+    await query.message.edit(
+        f"📺 **Animes starting with `{letter}`**\n"
+        f"Showing: {start + 1} - {min(end, total)} of {total} ({len(shown_animes)}/{total})",
+        reply_markup=InlineKeyboardMarkup(buttons)
+    )
+
+
+
+@app.on_callback_query(filters.regex(r"anime_click_(.+)"))
+async def inline_hint_anime(_, callback_query):
+    anime = callback_query.data.split("_", 2)[2]
+    bot_username = (await app.get_me()).username
+    await callback_query.answer()
+
+    await callback_query.message.edit(
+        f"🔍 Tap below to search waifus from **{anime}**:\n\n"
+        f"👉 `@{bot_username} {anime}`",
+        reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton(f"🔎 Search {anime} Waifus", switch_inline_query_current_chat=anime)],
+            [InlineKeyboardButton("🔙 Back", callback_data=f"anime_list_{anime[0].upper()}_0")]
+        ])
+    )
+
+
