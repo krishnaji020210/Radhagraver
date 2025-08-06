@@ -4,8 +4,9 @@ from Grabber.core import main_func
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
-# Format waifus list for display
-def format_waifus_list(waifus, page=0, per_page=5):
+
+
+async def format_waifus_list(waifus, page=0, per_page=5):
     total = len(waifus)
     start = page * per_page
     end = start + per_page
@@ -13,12 +14,11 @@ def format_waifus_list(waifus, page=0, per_page=5):
 
     text = f"🏵 <b>Waifu Grab</b> - ({min(end, total)}/{total})\n━━━━━━━━━━━━━━━━━━\n"
     for w in page_waifus:
-        rarity = await main_func.rank_definer(w['rank'])
         text += (
             f"📑 <b>ID</b>: <code>{w['waifu_id']}</code>\n"
             f"🧽️ <b>Name</b>: {w['name']}\n"
             f"🧩 <b>Anime</b>: {w['anime']} - {w['grab_count']}x\n"
-            f"🎭 <b>Rarity</b>: {rarity}\n"
+            f"🎭 <b>Rarity</b>: {(await main_func.rank_definer(w['rank']))}\n"
             f"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n"
         )
     return text
@@ -41,12 +41,11 @@ async def mywaifus_handler(client, message):
         return await message.reply("You don't own any waifus yet.")
 
     page = 0
-    text = format_waifus_list(waifus, page=page)
+    text = await format_waifus_list(waifus, page=page)  # ✅ await the async function
     buttons = get_buttons(page, len(waifus))
     top_image = waifus[0]["image"]
 
     await message.reply_photo(photo=top_image, caption=text, reply_markup=buttons)
-
 
 
 
@@ -60,7 +59,7 @@ async def paginate_waifus(client, callback_query):
     if not waifus:
         return await callback_query.answer("No waifus found.", show_alert=True)
 
-    text = format_waifus_list(waifus, page=page)
+    text = await format_waifus_list(waifus, page=page)  # ✅ await the async function
     buttons = get_buttons(page, len(waifus))
     top_image = waifus[page * 5]["image"] if len(waifus) > page * 5 else waifus[-1]["image"]
 
@@ -76,4 +75,4 @@ async def paginate_waifus(client, callback_query):
 async def close_waifus(client, callback_query):
     await callback_query.message.delete()
 
-
+    
