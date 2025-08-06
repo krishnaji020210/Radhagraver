@@ -50,29 +50,42 @@ async def mywaifus_handler(client, message):
 
 
 @app.on_callback_query(filters.regex(r"waifus_(next|prev)_(\d+)"))
-async def paginate_waifus(client, callback_query):
-    direction, page = callback_query.data.split("_")[1:]
+async def paginate_waifus(client, query):
+    replie_id = query.message.reply_to_message.from_user.id
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+        
+    direction, page = query.data.split("_")[1:]
     page = int(page)
     user_id = callback_query.from_user.id
     waifus = await getUserAllWaifus(user_id)
 
     if not waifus:
-        return await callback_query.answer("No waifus found.", show_alert=True)
+        return await query.answer("No waifus found.", show_alert=True)
 
     text = await format_waifus_list(waifus, page=page)  # ✅ await the async function
     buttons = get_buttons(page, len(waifus))
     top_image = waifus[page * 5]["image"] if len(waifus) > page * 5 else waifus[-1]["image"]
 
     try:
-        await callback_query.message.edit_media(
+        await query.message.edit_media(
             media=InputMediaPhoto(media=top_image, caption=text),
             reply_markup=buttons
         )
     except Exception as e:
-        await callback_query.answer("Failed to update page.", show_alert=True)
+        await query.answer("Failed to update page.", show_alert=True)
 
+                                                                                 
 @app.on_callback_query(filters.regex("waifus_close"))
-async def close_waifus(client, callback_query):
-    await callback_query.message.delete()
+async def close_waifus(client, query):
+    replie_id = query.message.reply_to_message.from_user.id
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+        
+    await query.message.delete()
 
     
