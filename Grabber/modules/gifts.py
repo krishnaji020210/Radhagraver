@@ -37,12 +37,12 @@ async def gift_waifu(_, message):
         return await message.reply_text("❌ <b>This waifu is not in your collection.</b>")
 
     waifu_name = waifu_data["name"]
-    waifu_anime = waifu_data.get("anime", "Unknown Anime")
+    waifu_anime = waifu_data["anime"]
     waifu_rank = waifu_data["rank"] 
     
     buttons = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("🟢 Accept", callback_data=f"gift_yes:{sender_id}:{waifu_id}"),
+            InlineKeyboardButton("🟢 Accept", callback_data=f"gift_yes:{sender_id}:{receiver_id}:{waifu_id}"),
             InlineKeyboardButton("🔴 Decline", callback_data="gift_no")
         ]
     ])
@@ -59,6 +59,7 @@ async def gift_waifu(_, message):
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
             await app.send_message(receiver_id, caption, reply_markup=buttons)
+            await message.reply_text("Requests sending to gift waifu like this text likh do yha")
         else:
             await message.reply_text(caption, reply_markup=buttons)
     except Exception:
@@ -67,16 +68,16 @@ async def gift_waifu(_, message):
     
     
 
-"""
 @app.on_callback_query(filters.regex(r"gift_yes:(\d+):(.+)"))
 async def gift_confirm(_, query):
-    receiver_id = query.from_user.id
-    sender_id, waifu_id = query.data.split(":")[1:]
-
-    # Re-fetch waifu to confirm ownership
+    click_id = query.from_user.id
+    sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
+    if click_id != int(reciever_id):
+        return await query.answer("This is not for you", show_alert=True)
+        
     waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
     if not waifu_data:
-        return await query.answer("❌ Waifu no longer exists!", show_alert=True)
+        return await query.answer("🛑 Waifu no longer exists!", show_alert=True)
 
     await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
     await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
@@ -88,32 +89,3 @@ async def gift_confirm(_, query):
 
 
 
-
-
-
-
-@app.on_callback_query(filters.regex(r"trade_yes:(\d+):(.+):(.+)"))
-async def trade_confirm(_, query):
-    receiver_id = query.from_user.id
-    sender_id, sender_waifu_id, receiver_waifu_id = query.data.split(":")[1:]
-
-    sender_waifu = await waifusdb.getUserWaifu(int(sender_id), sender_waifu_id)
-    receiver_waifu = await waifusdb.getUserWaifu(receiver_id, receiver_waifu_id)
-
-    if not sender_waifu or not receiver_waifu:
-        return await query.answer("❌ Trade failed: One or both waifus missing!", show_alert=True)
-
-    await waifusdb.addUser_Waifu(receiver_id, sender_waifu["_id"], sender_waifu["name"], sender_waifu["anime"], sender_waifu["image"], sender_waifu["rank"])
-    await waifusdb.addUser_Waifu(int(sender_id), receiver_waifu["_id"], receiver_waifu["name"], receiver_waifu["anime"], receiver_waifu["image"], receiver_waifu["rank"])
-
-    await waifusdb.removeUserWaifu(int(sender_id), sender_waifu_id)
-    await waifusdb.removeUserWaifu(receiver_id, receiver_waifu_id)
-
-    await query.message.edit_text("🔁 <b>Trade completed successfully!</b> 🎉")
-
-
-@app.on_callback_query(filters.regex("trade_no"))
-async def trade_decline(_, query):
-    await query.message.edit_text("❌ <b>Trade declined.</b>")
-
-"""
