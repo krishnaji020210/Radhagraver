@@ -52,14 +52,13 @@ async def mywaifus_handler(client, message):
 @app.on_callback_query(filters.regex(r"waifus_(next|prev)_(\d+)"))
 async def paginate_waifus(client, query):
     replie_id = query.message.reply_to_message.from_user.id
-    click_id = query.from_user.id
+    user_id = query.from_user.id
     
-    if click_id != replie_id:
+    if user_id != replie_id:
         return await query.answer("This is not for you!!", show_alert=True)
         
     direction, page = query.data.split("_")[1:]
     page = int(page)
-    user_id = callback_query.from_user.id
     waifus = await getUserAllWaifus(user_id)
 
     if not waifus:
