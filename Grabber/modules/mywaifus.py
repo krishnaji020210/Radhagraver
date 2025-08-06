@@ -17,7 +17,7 @@ def format_waifus_list(waifus, page=0, per_page=5):
             f"📑 <b>ID</b>: <code>{w['waifu_id']}</code>\n"
             f"🧽️ <b>Name</b>: {w['name']}\n"
             f"🧩 <b>Anime</b>: {w['anime']} - {w['grab_count']}x\n"
-            f"🎭 <b>Rarity</b>: {w['rank']}\n"
+            f"🎭 <b>Rarity</b>: {(await main_func.rank_definer(w['rank']))}\n"
             f"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n"
         )
     return text
