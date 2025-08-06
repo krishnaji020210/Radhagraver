@@ -88,4 +88,11 @@ async def gift_confirm(_, query):
     )
 
 
+@app.on_callback_query(filters.regex(r"gift_no"))
+async def gift_confirm(_, query):
+    click_id = query.from_user.id
+    sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
+    if click_id != int(receiver_id):
+        return await query.answer("This is not for you", show_alert=True)
+    await query.message.edit_text(f"{name} aapka gift accept nhi krna chahte vo aapka gift lene me interested nhi hai ")
 
