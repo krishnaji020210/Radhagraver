@@ -72,7 +72,7 @@ async def gift_waifu(_, message):
 async def gift_confirm(_, query):
     click_id = query.from_user.id
     sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
-    if click_id != int(reciever_id):
+    if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
         
     waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
