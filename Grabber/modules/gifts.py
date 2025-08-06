@@ -144,16 +144,14 @@ async def trade_waifu(_, message):
     ])
 
     caption = f"""
-🎁 <b>{name}, you have received a trade offer!</b>
-
-<b>🧸 Waifu:</b> <code>{waifu_name}</code>
-<b>📺 Anime:</b> <code>{waifu_anime}</code>
-<b>⭐ Rarity:</b> <code>{(await main_func.rank_definer(waifu_rank))}</code>
-<b>📨 From:</b> {message.from_user.mention()}
-
+**OwO, {name} received a trade offer!**\n
+**⬤ Waifu** : <code>{waifu_name}</code>
+**⬤ Anime** : <code>{waifu_anime}</code>
+**⬤ Rarity** : <code>{(await main_func.rank_definer(waifu_rank))}</code>
+**⬤ From** : {message.from_user.mention()}\n
 <i>Do you want to accept this trade offer?</i>
 """
-
+   
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
             await app.send_message(receiver_id, caption, reply_markup=buttons)
