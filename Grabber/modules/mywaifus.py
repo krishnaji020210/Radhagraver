@@ -13,11 +13,12 @@ def format_waifus_list(waifus, page=0, per_page=5):
 
     text = f"🏵 <b>Waifu Grab</b> - ({min(end, total)}/{total})\n━━━━━━━━━━━━━━━━━━\n"
     for w in page_waifus:
+        rarity = await main_func.rank_definer(w['rank'])
         text += (
             f"📑 <b>ID</b>: <code>{w['waifu_id']}</code>\n"
             f"🧽️ <b>Name</b>: {w['name']}\n"
             f"🧩 <b>Anime</b>: {w['anime']} - {w['grab_count']}x\n"
-            f"🎭 <b>Rarity</b>: {(await main_func.rank_definer(w['rank']))}\n"
+            f"🎭 <b>Rarity</b>: {rarity}\n"
             f"┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈\n"
         )
     return text
