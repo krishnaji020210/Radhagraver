@@ -5,7 +5,7 @@ from Grabber.core.mongo.waifusdb import getAllWaifus
 
 
 @app.on_message(filters.command("animes"))
-async def anime_alphabets(_, message):
+async def anime_list(_, message):
     row1 = [InlineKeyboardButton(str(i), callback_data=f"anime_letter_{i}") for i in range(1, 6)]
     row2 = [InlineKeyboardButton(str(i), callback_data=f"anime_letter_{i}") for i in range(6, 10)]
 
@@ -102,75 +102,6 @@ async def inline_hint_anime(_, callback_query):
 
 
 
-
-@app.on_inline_query()
-async def inline_search_anime(_, inline_query):
-    query = inline_query.query.strip()
-    all_waifus = await getAllWaifus()
-
-    if not query:
-        results = []
-        for waifu in all_waifus[:50]:
-            caption = f"""
-👩🏻‍🎤 {waifu['name']}
-📺 Anime: {waifu['anime']}
-🏷️ Rank: {waifu['rank'].capitalize()}
-            """
-            results.append(
-                InlineQueryResultPhoto(
-                    photo_url=waifu["image"],
-                    thumb_url=waifu["image"],
-                    title=" ",
-                    input_message_content=InputTextMessageContent(
-                        message_text=caption.strip()
-                    ),
-                    reply_markup=InlineKeyboardMarkup([
-                        [InlineKeyboardButton("❌ Close", callback_data="close_inline")]
-                    ])
-                )
-            )
-        await inline_query.answer(results, cache_time=1)
-        return
-
-    filtered = [
-        w for w in all_waifus if query.lower() == w["anime"].lower()
-    ]
-
-    if not filtered:
-        await inline_query.answer([
-            InlineQueryResultPhoto(
-                photo_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
-                thumb_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
-                title="Not Found",
-                input_message_content=InputTextMessageContent(
-                    message_text=f"❌ No waifus found in {query}"
-                )
-            )
-        ], cache_time=1)
-        return
-
-    results = []
-    for waifu in filtered[:50]:
-        caption = f"""
-👩🏻‍🎤 {waifu['name']}
-📺 Anime: {waifu['anime']}
-🏷️ Rank: {waifu['rank'].capitalize()}
-        """
-        results.append(
-            InlineQueryResultPhoto(
-                photo_url=waifu["image"],
-                thumb_url=waifu["image"],
-                title=" ",
-                input_message_content=InputTextMessageContent(
-                    message_text=caption.strip()
-                ),
-                reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton(" Close", callback_data="close_inline")]
-                ])
-            )
-        )
-
-    await inline_query.answer(results, cache_time=1)
 
 
 
