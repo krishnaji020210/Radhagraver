@@ -20,7 +20,7 @@ async def anime_list(_, message):
         ["Y", "Z"]
     ]
     alpha_buttons = [[InlineKeyboardButton(letter, callback_data=f"anime_letter_{letter}") for letter in row] for row in alpha_rows]
-    close_btn = [InlineKeyboardButton("🔴 Close", callback_data="close_data")]
+    close_btn = [InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]
 
     keyboard = [row1, row2] + alpha_buttons + [close_btn]
 
@@ -88,6 +88,7 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     )
 
 
+# ------------------------- Animes Click Regex ------------------------- #
 
 @app.on_callback_query(filters.regex(r"anime_click_(.+)"))
 async def inline_hint_anime(_, callback_query):
@@ -99,11 +100,12 @@ async def inline_hint_anime(_, callback_query):
         f"🔍 Tap below to search waifus from **{anime}**:",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(f"🔎 ᴀʟʟ ᴡᴀɪғᴜs", switch_inline_query_current_chat=anime)],
-            [InlineKeyboardButton("🔙 ʙᴀᴄᴋ", callback_data=f"anime_list_{anime[0].upper()}_0")]
+            [InlineKeyboardButton("↺ ʙᴀᴄᴋ ↻", callback_data=f"anime_list_{anime[0].upper()}_0")]
         ])
     )
 
 
+# ------------------------- Inline Photo Result ------------------------- #
 
 
 
