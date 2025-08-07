@@ -5,6 +5,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMedi
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
 
+# ------------------------- My Waifus ------------------------- #
 
 async def format_waifus_list(waifus, page=0, per_page=5):
     total = len(waifus)
@@ -27,10 +28,10 @@ def get_buttons(page, total, per_page=5):
     max_pages = (total - 1) // per_page
     buttons = []
     if page > 0:
-        buttons.append(InlineKeyboardButton("﹤ Prev", callback_data=f"waifus_prev_{page-1}"))
+        buttons.append(InlineKeyboardButton("﹤ ᴘʀᴇᴠ", callback_data=f"waifus_prev_{page-1}"))
     if page < max_pages:
-        buttons.append(InlineKeyboardButton("Next ﹥", callback_data=f"waifus_next_{page+1}"))
-    buttons.append(InlineKeyboardButton("☌ Close", callback_data="waifus_close"))
+        buttons.append(InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"waifus_next_{page+1}"))
+    buttons.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="waifus_close"))
     return InlineKeyboardMarkup([buttons])
 
 @app.on_message(filters.command("mywaifus"))
@@ -41,13 +42,15 @@ async def mywaifus_handler(client, message):
         return await message.reply("You don't own any waifus yet.")
 
     page = 0
-    text = await format_waifus_list(waifus, page=page)  # ✅ await the async function
+    text = await format_waifus_list(waifus, page=page)  
     buttons = get_buttons(page, len(waifus))
     top_image = waifus[0]["image"]
 
     await message.reply_photo(photo=top_image, caption=text, reply_markup=buttons)
 
 
+
+# ------------------------- Regex Callbacks ------------------------- #
 
 @app.on_callback_query(filters.regex(r"waifus_(next|prev)_(\d+)"))
 async def paginate_waifus(client, query):
@@ -81,7 +84,7 @@ async def paginate_waifus(client, query):
         await query.answer("Failed to update page.", show_alert=True)
 
                                                                                  
-@app.on_callback_query(filters.regex("waifus_close"))
+@app.on_callback_query(filters.regex("close_data"))
 async def close_waifus(client, query):
     try:
         replie_id = query.message.reply_to_message.from_user.id
