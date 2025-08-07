@@ -3,6 +3,7 @@ from Grabber import app
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InlineQueryResultPhoto, InputTextMessageContent
 from Grabber.core.mongo.waifusdb import getAllWaifus
 
+# ------------------------- Animes List ------------------------- #
 
 @app.on_message(filters.command("animes"))
 async def anime_list(_, message):
@@ -29,6 +30,8 @@ async def anime_list(_, message):
     )
 
 
+# ------------------------- Regex Callbacks  ------------------------- #
+
 @app.on_callback_query(filters.regex(r"anime_letter_(.+)"))
 async def handle_letter_click(_, query: CallbackQuery):
     letter = query.data.split("_")[2].upper()
@@ -40,6 +43,7 @@ async def handle_anime_page(_, query: CallbackQuery):
     page = int(query.data.split("_")[3])
     await show_anime_page(query, letter, page)
 
+# ------------------------- Show Anime Page Func ------------------------- #
 
 async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     await query.answer()
@@ -67,12 +71,12 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     nav_row = []
 
     if page > 0:
-        nav_row.append(InlineKeyboardButton("⬅️ Prev", callback_data=f"anime_list_{letter}_{page - 1}"))
+        nav_row.append(InlineKeyboardButton("﹤ ᴘʀᴇᴠ", callback_data=f"anime_list_{letter}_{page - 1}"))
 
     if end < total:
-        nav_row.append(InlineKeyboardButton("➡️ Next", callback_data=f"anime_list_{letter}_{page + 1}"))
+        nav_row.append(InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"anime_list_{letter}_{page + 1}"))
 
-    nav_row.append(InlineKeyboardButton("🔴 Close", callback_data="close_data"))
+    nav_row.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data"))
 
     if nav_row:
         buttons.append(nav_row)
@@ -92,11 +96,10 @@ async def inline_hint_anime(_, callback_query):
     await callback_query.answer()
 
     await callback_query.message.edit(
-        f"🔍 Tap below to search waifus from **{anime}**:\n\n"
-        f"👉 `@{bot_username} {anime}`",
+        f"🔍 Tap below to search waifus from **{anime}**:",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(f"🔎 Search {anime} Waifus", switch_inline_query_current_chat=anime)],
-            [InlineKeyboardButton("🔙 Back", callback_data=f"anime_list_{anime[0].upper()}_0")]
+            [InlineKeyboardButton(f"🔎 ᴀʟʟ ᴡᴀɪғᴜs", switch_inline_query_current_chat=anime)],
+            [InlineKeyboardButton("🔙 ʙᴀᴄᴋ", callback_data=f"anime_list_{anime[0].upper()}_0")]
         ])
     )
 
