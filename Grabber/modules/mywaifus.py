@@ -31,7 +31,7 @@ def get_buttons(page, total, per_page=5):
         buttons.append(InlineKeyboardButton("﹤ ᴘʀᴇᴠ", callback_data=f"waifus_prev_{page-1}"))
     if page < max_pages:
         buttons.append(InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"waifus_next_{page+1}"))
-    buttons.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="waifus_close"))
+    buttons.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data"))
     return InlineKeyboardMarkup([buttons])
 
 @app.on_message(filters.command("mywaifus"))
