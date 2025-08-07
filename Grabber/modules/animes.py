@@ -108,6 +108,45 @@ async def inline_hint_anime(_, callback_query):
 # ------------------------- Inline Photo Result ------------------------- #
 
 
+@app.on_inline_query()
+async def inline_search_anime(_, inline_query):
+    query = inline_query.query.strip()
+    all_waifus = await getAllWaifus()
+
+    results = []
+
+    waifus_to_show = all_waifus[:50] if not query else [
+        w for w in all_waifus if query.lower() == w["anime"].lower()
+    ]
+
+    if not waifus_to_show:
+        await inline_query.answer([
+            InlineQueryResultPhoto(
+                photo_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+                thumb_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+                title="Not Found",
+                caption=f"❌ No waifus found in {query}"
+            )
+        ], cache_time=1)
+        return
+
+    for waifu in waifus_to_show[:50]:
+        caption = f"👩🏻‍🎤 Name: {waifu['name']}\n📺 Anime: {waifu['anime']}\n🏷️ Rank: {waifu['rank'].capitalize()}"
+        results.append(
+            InlineQueryResultPhoto(
+                photo_url=waifu["image"],
+                thumb_url=waifu["image"],
+                title=waifu['name'], 
+                caption=caption,
+                reply_markup=InlineKeyboardMarkup([
+                    [InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]
+                ])
+            )
+        )
+
+    await inline_query.answer(results, cache_time=1)
+
+
 
 
 
