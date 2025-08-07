@@ -90,7 +90,7 @@ async def gift_confirm(_, query):
     )
 
 
-@app.on_callback_query(filters.regex(r"gift_no"))
+@app.on_callback_query(filters.regex(r"gift_no:(\d+):(.+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
     receiver_id = query.data.split(":")[1:]
