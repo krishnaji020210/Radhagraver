@@ -51,7 +51,11 @@ async def mywaifus_handler(client, message):
 
 @app.on_callback_query(filters.regex(r"waifus_(next|prev)_(\d+)"))
 async def paginate_waifus(client, query):
-    replie_id = query.message.reply_to_message.from_user.id
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+        
     user_id = query.from_user.id
     
     if user_id != replie_id:
@@ -79,12 +83,16 @@ async def paginate_waifus(client, query):
                                                                                  
 @app.on_callback_query(filters.regex("waifus_close"))
 async def close_waifus(client, query):
-    replie_id = query.message.reply_to_message.from_user.id
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
     click_id = query.from_user.id
     
     if click_id != replie_id:
         return await query.answer("This is not for you!!", show_alert=True)
-        
+       
     await query.message.delete()
 
     
