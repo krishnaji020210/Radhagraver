@@ -44,7 +44,7 @@ async def harem_menu(_, message):
     )
 
 # ---------------- PAGE SENDER ----------------
-async def send_harem_page(query, user_id, page, waifus, sort_type):
+async def send_harem_page(query, user_id, name, page, waifus, sort_type):
     total = len(waifus)
     start = page * PER_PAGE
     end = start + PER_PAGE
@@ -107,6 +107,103 @@ async def send_harem_page(query, user_id, page, waifus, sort_type):
         reply_markup=build_nav_buttons(sort_type, user_id, page)
     )
 
+
+
+@app.on_callback_query(filters.regex(r"^harem_sort"))
+async def harem_sort_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
+    await query.answer("⏳ Waito... fetching your waifus")
+    _, sort_type, user_id, page = query.data.split(":")
+    user_id = int(user_id)
+    page = int(page)
+    waifus = await getUserAllWaifus(user_id)
+    if not waifus:
+        return await query.answer("❌ You don't have any waifus!", show_alert=True)
+
+    user = await app.get_users(user_id)
+    display_name = user.mention()
+    
+    if sort_type == "waifus":
+        waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
+    elif sort_type == "anime":
+        waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rank", "Unknown")) if x.get("rank", "Unknown") in RARITY_ORDER else 999)
+    await send_harem_page(query, user_id, display_name, page, waifus, sort_type)
+
+@app.on_callback_query(filters.regex(r"^harem_next"))
+async def harem_next_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
+    _, sort_type, user_id, page = query.data.split(":")
+    user_id = int(user_id)
+    page = int(page) + 1
+    waifus = await getUserAllWaifus(user_id)
+    user = await app.get_users(user_id)
+    display_name = user.mention()
+    
+    if sort_type == "waifus":
+        waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
+    elif sort_type == "anime":
+        waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rank", "Unknown")) if x.get("rank", "Unknown") in RARITY_ORDER else 999)
+    if page * PER_PAGE >= len(waifus):
+        return await query.answer("🚫 No more pages!", show_alert=True)
+    await send_harem_page(query, user_id, display_name, page, waifus, sort_type)
+
+@app.on_callback_query(filters.regex(r"^harem_prev"))
+async def harem_prev_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
+    _, sort_type, user_id, page = query.data.split(":")
+    user_id = int(user_id)
+    page = int(page) - 1
+    if page < 0:
+        return await query.answer("⚠️ You're on the first page!", show_alert=True)
+    waifus = await getUserAllWaifus(user_id)
+    user = await app.get_users(user_id)
+    display_name = user.mention()
+    
+    if sort_type == "waifus":
+        waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
+    elif sort_type == "anime":
+        waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rank", "Unknown")) if x.get("rank", "Unknown") in RARITY_ORDER else 999)
+    await send_harem_page(query, user_id, display_name, page, waifus, sort_type)
+
+
+
+
+
+
+"""
 # ---------------- SORT HANDLER ----------------
 @app.on_callback_query(filters.regex(r"^harem_sort"))
 async def harem_sort_handler(_, query):
@@ -161,6 +258,6 @@ async def harem_prev_handler(_, query):
 
 
 
-
+"""
 
 
