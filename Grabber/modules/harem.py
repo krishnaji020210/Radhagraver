@@ -4,16 +4,17 @@ from Grabber import app
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
 PER_PAGE = 10
+RARITY_ORDER = ["Common", "Rare", "Epic", "Legendary", "Mythical"]
 
 def build_menu_buttons(user_id):
     buttons = [
         [
             InlineKeyboardButton("📜 Default", callback_data=f"harem_sort:default:{user_id}:0"),
             InlineKeyboardButton("🔠 Waifus (A-Z)", callback_data=f"harem_sort:waifus:{user_id}:0"),
+        ],[
             InlineKeyboardButton("🎬 Anime", callback_data=f"harem_sort:anime:{user_id}:0"),
             InlineKeyboardButton("💎 Rarity", callback_data=f"harem_sort:rarity:{user_id}:0")
-        ],
-        [
+        ],[
             InlineKeyboardButton("❌ Close", callback_data=f"harem_close:{user_id}")
         ]
     ]
@@ -57,20 +58,42 @@ async def send_harem_page(query, user_id, page, waifus, sort_type):
             text += f"**{anime}** ({len(waifu_list)})\n"
             for w in waifu_list:
                 text += (
-                    f"🆔 **ID:** {w.get('_id', 'N/A')}\n"
+                    f"🆔 **ID:** {w.get('waifu_id', 'N/A')}\n"
                     f"👩 **Name:** {w.get('name', 'Unknown')}\n"
-                    f"💎 **Rarity:** {w.get('rarity', 'Unknown')}\n"
+                    f"💎 **Rarity:** {w.get('rank', 'Unknown')}\n"
                     + "─" * 20 + "\n"
                 )
         photo_url = waifus[0].get('image', "https://via.placeholder.com/300") if waifus else "https://via.placeholder.com/300"
+
+    elif sort_type == "rarity":
+        grouped = {r: [] for r in RARITY_ORDER}
+        for w in waifus:
+            rarity = w.get("rank", "Unknown")
+            if rarity not in grouped:
+                grouped[rarity] = []
+            grouped[rarity].append(w)
+        text = f"💎 **Your Harem by Rarity** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        for rarity in RARITY_ORDER:
+            if grouped.get(rarity):
+                text += f"**{rarity}** ({len(grouped[rarity])})\n"
+                for w in grouped[rarity]:
+                    text += (
+                        f"🆔 **ID:** {w.get('waifu_id', 'N/A')}\n"
+                        f"👩 **Name:** {w.get('name', 'Unknown')}\n"
+                        f"🎬 **Anime:** {w.get('anime', 'Unknown')}\n"
+                        f"💎 **Rarity:** {rarity}\n"
+                        + "─" * 20 + "\n"
+                    )
+        photo_url = waifus[0].get('image', "https://via.placeholder.com/300") if waifus else "https://via.placeholder.com/300"
+
     else:
         text = f"💖 **Your Harem** ({shown_count}/{total})\n" + "─" * 30 + "\n"
         for w in page_waifus:
             text += (
-                f"🆔 **ID:** {w.get('_id', 'N/A')}\n"
+                f"🆔 **ID:** {w.get('waifu_id', 'N/A')}\n"
                 f"👩 **Name:** {w.get('name', 'Unknown')}\n"
                 f"🎬 **Anime:** {w.get('anime', 'Unknown')}\n"
-                f"💎 **Rarity:** {w.get('rarity', 'Unknown')}\n"
+                f"💎 **Rarity:** {w.get('rank', 'Unknown')}\n"
                 + "─" * 20 + "\n"
             )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
@@ -92,6 +115,8 @@ async def harem_sort_handler(_, query):
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
         waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rarity", "Unknown")) if x.get("rarity", "Unknown") in RARITY_ORDER else 999)
     await send_harem_page(query, user_id, page, waifus, sort_type)
 
 @app.on_callback_query(filters.regex(r"^harem_next"))
@@ -104,6 +129,8 @@ async def harem_next_handler(_, query):
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
         waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rarity", "Unknown")) if x.get("rarity", "Unknown") in RARITY_ORDER else 999)
     if page * PER_PAGE >= len(waifus):
         return await query.answer("🚫 No more pages!", show_alert=True)
     await send_harem_page(query, user_id, page, waifus, sort_type)
@@ -120,10 +147,14 @@ async def harem_prev_handler(_, query):
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
         waifus = sorted(waifus, key=lambda x: x.get("anime", "").lower())
+    elif sort_type == "rarity":
+        waifus = sorted(waifus, key=lambda x: RARITY_ORDER.index(x.get("rarity", "Unknown")) if x.get("rarity", "Unknown") in RARITY_ORDER else 999)
     await send_harem_page(query, user_id, page, waifus, sort_type)
 
-@app.on_callback_query(filters.regex(r"^harem_close"))
-async def harem_close_handler(_, query):
-    await query.message.delete()
 
 
+
+
+
+
+                                  
