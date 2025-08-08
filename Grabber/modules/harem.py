@@ -4,7 +4,7 @@ from Grabber import app
 from Grabber.core import main_func
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
-PER_PAGE = 10
+PER_PAGE = 5
 RARITY_ORDER = ["Common", "Rare", "Epic", "Legendary", "Mythical"]
 
 def build_menu_buttons(user_id):
