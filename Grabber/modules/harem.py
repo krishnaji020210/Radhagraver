@@ -1,6 +1,7 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 from Grabber import app
+from Grabber.core import main_func
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
 PER_PAGE = 10
@@ -15,7 +16,7 @@ def build_menu_buttons(user_id):
             InlineKeyboardButton("🎬 Anime", callback_data=f"harem_sort:anime:{user_id}:0"),
             InlineKeyboardButton("💎 Rarity", callback_data=f"harem_sort:rarity:{user_id}:0")
         ],[
-            InlineKeyboardButton("❌ Close", callback_data=f"harem_close:{user_id}")
+            InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data=f"close_data")
         ]
     ]
     return InlineKeyboardMarkup(buttons)
@@ -23,11 +24,11 @@ def build_menu_buttons(user_id):
 def build_nav_buttons(sort_type, user_id, page):
     buttons = [
         [
-            InlineKeyboardButton("⬅️ Prev", callback_data=f"harem_prev:{sort_type}:{user_id}:{page}"),
-            InlineKeyboardButton("Next ➡️", callback_data=f"harem_next:{sort_type}:{user_id}:{page}")
+            InlineKeyboardButton("﹤ ᴘʀᴇᴠ", callback_data=f"harem_prev:{sort_type}:{user_id}:{page}"),
+            InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"harem_next:{sort_type}:{user_id}:{page}")
         ],
         [
-            InlineKeyboardButton("❌ Close", callback_data=f"harem_close:{user_id}")
+            InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data=f"close_data")
         ]
     ]
     return InlineKeyboardMarkup(buttons)
@@ -55,20 +56,20 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
         grouped = dict(sorted(grouped.items(), key=lambda x: x[0].lower()))
         text = f"📣 **{name}'s Harem by Anime** ({shown_count}/{total})\n"
         for anime, waifu_list in grouped.items():
-            text += f"**{anime}** ({len(waifu_list)})\n" + "─" * 30 + "\n"
+            text += f"**{anime}** ({len(waifu_list)})\n" + "─" * 20 + "\n"
             for w in waifu_list:
                 text += (
                     f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                     f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
-                    f"🎭 **Rarity:** {w.get('rank', 'Unknown')}\n"
-                    f"┈" * 30 + "\n"
+                    f"🎭 **Rarity:** {(await main_func.rank_definer(w['rank']))}\n"
+                    f"┈" * 20 + "\n"
                 )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
     elif sort_type == "rarity":
         grouped = {r: [] for r in RARITY_ORDER}
         for w in page_waifus:
-            rarity = w.get("rank", "Unknown")
+            rarity = await main_func.rank_definer(w['rank'])
             if rarity not in grouped:
                 grouped[rarity] = []
             grouped[rarity].append(w)
@@ -87,14 +88,14 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
     else:
-        text = f"👒 **{name}'s Harem** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        text = f"👒 **{name}'s Harem** ({shown_count}/{total})\n" + "─" * 20 + "\n"
         for w in page_waifus:
             text += (
                 f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                 f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                 f"🧩 **Anime:** {w.get('anime', 'Unknown')}\n"
-                f"🎭 **Rarity:** {w.get('rank', 'Unknown')}\n"
-                + "┈" * 30 + "\n"
+                f"🎭 **Rarity:** {(await main_func.rank_definer(w['rank']))}\n"
+                + "┈" * 20 + "\n"
             )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
@@ -105,6 +106,16 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
 
 @app.on_callback_query(filters.regex(r"^harem_sort"))
 async def harem_sort_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
     await query.answer("⏳ Waito... fetching your waifus")
     _, sort_type, user_id, page = query.data.split(":")
     user_id = int(user_id)
@@ -126,6 +137,16 @@ async def harem_sort_handler(_, query):
 
 @app.on_callback_query(filters.regex(r"^harem_next"))
 async def harem_next_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
     _, sort_type, user_id, page = query.data.split(":")
     user_id = int(user_id)
     page = int(page) + 1
@@ -145,6 +166,16 @@ async def harem_next_handler(_, query):
 
 @app.on_callback_query(filters.regex(r"^harem_prev"))
 async def harem_prev_handler(_, query):
+    try:
+        replie_id = query.message.reply_to_message.from_user.id
+    except:
+        replie_id = query.from_user.id
+    
+    click_id = query.from_user.id
+    
+    if click_id != replie_id:
+        return await query.answer("This is not for you!!", show_alert=True)
+
     _, sort_type, user_id, page = query.data.split(":")
     user_id = int(user_id)
     page = int(page) - 1
