@@ -58,15 +58,15 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
             anime_name = w.get("anime", "Unknown")
             grouped.setdefault(anime_name, []).append(w)
         grouped = dict(sorted(grouped.items(), key=lambda x: x[0].lower()))
-        text = f"📣 **{name}'s Harem by Anime** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        text = f"📣 **{name}'s Harem by Anime** ({shown_count}/{total})\n" + "─" * 20 + "\n"
         for anime, waifu_list in grouped.items():
-            text += f"**{anime}** ({len(waifu_list)})\n"
+            text += f"⎔ **{anime}** ({len(waifu_list)})\n"
             for w in waifu_list:
                 text += (
                     f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                     f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                     f"🎭 **Rarity:** {(await main_func.rank_definer(w['rank']))}\n"
-                    + "─" * 20 + "\n"
+                    + "┅" * 20 + "\n"
                 )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
@@ -77,29 +77,29 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
             if rarity not in grouped:
                 grouped[rarity] = []
             grouped[rarity].append(w)
-        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n" + "─" * 20 + "\n"
         for rarity in RARITY_ORDER:
             if grouped.get(rarity):
-                text += f"**{rarity}** ({len(grouped[rarity])})\n"
+                text += f"⎔ **{rarity}** ({len(grouped[rarity])})\n"
                 for w in grouped[rarity]:
                     text += (
                         f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                         f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                         f"🧩 **Anime:** {w.get('anime', 'Unknown')}\n"
                         f"🎭 **Rarity:** {rarity}\n"
-                        + "─" * 20 + "\n"
+                        + "┅" * 20 + "\n"
                     )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
     else:  
-        text = f"👒 **{name}'s Harem** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        text = f"👒 **{name}'s Harem** ({shown_count}/{total})\n" + "─" * 20 + "\n"
         for w in page_waifus:
             text += (
                 f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                 f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                 f"🧩 **Anime:** {w.get('anime', 'Unknown')}\n"
                 f"🎭 **Rarity:** {(await main_func.rank_definer(w['rank']))}\n"
-                + "─" * 20 + "\n"
+                + "┅" * 20 + "\n"
             )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
