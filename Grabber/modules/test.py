@@ -86,7 +86,7 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
                         f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
                         f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                         f"🧩 **Anime:** {w.get('anime', 'Unknown')}\n"
-                        f"🎭 **Rarity:** {rarity}\n"
+                        f"🎭 **Rarity:** {(await main_func.rank_definer(rarity))}\n"
                         + "┅" * 20 + "\n"
                     )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
