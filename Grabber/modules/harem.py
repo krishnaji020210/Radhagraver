@@ -55,7 +55,7 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
         grouped = dict(sorted(grouped.items(), key=lambda x: x[0].lower()))
         text = f"📣 **{name}'s Harem by Anime** ({shown_count}/{total})\n"
         for anime, waifu_list in grouped.items():
-            text += f"**{anime}** ({len(waifu_list)})\n━━━━━━━━━━━━━━━━━━\n"
+            text += f"**{anime}** ({len(waifu_list)})\n" + "─" * 30 + "\n"
             for w in waifu_list:
                 text += (
                     f"📑 **ID:** {w.get('waifu_id', 'N/A')}\n"
@@ -72,7 +72,7 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
             if rarity not in grouped:
                 grouped[rarity] = []
             grouped[rarity].append(w)
-        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n━━━━━━━━━━━━━━━━━━\n"
+        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n" + "─" * 30 + "\n"
         for rarity in RARITY_ORDER:
             if grouped.get(rarity):
                 text += f"**{rarity}** ({len(grouped[rarity])})\n"
