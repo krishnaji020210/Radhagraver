@@ -69,11 +69,11 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
     elif sort_type == "rarity":
         grouped = {r: [] for r in RARITY_ORDER}
         for w in page_waifus:
-            rarity = await main_func.rank_definer(w['rank'])
+            rarity = w.get("rank", "Unknown")
             if rarity not in grouped:
                 grouped[rarity] = []
             grouped[rarity].append(w)
-        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n" + "─" * 30 + "\n"
+        text = f"🏵 **{name}'s Harem by Rarity** ({shown_count}/{total})\n" + "─" * 20 + "\n"
         for rarity in RARITY_ORDER:
             if grouped.get(rarity):
                 text += f"**{rarity}** ({len(grouped[rarity])})\n"
@@ -83,7 +83,7 @@ async def send_harem_page(query, user_id, name, page, waifus, sort_type):
                         f"🧽️ **Name:** {w.get('name', 'Unknown')}\n"
                         f"🧩 **Anime:** {w.get('anime', 'Unknown')}\n"
                         f"🎭 **Rarity:** {rarity}\n"
-                        f"┈" * 30 + "\n"
+                        f"┈" * 20 + "\n"
                     )
         photo_url = page_waifus[0].get('image', "https://via.placeholder.com/300") if page_waifus else "https://via.placeholder.com/300"
 
