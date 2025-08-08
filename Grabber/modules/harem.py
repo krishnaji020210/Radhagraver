@@ -112,11 +112,10 @@ async def harem_sort_handler(_, query):
     waifus = await getUserAllWaifus(user_id)
     if not waifus:
         return await query.answer("❌ You don't have any waifus!", show_alert=True)
-    # Get user info to show name
+
     user = await app.get_users(user_id)
-    display_name = user.first_name
-    if user.username:
-        display_name += f" (@{user.username})"
+    display_name = user.mention()
+    
     if sort_type == "waifus":
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
@@ -132,9 +131,8 @@ async def harem_next_handler(_, query):
     page = int(page) + 1
     waifus = await getUserAllWaifus(user_id)
     user = await app.get_users(user_id)
-    display_name = user.first_name
-    if user.username:
-        display_name += f" (@{user.username})"
+    display_name = user.mention()
+    
     if sort_type == "waifus":
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
@@ -154,9 +152,8 @@ async def harem_prev_handler(_, query):
         return await query.answer("⚠️ You're on the first page!", show_alert=True)
     waifus = await getUserAllWaifus(user_id)
     user = await app.get_users(user_id)
-    display_name = user.first_name
-    if user.username:
-        display_name += f" (@{user.username})"
+    display_name = user.mention()
+    
     if sort_type == "waifus":
         waifus = sorted(waifus, key=lambda x: x.get("name", "").lower())
     elif sort_type == "anime":
