@@ -107,7 +107,7 @@ async def inline_hint_anime(_, callback_query):
 
 # ------------------------- Inline Photo Result ------------------------- #
 
-
+"""
 @app.on_inline_query()
 async def inline_search_anime(_, inline_query):
     query = inline_query.query.strip()
@@ -147,7 +147,7 @@ async def inline_search_anime(_, inline_query):
     await inline_query.answer(results, cache_time=1)
 
 
-
+"""
 
 
 
