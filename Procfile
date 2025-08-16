@@ -1,1 +1,1 @@
-worker: python -m Grabber
+web: python -m Grabber
