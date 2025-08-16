@@ -83,7 +83,7 @@ async def add_waifus(_, message):
         rank = input4.text.strip()
         await input4.delete()
         
-        await msg.edit_text("💠 Now send the **waifu price**.\n\nExamples:\n`Common - 100-400`\n`Rare` - 300-800\n`Epic - 500-1000`\n`Legendary - 600-1200`\n`Mythical - 800-1600`\n`Dark - 1000-2000`\n`Divine - 1200-2400`\n`Celestial - 1400-3000`")
+        await msg.edit_text("💠 Now send the **waifu price**.\n\nExample Of Price List:\n`Common: 100-400`\n`Rare: 300-800`\n`Epic: 500-1000`\n`Legendary: 600-1200`\n`Mythical: 800-1600`\n`Dark: 1000-2000`\n`Divine: 1200-2400`\n`Celestial: 1400-3000`")
 
         try:
             input5 = await app.listen(user_id=user_id, timeout=30)
