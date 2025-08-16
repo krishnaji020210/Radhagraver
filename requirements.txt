@@ -3,3 +3,5 @@ pyromod
 tgcrypto
 requests
 motor
+fastapi
+uvicorn
