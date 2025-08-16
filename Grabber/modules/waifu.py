@@ -73,7 +73,7 @@ async def add_waifus(_, message):
         anime = input3.text.strip()
         await input3.delete()
 
-        await msg.edit_text("💠 Now send the **waifu rank**.\n\nExamples:\n`Common`, `Rare`, `Epic`, `Legendary`, `Mythic`")
+        await msg.edit_text("💠 Now send the **waifu rank**.\n\nExamples:\n`Common`, `Rare`, `Epic`, `Legendary`, `Mythical`, `Dark`,`Divine`,`Celestial`")
 
         try:
             input4 = await app.listen(user_id=user_id, timeout=30)
@@ -82,8 +82,18 @@ async def add_waifus(_, message):
 
         rank = input4.text.strip()
         await input4.delete()
+        
+        await msg.edit_text("💠 Now send the **waifu price**.\n\nExamples:\n`Common - 100-400`\n`Rare` - 300-800\n`Epic - 500-1000`\n`Legendary - 600-1200`\n`Mythical - 800-1600`\n`Dark - 1000-2000`\n`Divine - 1200-2400`\n`Celestial - 1400-3000`")
 
-        await waifusdb.addWaifu(name, url, anime, rank)
+        try:
+            input5 = await app.listen(user_id=user_id, timeout=30)
+        except:
+            return await msg.edit_text("❌ Timeout! You didn't send the Price in time.")
+
+        price = int(input5.text.strip())
+        await input4.delete()
+
+        await waifusdb.addWaifu(name, url, anime, rank, price)
         await msg.delete()
         await message.reply_photo(photo=url,
             caption=f"""
@@ -93,6 +103,7 @@ async def add_waifus(_, message):
 👧 Name: {name}
 🎬 Anime: {anime}
 💠 Rank: {rank}
+💰 Price: {price}
         """)
 
     else:
