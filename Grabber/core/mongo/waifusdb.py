@@ -9,7 +9,7 @@ user_collection = db.user_waifus
 
 # ------------------------ Add New Waifu ------------------------ #
 
-async def addWaifu(name: str, image: str, anime: str, rank: str) -> dict:
+async def addWaifu(name: str, image: str, anime: str, rank: str, price: int) -> dict:
     last = await waifu_collection.find().sort("_id", -1).limit(1).to_list(1)
     new_id = str(int(last[0]['_id']) + 1).zfill(3) if last else "001"
 
@@ -18,7 +18,8 @@ async def addWaifu(name: str, image: str, anime: str, rank: str) -> dict:
         "name": name,
         "image": image,
         "anime": anime,
-        "rank": rank
+        "rank": rank,
+        "price": price    
     }
 
     await waifu_collection.insert_one(waifu_data)
@@ -59,7 +60,7 @@ async def removeAllWaifus() -> int:
 
 # ------------------------ Add User Waifu  ------------------------ #
 
-async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, image: str, rank: str):
+async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, image: str, rank: str, price: int):
     query = {"_id": str(user_id), "waifus.waifu_id": waifu_id}
     existing = await user_collection.find_one(query)
     if existing:
@@ -74,6 +75,7 @@ async def addUser_Waifu(user_id: int, waifu_id: str, name: str, anime: str, imag
             "anime": anime,
             "image": image,
             "rank": rank,
+            "price": price, 
             "grab_count": 1
         }
         await user_collection.update_one(
