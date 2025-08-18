@@ -38,5 +38,5 @@ async def add_coins(user_id, coins):
 
 async def get_coins(user_id: int) -> int:
     result = await coins_collection.find_one({"_id": user_id})
-    return result["count"] if result else 0
+    return result["coins"] if result else 0
 
