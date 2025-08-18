@@ -86,7 +86,7 @@ async def user_info(user_id: int = None):
         return res(False, "Missing required parameter: user_id", code=400)
 
     waifus = await waifusdb.getUserAllWaifus(user_id)
-    coins = await settingsdb.add_coins(user_id)
+    coins = await settingsdb.get_coins(user_id)
     return res(True, data={"total_waifu": len(waifus), "coins": coins})
 
 
