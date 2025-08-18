@@ -1,5 +1,4 @@
 from Grabber import api
-from fastapi import Query
 from Grabber.core.mongo import waifusdb
 from fastapi.responses import JSONResponse
 
@@ -21,7 +20,7 @@ async def all_waifus():
 
 
 @api.get("/userWaifus")
-async def user_waifus(user_id: int = Query(None)):
+async def user_waifus(user_id: int = None):
     if not user_id:
         return res(False, "Missing required parameter: user_id", code=400)
 
@@ -31,12 +30,13 @@ async def user_waifus(user_id: int = Query(None)):
 
 @api.post("/addUserWaifu")
 async def add_user_waifu(
-    user_id: int = Query(None),
-    waifu_id: str = Query(None),
-    name: str = Query(None),
-    anime: str = Query(None),
-    image: str = Query(None),
-    rank: str = Query(None)
+    user_id: int = 0,
+    waifu_id: str = None,
+    name: str = None,
+    anime: str = None,
+    image: str = None,
+    rank: str = None, 
+    price: int = None
 ):
     params = {
         "user_id": user_id,
@@ -45,6 +45,7 @@ async def add_user_waifu(
         "anime": anime,
         "image": image,
         "rank": rank
+        "price": price,
     }
     missing = [k for k, v in params.items() if not v]
 
