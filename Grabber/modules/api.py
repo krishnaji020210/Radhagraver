@@ -59,16 +59,14 @@ async def add_user_waifu(
         "price": price,
     }
 
+    print("📌 Received params:", params)   # Debugging ke liye
+
     success = await waifusdb.addUser_Waifu(**params)
+
     if success:
         return res(True, f"Waifu '{name}' from '{anime}' successfully added.", code=201)
 
     return res(False, "Failed to add waifu. Please check the provided details.", code=400)
-
-
-
-
-
 
 
 
