@@ -41,13 +41,13 @@ async def user_waifus(user_id: int = None):
 
 @api.post("/addUserWaifu")
 async def add_user_waifu(
-    user_id: int = None,
-    waifu_id: str = None,
-    name: str = None,
-    anime: str = None,
-    image: str = None,
-    rank: str = None,
-    price: int = None
+    user_id: int = Body(None),
+    waifu_id: str = Body(None),
+    name: str = Body(None),
+    anime: str = Body(None),
+    image: str = Body(None),
+    rank: str = Body(None),
+    price: int = Body(None)
 ):
     params = {
         "user_id": user_id,
@@ -59,15 +59,16 @@ async def add_user_waifu(
         "price": price,
     }
 
-    print("📌 Received params:", params)   # Debugging ke liye
+    missing = [k for k, v in params.items() if v is None]
+    if missing:
+        return res(False, f"Missing fields: {', '.join(missing)}", code=400)
 
-    success = await waifusdb.addUser_Waifu(user_id, waifu_id, name, anime, image, rank, price)
+    print("📌 Received params:", params)
+    success = await waifusdb.addUser_Waifu(
+        user_id, waifu_id, name, anime, image, rank, price
+    )
 
-    if success:
-        return res(True, f"Waifu '{name}' from '{anime}' successfully added.", code=201)
+    return res(True, f"Waifu '{name}' from '{anime}' successfully added.", code=201)
 
-    return res(False, "Failed to add waifu. Please check the provided details.", code=400)
-
-
-
+    
 
