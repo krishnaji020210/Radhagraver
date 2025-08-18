@@ -41,13 +41,13 @@ async def user_waifus(user_id: int = None):
 
 @api.post("/addUserWaifu")
 async def add_user_waifu(
-    user_id: int = Body(...),
-    waifu_id: str = Body(...),
-    name: str = Body(...),
-    anime: str = Body(...),
-    image: str = Body(...),
-    rank: str = Body(...),
-    price: int = Body(...)
+    user_id: int = None,
+    waifu_id: str = None,
+    name: str = None,
+    anime: str = None,
+    image: str = None,
+    rank: str = None,
+    price: int = None
 ):
     params = {
         "user_id": user_id,
