@@ -3,9 +3,12 @@ from Grabber.core.mongo import waifusdb
 from fastapi.responses import JSONResponse
 
 
-
 def res(success: bool, message=None, data=None, code=200):
-    return JSONResponse(content={"success": success, "message": message, "data": data}, status_code=code)
+    return JSONResponse(content={
+        "success": success,
+        "message": message,
+        "data": data
+    }, status_code=code)
 
 
 @api.get("/")
@@ -16,7 +19,9 @@ async def root():
 @api.get("/allWaifus")
 async def all_waifus():
     waifus = await waifusdb.getAllWaifus()
-    return res(True, data=waifus) if waifus else res(False, "No waifus found in the database.", code=404)
+    if not waifus:
+        return res(False, "No waifus found in the database.", code=404)
+    return res(True, data=waifus)
 
 
 @api.get("/userWaifus")
@@ -25,7 +30,10 @@ async def user_waifus(user_id: int = None):
         return res(False, "Missing required parameter: user_id", code=400)
 
     waifus = await waifusdb.getUserAllWaifus(user_id)
-    return res(True, data={"total": len(waifus), "waifus": waifus}) if waifus else res(False, "No waifus found for this user.", code=404)
+    if not waifus:
+        return res(False, "No waifus found for this user.", code=404)
+
+    return res(True, data={"total": len(waifus), "waifus": waifus})
 
 
 @api.post("/addUserWaifu")
@@ -35,7 +43,7 @@ async def add_user_waifu(
     name: str = None,
     anime: str = None,
     image: str = None,
-    rank: str = None, 
+    rank: str = None,
     price: int = None
 ):
     params = {
@@ -44,17 +52,19 @@ async def add_user_waifu(
         "name": name,
         "anime": anime,
         "image": image,
-        "rank": rank
+        "rank": rank,
         "price": price,
     }
-    missing = [k for k, v in params.items() if not v]
 
+    missing = [k for k, v in params.items() if v is None or v == 0]
     if missing:
         return res(False, f"Missing required parameters: {', '.join(missing)}", code=400)
 
-    if await waifusdb.addUser_Waifu(**params):
+    success = await waifusdb.addUser_Waifu(**params)
+    if success:
         return res(True, f"Waifu '{name}' from '{anime}' successfully added.", code=201)
 
     return res(False, "Failed to add waifu. Please check the provided details.", code=400)
+
 
 
