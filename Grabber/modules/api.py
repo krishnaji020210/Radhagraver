@@ -1,9 +1,9 @@
 from Grabber import api
 from fastapi import Body
-from Grabber.core.mongo import waifusdb
+from Grabber.core.mongo import waifusdb, settingsdb
 from fastapi.responses import JSONResponse
 
-
+# -------------------------- Response Template -------------------------- #
 def res(success: bool, message=None, data=None, code=200):
     return JSONResponse(content={
         "success": success,
@@ -12,10 +12,15 @@ def res(success: bool, message=None, data=None, code=200):
     }, status_code=code)
 
 
+
+# -------------------------- Server Alive -------------------------- #
+
 @api.get("/")
 async def root():
     return res(True, "Server is running successfully.")
 
+
+# -------------------------- Get All Waifus -------------------------- #
 
 @api.get("/allWaifus")
 async def all_waifus():
@@ -24,6 +29,7 @@ async def all_waifus():
         return res(False, "No waifus found in the database.", code=404)
     return res(True, data=waifus)
 
+# -------------------------- Get Users All Waifu -------------------------- #
 
 @api.get("/userWaifus")
 async def user_waifus(user_id: int = None):
@@ -38,6 +44,7 @@ async def user_waifus(user_id: int = None):
 
 
 
+# -------------------------- Add Users Waifu -------------------------- #
 
 @api.post("/addUserWaifu")
 async def add_user_waifu(
@@ -71,4 +78,15 @@ async def add_user_waifu(
     return res(True, f"Waifu '{name}' from '{anime}' successfully added.", code=201)
 
     
+# -------------------------- Get Users Info -------------------------- #
+
+@api.get("/userInfo")
+async def user_info(user_id: int = None):
+    if not user_id:
+        return res(False, "Missing required parameter: user_id", code=400)
+
+    waifus = await waifusdb.getUserAllWaifus(user_id)
+    coins = await settingsdb.add_coins(user_id)
+    return res(True, data={"total_waifu": len(waifus), "coins": coins})
+
 
