@@ -92,7 +92,7 @@ async def user_info(user_id: int = None):
 
 # -------------------------- Add User Coins -------------------------- #
 
-@api.get("/addUserCoin")
+@api.get("/addUserCoins")
 async def add_user_coins(user_id: int = None, coins:int = None):
     if not user_id:
         return res(False, "Missing required parameter: user_id", code=400)
