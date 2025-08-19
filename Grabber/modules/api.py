@@ -90,3 +90,18 @@ async def user_info(user_id: int = None):
     return res(True, data={"total_waifu": len(waifus), "coins": coins})
 
 
+# -------------------------- Add User Coins -------------------------- #
+
+@api.get("/addUserCoin")
+async def add_user_coins(user_id: int = None, coins:int = None):
+    if not user_id:
+        return res(False, "Missing required parameter: user_id", code=400)
+    if not coins:
+        return res(False, "Missing required parameter: coins", code=400)
+
+    coins = await settingsdb.add_coins(user_id, coins)
+    return res(True, f"Successfully Added coins {coins}")
+
+
+
+
