@@ -46,7 +46,7 @@ async def get_coins(user_id: int) -> int:
 
 # ----------------------- Add Trial Time ----------------------- #
 
-async def addExpire_Time(user_id, count, time):
+async def addTime_expired(user_id, count, time):
     await trial_collection.update_one(
         {"_id": user_id},
         {"$set": {"coins": coins, "time": time}},
@@ -56,7 +56,7 @@ async def addExpire_Time(user_id, count, time):
 
 # ----------------------- Get Trial Time ----------------------- #
 
-async def getExpire_Time(user_id: int) -> int:
+async def getTime_expired(user_id: int) -> int:
     result = await trial_collection.find_one({"_id": user_id})
     return result["count"], result["time"] if result else 0, 0
 
