@@ -5,6 +5,7 @@ mongo = MongoCli(MONGO_DB)
 db = mongo.settingsdb
 time_collection = db.spwantime_db  
 coins_collection = db.users_coins
+trial_collection = db.users_trail_time
 
 # ----------------------- Get Spawn Time ----------------------- #
 
@@ -39,4 +40,25 @@ async def add_coins(user_id, coins):
 async def get_coins(user_id: int) -> int:
     result = await coins_collection.find_one({"_id": user_id})
     return result["coins"] if result else 0
+
+
+
+
+# ----------------------- Add Trial Time ----------------------- #
+
+async def addExpire_Time(user_id, count, time):
+    await trial_collection.update_one(
+        {"_id": user_id},
+        {"$set": {"coins": coins, "time": time}},
+        upsert=True
+    )
+
+
+# ----------------------- Get Trial Time ----------------------- #
+
+async def getExpire_Time(user_id: int) -> int:
+    result = await trial_collection.find_one({"_id": user_id})
+    return result["count"], result["time"] if result else 0, 0
+
+
 
