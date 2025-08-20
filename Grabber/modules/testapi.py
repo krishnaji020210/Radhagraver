@@ -11,6 +11,7 @@ async def code_playground():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Code Playground - Telegram WebApp</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material-darker.min.css">
@@ -408,7 +409,24 @@ async def code_playground():
         // Global variables
         let editor;
         let currentLanguage = 'javascript';
-        let tg = window.Telegram?.WebApp;
+        let tg = null;
+
+        function waitForTelegram() {
+            return new Promise((resolve) => {
+                if (window.Telegram && window.Telegram.WebApp) {
+                    resolve(window.Telegram.WebApp);
+                } else {
+                    const checkTelegram = () => {
+                        if (window.Telegram && window.Telegram.WebApp) {
+                            resolve(window.Telegram.WebApp);
+                        } else {
+                            setTimeout(checkTelegram, 100);
+                        }
+                    };
+                    checkTelegram();
+                }
+            });
+        }
 
         // Code examples for different languages
         const codeExamples = {
@@ -670,16 +688,16 @@ fn main() {
         };
 
         // Initialize the application
-        function initApp() {
-            initTelegramWebApp();
+        async function initApp() {
+            console.log("[v0] Starting app initialization");
+            await initTelegramWebApp();
             initCodeEditor();
             initEventListeners();
             populateExamples();
-            loadDefaultCode();
+            console.log("[v0] App initialization complete");
         }
 
-        // Initialize Telegram WebApp
-        function initTelegramWebApp() {
+        async function initTelegramWebApp() {
             const statusIndicator = document.getElementById('statusIndicator');
             const statusText = document.getElementById('statusText');
             const userId = document.getElementById('userId');
@@ -687,8 +705,12 @@ fn main() {
             const version = document.getElementById('version');
             const theme = document.getElementById('theme');
 
-            if (tg) {
-                try {
+            try {
+                console.log("[v0] Waiting for Telegram WebApp...");
+                tg = await waitForTelegram();
+                
+                if (tg) {
+                    console.log("[v0] Telegram WebApp found, initializing...");
                     tg.ready();
                     tg.expand();
                     
@@ -696,7 +718,7 @@ fn main() {
                     statusText.textContent = 'Telegram WebApp Connected';
                     
                     const user = tg.initDataUnsafe?.user;
-                    userId.textContent = user?.id || '—';
+                    userId.textContent = user?.id || user?.username || '—';
                     platform.textContent = tg.platform || '—';
                     version.textContent = tg.version || '—';
                     theme.textContent = tg.colorScheme || '—';
@@ -708,12 +730,15 @@ fn main() {
                     }
                     
                     console.log('✅ Telegram WebApp initialized successfully');
-                } catch (error) {
-                    console.error('❌ Telegram WebApp initialization error:', error);
+                    logToConsole('✅ Telegram WebApp connected successfully!', 'success');
+                } else {
+                    throw new Error('Telegram WebApp not available');
                 }
-            } else {
+            } catch (error) {
+                console.log("[v0] Not in Telegram WebApp environment");
                 statusText.textContent = 'Not in Telegram WebApp';
                 platform.textContent = navigator.userAgent.split(' ')[0];
+                logToConsole('ℹ️ Running outside Telegram WebApp', 'info');
             }
         }
 
@@ -729,8 +754,9 @@ fn main() {
                 indentUnit: 4,
                 tabSize: 4,
                 lineWrapping: true,
-                value: ''
+                value: '' // Start with empty editor
             });
+            console.log("[v0] Code editor initialized");
         }
 
         // Initialize event listeners
@@ -744,6 +770,8 @@ fn main() {
             document.getElementById('runBtn').addEventListener('click', runCode);
             document.getElementById('clearBtn').addEventListener('click', clearConsole);
             document.getElementById('downloadBtn').addEventListener('click', downloadCode);
+            
+            console.log("[v0] Event listeners initialized");
         }
 
         // Switch programming language
@@ -893,7 +921,7 @@ fn main() {
             const consoleOutput = document.getElementById('consoleOutput');
             consoleOutput.innerHTML = '';
             consoleOutput.scrollTop = 0;
-            console.log("[v0] Console cleared");
+            console.log("[v0] Console cleared successfully");
         }
 
         // Download current code
@@ -929,19 +957,15 @@ fn main() {
         }
 
         // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("[v0] Initializing Code Playground");
-            
-            initTelegramWebApp();
-            initCodeEditor();
-            initEventListeners();
-            populateExamples();
-            
-            console.log("[v0] Code Playground initialized");
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log("[v0] DOM loaded, initializing Code Playground");
+            await initApp();
         });
     </script>
 </body>
 </html>"""
     
     return HTMLResponse(content=html_content, status_code=200)
+
+
 
