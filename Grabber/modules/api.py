@@ -104,4 +104,33 @@ async def add_user_coins(user_id: int = None, coins:int = None):
 
 
 
+# -------------------------- Add Expired Time Trial -------------------------- #
+
+@api.get("/addExpiredTime")
+async def add_user_coins(user_id: int = None, count:int = 0, Time:int 0):
+    if not user_id:
+        return res(False, "Missing required parameter: user_id", code=400)
+    
+    await settingsdb.addTime_expired(user_id, count, time)
+    return res(True, f"Successfully Added Count: {count} | Time: {Time} ")
+
+
+# -------------------------- Get Expired Time Trial -------------------------- #
+
+@api.get("/getExpiredTime")
+async def add_user_coins(user_id):
+    if not user_id:
+        return res(False, "Missing required parameter: user_id", code=400)
+    
+    count,  time = await settingsdb.getTime_expired(user_id)
+    return res(True, data={"count": count, "isExpired": time})
+
+
+
+
+    
+
+
+
+
 
