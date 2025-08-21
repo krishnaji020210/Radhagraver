@@ -122,8 +122,8 @@ async def addExpired_time(user_id):
     if not user_id:
         return res(False, "Missing required parameter: user_id", code=400)
     
-    count,  time = await settingsdb.getTime_expired(user_id)
-    return res(True, data={"count": count, "isExpired": time})
+    count, time = await settingsdb.getTime_expired(user_id)
+    return res(True, data={"count": count, "time": time})
 
 
 
