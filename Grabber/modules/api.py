@@ -107,7 +107,11 @@ async def add_user_coins(user_id: int = None, coins:int = None):
 # -------------------------- Add Expired Time Trial -------------------------- #
 
 @api.post("/addExpiredTime")
-async def addExpired_time(user_id: int = None, count:int = 0, Time:int = 0):
+async def addExpired_time(
+    user_id: int = Body(None),
+    count: int = Body(0),
+    time: int = Body(0)
+):
     if not user_id:
         return res(False, "Missing required parameter: user_id", code=400)
     
