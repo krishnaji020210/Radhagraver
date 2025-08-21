@@ -58,7 +58,7 @@ async def addTime_expired(user_id, count, time):
 
 async def getTime_expired(user_id: int) -> int:
     result = await trial_collection.find_one({"_id": user_id})
-    return result["count"], result["time"] if result else 0, 0
+    return result.get("count", 0), result("time", 0) if result else 0, 0
 
 
 
