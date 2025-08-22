@@ -116,7 +116,7 @@ async def addExpired_time(
         return res(False, "Missing required parameter: user_id", code=400)
     
     await settingsdb.addTime_expired(user_id, count, time)
-    return res(True, f"Successfully Added Count: {count} | Time: {Time} ")
+    return res(True, f"Successfully Added Count: {count} | Time: {time} ")
 
 
 # -------------------------- Get Expired Time Trial -------------------------- #
