@@ -48,11 +48,11 @@ async def gift_waifu(_, message):
             [
                 InlineKeyboardButton(
                     "🟢 Accept",
-                    callback_data=f"gift_yes:{sender_id}:{receiver_id}:{waifu_id}",
+                    callback_data=f"gift_accept:{sender_id}:{receiver_id}:{waifu_id}",
                 ),
                 InlineKeyboardButton(
                     "🔴 Decline",
-                    callback_data=f"gift_no:{receiver_id}",
+                    callback_data=f"gift_reject:{receiver_id}",
                 ),
             ]
         ]
@@ -85,33 +85,28 @@ async def gift_waifu(_, message):
     
 # ------------------------ Gift Regex Callback ------------------------ #
 
-@app.on_callback_query(filters.regex(r"gift_yes:(\d+):(.+)"))
+@app.on_callback_query(filters.regex(r"gift_(accept|reject):(\d+):(\d+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
-    sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
+    action, sender_id, receiver_id, waifu_id = query.data.split(":")
+    
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
-        
-    waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
-    if not waifu_data:
-        return await query.answer("🛑 Waifu no longer exists!", show_alert=True)
+    
+    if action == "accept":
+        waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
+        if not waifu_data:
+            return await query.answer("🛑 Waifu no longer exists!", show_alert=True)
 
-    await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
-    await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
+        await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
+        await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
 
-    await query.message.edit_text(
-        f"🎉 <b>Gift Accepted!</b>\n\n"
-        f"<i>Now {waifu_data['name']} belongs to {query.from_user.first_name}</i> ❤️"
-    )
-
-
-@app.on_callback_query(filters.regex(r"gift_no:(\d+):(.+):(.+)"))
-async def gift_confirm(_, query):
-    click_id = query.from_user.id
-    receiver_id = query.data.split(":")[1:]
-    if click_id != int(receiver_id):
-        return await query.answer("This is not for you", show_alert=True)
-    await query.message.edit_text(f"{name} does not want to accept your gift. They are not interested in receiving your gift.")
+        await query.message.edit_text(
+            f"🎉 <b>Gift Accepted!</b>\n\n"
+            f"<i>Now {waifu_data['name']} belongs to {query.from_user.first_name}</i> ❤️"
+        )
+    else:
+        await query.message.edit_text(f"{query.from_user.first_name} does not want to accept your gift. They are not interested in receiving your gift.")
 
 
 
@@ -158,11 +153,11 @@ async def trade_waifu(_, message):
             [
                 InlineKeyboardButton(
                     "🟢 Accept",
-                    callback_data=f"trade_yes:{sender_id}:{receiver_id}:{waifu_id}",
+                    callback_data=f"trade_accept:{sender_id}:{receiver_id}:{waifu_id}",
                 ),
                 InlineKeyboardButton(
                     "🔴 Decline",
-                    callback_data=f"trade_no:{receiver_id}",
+                    callback_data=f"trade_reject:{receiver_id}",
                 ),
             ]
         ]
@@ -192,36 +187,26 @@ async def trade_waifu(_, message):
 
 # ------------------------ Trade Regex Callback ------------------------ #
 
-@app.on_callback_query(filters.regex(r"trade_yes:(\d+):(.+)"))
-async def trade_confirm(_, query):
+@app.on_callback_query(filters.regex(r"trade_(accept|reject):(\d+):(\d+):(.+)"))
+async def gift_confirm(_, query):
     click_id = query.from_user.id
-    sender_id, receiver_id, waifu_id = query.data.split(":")[1:]
+    action, sender_id, receiver_id, waifu_id = query.data.split(":")
+    
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
-        
-    waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
-    if not waifu_data:
-        return await query.answer("🛑 Waifu no longer exists!", show_alert=True)
+    
+    if action == "accept":
+        waifu_data = await waifusdb.getUserWaifu(int(sender_id), waifu_id)
+        if not waifu_data:
+            return await query.answer("🛑 Waifu no longer exists!", show_alert=True)
 
-    await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"])
-    await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
+        await waifusdb.addUser_Waifu(receiver_id, waifu_data["waifu_id"], waifu_data["name"], waifu_data["anime"], waifu_data["image"], waifu_data["rank"], waifu_data["price"])
+        await waifusdb.removeUserWaifu(int(sender_id), waifu_id)
 
-    await query.message.edit_text(
-        f"✅ <b>Trade Accepted!</b>\n\n"
-        f"<i>{waifu_data['name']} has now been traded to {query.from_user.first_name}.</i> 🤝"
-    )
-
-
-@app.on_callback_query(filters.regex(r"trade_no:(\d+):(.+):(.+)"))
-async def trade_decline(_, query):
-    click_id = query.from_user.id
-    receiver_id = query.data.split(":")[1:]
-    if click_id != int(receiver_id):
-        return await query.answer("This is not for you", show_alert=True)
-        
-    await query.message.edit_text(
-        f"🛑 <b>Trade Declined!</b>\n\n"
-        f"<i>{query.from_user.first_name} is not interested in this trade offer.</i>"
-    )
-
+        await query.message.edit_text(
+            f"✅ <b>Trade Accepted!</b>\n\n"
+            f"<i>{waifu_data['name']} has now been traded to {query.from_user.first_name}.</i> 🤝"
+        )
+    else:
+        await query.message.edit_text(f"🛑 <b>Trade Declined!</b>\n\n<i>{query.from_user.first_name} is not interested in this trade offer.</i>")
 
