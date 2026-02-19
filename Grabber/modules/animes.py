@@ -76,7 +76,7 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     if end < total:
         nav_row.append(InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"anime_list_{letter}_{page + 1}"))
 
-    nav_row.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data"))
+    nav_row.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ ☌", callback_data="close_data"))
 
     if nav_row:
         buttons.append(nav_row)
@@ -113,7 +113,6 @@ async def inline_search_anime(_, inline_query):
     query = inline_query.query.strip().lower()
     all_waifus = await getAllWaifus()
 
-    # Partial search (better UX)
     if query:
         waifus_to_show = [
             w for w in all_waifus
@@ -142,17 +141,17 @@ async def inline_search_anime(_, inline_query):
     for waifu in waifus_to_show[:50]:
         results.append(
             InlineQueryResultPhoto(
-                id=str(uuid.uuid4()),  # VERY IMPORTANT
+                id=str(uuid.uuid4()), 
                 photo_url=waifu["image"],
                 thumb_url=waifu["image"],
-                title=waifu["name"],   # Grid me ye title show hota hai
+                title=waifu["name"],   
                 caption=(
                     f"👩🏻 Name: {waifu['name']}\n"
                     f"📺 Anime: {waifu['anime']}\n"
                     f"🏷️ Rank: {waifu['rank'].capitalize()}"
                 ),
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("❌ Close", callback_data="close_data")]
+                    [InlineKeyboardButton("☌ ᴄʟᴏsᴇ ☌", callback_data="close_data")]
                 ])
             )
         )
@@ -160,7 +159,7 @@ async def inline_search_anime(_, inline_query):
     await inline_query.answer(
         results=results,
         cache_time=1,
-        is_gallery=True  # 🔥 This forces gallery layout
+        is_gallery=True 
     )
 
 
