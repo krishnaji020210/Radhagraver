@@ -62,7 +62,7 @@ async def gift_waifu(_, message):
             await app.send_message(receiver_id, caption, reply_markup=buttons)
             await message.reply_text("Your gift request has been sent to the receiver.")
         else:
-            await message.reply_photo(photo=script.PHOTOS["GIFT_IMG"], caption, reply_markup=buttons)
+            await message.reply_photo(photo=script.PHOTOS["GIFT_IMG"], caption=caption, reply_markup=buttons)
     except Exception:
         await message.reply_text("⚠️ <b>Couldn’t send gift. The user may have privacy settings enabled.</b>")
 
@@ -154,7 +154,7 @@ async def trade_waifu(_, message):
    
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-            await app.send_message(receiver_id, caption, reply_markup=buttons)
+            await app.send_message(receiver_id, caption=caption, reply_markup=buttons)
             await message.reply_text("✅ Trade request has been sent to the user.")
         else:
             await message.reply_photo(photo=script.PHOTOS["TRADE_IMG"], caption, reply_markup=buttons)
