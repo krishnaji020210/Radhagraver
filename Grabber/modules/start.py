@@ -31,7 +31,7 @@ async def start_(_, message):
     name = message.from_user.mention
     if message.chat.type == enums.ChatType.PRIVATE:
         await message.reply_photo(photo="https://media.animerealms.org/image/AgACAgUAAx0EboWBewACmKBojCkPUdWBhp3UMe294WDaSqwBlgACJsgxG5W9YVRsYPzdf4h6zQEAAwIAA3kAAzYE",                         
-            caption=script.START_TEXT.format(name),
+            caption=script.START_TEXT.format(namen BOT_NAME),
             reply_markup=buttons
         )
     else:
