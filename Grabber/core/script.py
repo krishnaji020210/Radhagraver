@@ -41,4 +41,14 @@ GRAB_TEXT = [
     "**💞 {name} ᴊᴏɪɴᴇᴅ ʏᴏᴜʀ ʜᴀʀᴇᴍ ᴡɪᴛʜ ᴀ ᴡɪɴᴋ... ʏᴏᴜʀ ɢᴀᴍᴇ ɪꜱ sᴛʀᴏɴɢ~**"
 ]
 
+GUIDE_TEXT = """
+Here are all the commands related to the waifu grabber.
 
+- `/grab`: 
+- `/animes`: 
+- `/mywaifus`: 
+- `/gift`: 
+- `/harem`: 
+- `/spawntime`: 
+- `trade`: 
+"""
