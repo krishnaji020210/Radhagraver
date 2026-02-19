@@ -12,44 +12,45 @@ PHOTOS = {
 # ---------------------------------------------------------- #
 
 SPAWN_TEXT = [
-    "**💘 ᴀ {rank} ᴡᴀɪғᴜ ʜᴀs ᴀᴘᴘᴇᴀʀᴇᴅ ᴡɪᴛʜ ᴀ ɢʟɪᴍᴍᴇʀ ɪɴ ʜᴇʀ ᴇʏᴇs... /grab ʜᴇʀ ʙᴇғᴏʀᴇ sʜᴇ ᴠᴀɴɪsʜᴇs~**",
-    "**💋 ʜᴇʏ ᴅᴀʀʟɪɴɢ... ᴀ {rank} ᴡᴀɪғᴜ ᴊᴜsᴛ ʟᴀɴᴅᴇᴅ ᴡɪᴛʜ ᴀ ғʟɪʀᴛʏ ɢʀɪɴ... /grab ʜᴇʀ ɴᴏᴡ~**",
-    "**🖤 sʜᴇ ʟɪᴄᴋᴇᴅ ʜᴇʀ ʟɪᴘs... ʏᴇs, ᴀ {rank} ᴡᴀɪғᴜ ɪs ʀᴇᴀᴅʏ ғᴏʀ ʏᴏᴜ... /grab~**",
-    "**🌹 ᴀ {rank} ᴡᴀɪғᴜ ʏᴏᴜ ᴄᴀɴ’ᴛ ʀᴇsɪsᴛ ʜᴀs ᴀᴘᴘᴇᴀʀᴇᴅ... ʜᴜʀʀʏ ᴀɴᴅ /grab~**",
-    "**😈 ᴡɪᴛʜ ᴀ ᴛᴇᴀsɪɴɢ sᴍɪʀᴋ, ᴀ {rank} ᴡᴀɪғᴜ ᴀᴘᴘᴇᴀʀᴇᴅ... ᴅᴏɴ’ᴛ ʟᴇᴛ ʜᴇʀ sʟɪᴘ~ /grab**",
-    "**🕊 ᴀ {rank} ᴡᴀɪғᴜ ғᴇʟʟ ғʀᴏᴍ ʜᴇᴀᴠᴇɴ ᴛᴏ ʙᴇ ʏᴏᴜʀs... /grab ʜᴇʀ ʙᴇғᴏʀᴇ ᴛʜᴇ ᴄʜᴀɴᴄᴇ ɢᴏᴇs~**",
-    "**🔥 ᴛʜᴇ ᴀɪʀ ɢᴏᴛ ʜᴏᴛᴛᴇʀ... ᴀ {rank} ᴡᴀɪғᴜ ɪs ʜᴇʀᴇ ᴛᴏ ᴘʟᴀʏ~ /grab ғᴀsᴛ~**",
-    "**✨ ʏᴏᴜ ʜᴇᴀʀᴅ ᴛʜᴀᴛ ʙᴇʟʟ? ᴀ {rank} ᴡᴀɪғᴜ ʜᴀs sᴘᴀᴡɴᴇᴅ... /grab ᴏʀ ʟᴏsᴇ ʜᴇʀ**",
-    "**💄 sʜᴇ ᴅᴏᴇsɴ’ᴛ ᴡᴀɴᴛ ʟᴏᴠᴇ... ᴛʜᴇ {rank} ᴡᴀɪғᴜ ᴡᴀɴᴛs ᴏᴡɴᴇʀsʜɪᴘ... /grab ᴛᴏ ᴄʟᴀɪᴍ**",
-    "**👑 ᴀ {rank} ᴡᴀɪғᴜ sᴛᴇᴘᴘᴇᴅ ɪɴ ʟɪᴋᴇ ʀᴏʏᴀʟᴛʏ... ʙᴇ ʙʀᴀᴠᴇ, /grab ʜᴇʀ ғɪʀsᴛ~**"
+    "A {rank} waifu has appeared with a glimmer in her eyes... /grab her before she vanishes~",
+    "Hey darling... a {rank} waifu just landed with a flirty grin... /grab her now~",
+    "She licked her lips... yes, a {rank} waifu is ready for you... /grab~",
+    "A {rank} waifu you can't resist has appeared... hurry and /grab~",
+    "With a teasing smirk, a {rank} waifu appeared... don't let her slip~ /grab",
+    "A {rank} waifu fell from heaven to be yours... /grab her before the chance goes~",
+    "The air got hotter... a {rank} waifu is here to play~ /grab fast~",
+    "You heard that bell? A {rank} waifu has spawned... /grab or lose her",
+    "She doesn't want love... the {rank} waifu wants ownership... /grab to claim",
+    "A {rank} waifu stepped in like royalty... be brave, /grab her first~"
 ]
+
 
 # ---------------------------------------------------------- #
 
 MISSED_GRAB_TEXT = [
-    "**💨 {name} sᴍɪʀᴋᴇᴅ ᴀɴᴅ ᴅɪsᴀᴘᴘᴇᴀʀᴇᴅ ɪɴ ᴀ ᴡʜɪsᴘᴇʀ ᴏғ ᴘᴀʀғᴜᴍᴇ~**",
-    "**😢 {name} ᴡᴀɪᴛᴇᴅ ғᴏʀ sᴏᴍᴇᴏɴᴇ... ʙᴜᴛ ɴᴏ ᴏɴᴇ ᴄᴀʟʟᴇᴅ /grab~**",
-    "**🖤 sʜᴇ ɢᴀᴢᴇᴅ ɪɴ ᴛʜᴇ ᴄʀᴏᴡᴅ... {name} ʟᴏsᴛ ᴀʟʟ ʜᴏᴘᴇ ᴀɴᴅ ʟᴇғᴛ~**",
-    "**💔 {name} ᴡᴀs ʀᴇᴀᴅʏ ᴛᴏ ʙᴇ ʏᴏᴜʀs, ʙᴜᴛ ɴᴏ ᴏɴᴇ ᴅᴀʀᴇᴅ ᴛᴏ /grab~**",
-    "**👋 ᴡɪᴛʜ ᴀ sɪɴɪsᴛᴇʀ sᴍɪʟᴇ, {name} ᴛᴜʀɴᴇᴅ ᴀʀᴏᴜɴᴅ... ɴᴏ ᴏɴᴇ sᴛᴏᴘᴘᴇᴅ ʜᴇʀ~**",
-    "**🕸 {name} ɴᴇᴠᴇʀ ʙᴇʟᴏɴɢᴇᴅ ᴛᴏ ᴀɴʏᴏɴᴇ... ᴀɴᴅ ɴᴏᴛ ᴇᴠᴇɴ ʏᴏᴜ~**",
-    "**😶 {name} ʟᴇғᴛ ʏᴏᴜ ʙᴇʜɪɴᴅ ᴡɪᴛʜ ɴᴏ ᴡᴏʀᴅs... ʏᴏᴜ ᴡᴇʀᴇɴ’ᴛ ʙʀᴀᴠᴇ ᴇɴᴏᴜɢʜ~**",
-    "**🌫️ sᴏ ᴄʟᴏsᴇ, sᴏ ғᴀʀ... {name} sʟɪᴘᴘᴇᴅ ᴏᴜᴛ ᴏғ ʀᴇᴀʟɪᴛʏ~**"
+    "{name} smirked and disappeared in a whisper of perfume~",
+    "{name} waited for someone... but no one called /grab~",
+    "She gazed into the crowd... {name} lost all hope and left~",
+    "{name} was ready to be yours, but no one dared to /grab~",
+    "With a quiet smile, {name} turned around... no one stopped her~",
+    "{name} never belonged to anyone... and not even you~",
+    "{name} left without a word... you weren't brave enough~",
+    "So close, yet so far... {name} slipped out of reality~"
 ]
+
 
 # ---------------------------------------------------------- #
 
 GRAB_TEXT = [
-    "**💖 ʏᴏᴜ ɢᴇɴᴛʟʏ ᴄᴀᴜɢʜᴛ ʜᴇʀ ɢᴀᴢᴇ... ᴀɴᴅ ɴᴏᴡ {name} ɪs sᴀғᴇ ɪɴ ʏᴏᴜʀ ᴀʀᴍs~**",
-    "**💋 ᴏᴏʜ~ ᴛʜᴀᴛ ᴛᴏᴜᴄʜ ᴡᴀs sᴏ ꜱᴍᴏᴏᴛʜ... {name} sᴀʏs ʏᴏᴜ ʙᴇʟᴏɴɢ ᴛᴏ ʜᴇʀ ɴᴏᴡ 😘**",
-    "**🔥 ʏᴏᴜ sɴᴀᴛᴄʜᴇᴅ {name} ʙᴇғᴏʀᴇ ᴀɴʏᴏɴᴇ ᴄᴏᴜʟᴅ ᴇᴠᴇɴ ʙʟɪɴᴋ — ᴛʜᴀᴛ ᴡᴀs sᴇxʏ~**",
-    "**💞 ʜᴇʀ ᴄʜᴇᴇᴋs ᴀʀᴇ ʀᴇᴅ, ʜᴇʀ ʜᴇᴀʀᴛ ʀᴀᴄɪɴɢ — {name} ɪs ᴀʟʟ ʏᴏᴜʀs ɴᴏᴡ~**",
-    "**😏 ᴡɪᴛʜ ᴀ ꜰʟɪʀᴛʏ sᴍɪʀᴋ, {name} sᴜʀʀᴇɴᴅᴇʀᴇᴅ ʜᴇʀsᴇʟғ ᴛᴏ ʏᴏᴜ~**",
-    "**🎀 ʏᴏᴜ ᴛᴀᴍᴇᴅ ᴛʜᴇ ᴜɴᴛᴀᴍᴀʙʟᴇ... ɴᴏᴡ {name} ɪs ᴘᴀʀᴛ ᴏғ ʏᴏᴜʀ ʜᴀʀᴇᴍ 💘**",
-    "**👑 ɴᴏʙᴏᴅʏ ᴇʟsᴇ ᴅᴀʀᴇᴅ — ʙᴜᴛ ʏᴏᴜ ᴅɪᴅ ɪᴛ. {name} ɪs ʏᴏᴜʀs ғᴏʀᴇᴠᴇʀ~**",
-    "**🖤 ᴛʜᴇ ᴡᴏʀʟᴅ ꜱʟᴏᴡᴇᴅ ᴅᴏᴡɴ ᴀs {name} ғᴇʟʟ ɪɴᴛᴏ ʏᴏᴜʀ ᴀʀᴍs... ʜᴀʀᴇᴍ ᴜᴘᴅᴀᴛᴇᴅ~**",
-    "**💘 sʜᴇ ᴡᴀs ʀᴇᴀᴅʏ ғᴏʀ ʏᴏᴜ... ᴀɴᴅ ʏᴏᴜ ᴅɪᴅɴ’ᴛ ᴅɪsᴀᴘᴘᴏɪɴᴛ — {name} sᴍɪʟᴇs ꜱᴏғᴛʟʏ~**",
-    "**💞 {name} ᴊᴏɪɴᴇᴅ ʏᴏᴜʀ ʜᴀʀᴇᴍ ᴡɪᴛʜ ᴀ ᴡɪɴᴋ... ʏᴏᴜʀ ɢᴀᴍᴇ ɪꜱ sᴛʀᴏɴɢ~**"
+    "You gently caught her gaze... and now {name} is safe in your arms~",
+    "That touch was smooth... {name} says you belong to her now 😉",
+    "You snatched {name} before anyone could even blink — impressive~",
+    "Her cheeks are red, her heart racing — {name} is all yours now~",
+    "With a flirty smirk, {name} surrendered herself to you~",
+    "You tamed the untamable... now {name} is part of your harem 💘",
+    "Nobody else dared — but you did it. {name} is yours forever~",
+    "The world slowed down as {name} fell into your arms... harem updated~",
+    "{name} joined your harem with a wink... your game is strong~"
 ]
 
 # ---------------------------------------------------------- #
