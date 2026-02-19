@@ -114,13 +114,16 @@ async def add_waifus(_, message):
 
 spawn = {}
 
-@app.on_message(filters.group, group=11)
-async def _watcher(client, message):
-    chat_id = message.chat.id
-    spawn_count = await settingsdb.get_spawn_time(chat_id)
+
+@app.on_message(filters.group & filters.text, group=11)
+async def watcher(client, message):
     if not message.from_user:
         return
 
+    chat_id = message.chat.id
+    spawn_count = await settingsdb.get_spawn_time(chat_id)
+
+    # Initialize group state
     if chat_id not in spawn:
         spawn[chat_id] = {
             "count": 0,
@@ -131,16 +134,25 @@ async def _watcher(client, message):
             "rank": None,
             "spawned": False,
             "grabbed": False,
+            "task": None
         }
+
+    # If already spawned → don't increase count
+    if spawn[chat_id]["spawned"]:
+        return
 
     spawn[chat_id]["count"] += 1
 
+    # Spawn condition
     if spawn[chat_id]["count"] >= spawn_count:
+        spawn[chat_id]["count"] = 0  # Reset immediately
+
         waifus = await waifusdb.getAllWaifus()
         if not waifus:
             return
 
         waifu_data = random.choice(waifus)
+
         spawn[chat_id].update({
             "_id": waifu_data["_id"],
             "name": waifu_data["name"],
@@ -148,53 +160,72 @@ async def _watcher(client, message):
             "anime": waifu_data["anime"],
             "rank": waifu_data["rank"],
             "spawned": True,
-            "grabbed": False,
+            "grabbed": False
         })
 
-        msg = await message.reply_photo(
-            photo=waifu_data["image"],
-            caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"])
-        )
+        msg = await message.reply_photo(photo=waifu_data["image"], caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"]))
 
-        await asyncio.sleep(100)
-        await msg.delete()
-        if spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
-            await message.reply_text(
-                random.choice(script.MISSED_GRAB_TEXT).format(name=spawn[chat_id]["name"])
-            )
-            spawn[chat_id]["count"] = 0
-            spawn[chat_id]["spawned"] = False
+        async def timeout():
+            await asyncio.sleep(100)
+
+            if chat_id in spawn and spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
+                try:
+                    await msg.delete()
+                except:
+                    pass
+
+                await message.reply_text(
+                    random.choice(script.MISSED_GRAB_TEXT).format(
+                        name=spawn[chat_id]["name"]
+                    )
+                )
+
+                spawn[chat_id]["spawned"] = False
+                spawn[chat_id]["grabbed"] = False
+
+        # Cancel previous task if exists
+        if spawn[chat_id]["task"]:
+            spawn[chat_id]["task"].cancel()
+
+        spawn[chat_id]["task"] = asyncio.create_task(timeout())
 
 
 # ------------------------- Waifu Grab ------------------------- #
 
-@app.on_message(filters.command("grab"))
-async def grab_waifu(_, message):
+@app.on_message(filters.command("grab") & filters.group)
+async def grab_waifu(_, message: Message):
     chat_id = message.chat.id
     user_id = message.from_user.id
 
     if len(message.command) < 2:
         return await message.reply_text("<b>Use it like this:</b> <code>/grab WaifuName</code>")
 
-    name = message.text.split(" ", maxsplit=1)[1]
+    name = message.text.split(" ", 1)[1].strip()
 
     if chat_id not in spawn or not spawn[chat_id]["spawned"]:
         return await message.reply_text("No waifu has spawned in this group yet~ Wait for her appearance~ 😚")
 
-    if spawn[chat_id]["name"].lower() == name.lower():
-        await waifusdb.addUser_Waifu(
-            user_id=user_id,
-            waifu_id=spawn[chat_id]["_id"],
-            name=spawn[chat_id]["name"],
-            anime=spawn[chat_id]["anime"],
-            image=spawn[chat_id]["image"],
-            rank=spawn[chat_id]["rank"]
-        )
-        await message.reply_text(random.choice(script.GRAB_TEXT).format(name=name))
+    # if spawn[chat_id]["name"].lower() != name.lower():
+    #     return await message.reply_text("Wrong name! Try again 😏")
 
-        spawn[chat_id]["grabbed"] = True
-        spawn[chat_id]["spawned"] = False
-        spawn[chat_id]["count"] = 0
+    await waifusdb.addUser_Waifu(
+        user_id=user_id,
+        waifu_id=spawn[chat_id]["_id"],
+        name=spawn[chat_id]["name"],
+        anime=spawn[chat_id]["anime"],
+        image=spawn[chat_id]["image"],
+        rank=spawn[chat_id]["rank"]
+    )
+
+    await message.reply_text(random.choice(script.GRAB_TEXT).format(name=name))
+
+    spawn[chat_id]["grabbed"] = True
+    spawn[chat_id]["spawned"] = False
+
+    if spawn[chat_id]["task"]:
+        spawn[chat_id]["task"].cancel()
+        spawn[chat_id]["task"] = None
+
     
 
 
