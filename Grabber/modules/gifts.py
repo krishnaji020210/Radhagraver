@@ -72,7 +72,8 @@ async def gift_waifu(_, message):
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
             await app.send_message(receiver_id, caption, reply_markup=buttons)
-            await message.reply_text("Your gift request has been sent to the receiver.")
+            await app.send_photo(receiver_id, photo=script.PHOTOS["GIFT_IMG"], caption=caption, reply_markup=buttons)
+            await message.reply_text("✅ Your gift request has been sent to the receiver.")
         else:
             await message.reply_photo(photo=script.PHOTOS["GIFT_IMG"], caption=caption, reply_markup=buttons)
 
@@ -124,9 +125,7 @@ async def trade_waifu(_, message):
         try:
             waifu_id = message.text.split(None, 1)[1]
         except IndexError:
-            return await message.reply_text(
-                "💡 <b>Usage:</b> <code>/trade user_id waifu_id</code> or reply with <code>/trade waifu_id</code>"
-            )
+            return await message.reply_text("💡 <b>Usage:</b> <code>/trade user_id waifu_id</code> or reply with <code>/trade waifu_id</code>")
 
         receiver_id = message.reply_to_message.from_user.id
         name = message.reply_to_message.from_user.mention
@@ -140,19 +139,15 @@ async def trade_waifu(_, message):
                 name = user_data.mention
                 receiver_id = user_data.id
             except Exception:
-                return await message.reply_text("❌ <b>User not found.</b>")
+                return await message.reply_text("User ID Not Found!!")
 
         except ValueError:
-            return await message.reply_text(
-                "💡 <b>Usage:</b> <code>/trade user_id waifu_id</code> or reply with <code>/trade waifu_id</code>"
-            )
+            return await message.reply_text("💡 <b>Usage:</b> <code>/trade user_id waifu_id</code> or reply with <code>/trade waifu_id</code>")
 
     waifu_data = await waifusdb.getUserWaifu(sender_id, str(waifu_id))
 
     if not waifu_data or waifu_data["waifu_id"] != str(waifu_id):
-        return await message.reply_text(
-            "🛑 <b>This waifu is not in your collection.</b>"
-        )
+        return await message.reply_text("🛑 <b>This waifu is not in your collection.</b>")
 
     waifu_name = waifu_data["name"]
     waifu_anime = waifu_data["anime"]
@@ -178,7 +173,7 @@ async def trade_waifu(_, message):
 
 <b>✦ Waifu:</b> <code>{waifu_name}</code>
 <b>✦ Anime:</b> <code>{waifu_anime}</code>
-<b>✦ Rarity:</b> <code>{await main_func.rank_definer(waifu_rank)}</code>
+<b>✦ Rarity:</b> <code>{(await main_func.rank_definer(waifu_rank))}</code>
 <b>✦ From:</b> {message.from_user.mention}
 
 <i>{name}, do you accept this trade?</i>
@@ -186,25 +181,13 @@ async def trade_waifu(_, message):
 
     try:
         if message.chat.type == enums.ChatType.PRIVATE:
-            await app.send_message(
-                receiver_id,
-                caption=caption,
-                reply_markup=buttons
-            )
-            await message.reply_text("✅ Trade request sent.")
+            await app.send_photo(receiver_id, photo=script.PHOTOS["TRADE_IMG"], caption=caption, reply_markup=buttons)
+            await message.reply_text("✅ Trade request has been sent to the user.")
         else:
-            await message.reply_photo(
-                photo=script.PHOTOS["TRADE_IMG"],
-                caption=caption,
-                reply_markup=buttons
-            )
+            await message.reply_photo(photo=script.PHOTOS["TRADE_IMG"], caption=caption, reply_markup=buttons)
 
     except Exception:
-        await message.reply_text(
-            "⚠️ <b>Couldn’t send trade. The user may have privacy settings enabled.</b>"
-        )
-
-
+        await message.reply_text("⚠️ <b>Couldn’t send trade. The user may have privacy settings enabled.</b>")
 
 
 # ------------------------ Trade Regex Callback ------------------------ #
