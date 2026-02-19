@@ -52,3 +52,9 @@ Here are all the commands related to the waifu grabber.
 - `/spawntime`: 
 - `trade`: 
 """
+
+START_TEXT = """
+Hello {}!
+I’m {}. Every grab could unlock a rare waifu from the anime multiverse. Build your collection, trade smart, and rise through the ranks.
+Your journey to becoming the ultimate collector starts now. 💎🔥
+"""
