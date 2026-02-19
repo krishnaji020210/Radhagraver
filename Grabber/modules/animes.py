@@ -1,6 +1,7 @@
+import uuid
 from pyrogram import filters
 from Grabber import app
-import uuid
+from Grabber.core import script
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery, InlineQueryResultPhoto
 from Grabber.core.mongo.waifusdb import getAllWaifus
 
@@ -25,8 +26,8 @@ async def anime_list(_, message):
 
     keyboard = [row1, row2] + alpha_buttons + [close_btn]
 
-    await message.reply(
-        "**📚 Choose starting number or letter of anime name:**",
+    await message.reply_photo(script.PHOTOS["ANIMED_IMG"],
+        caption="**📚 Choose starting number or letter of anime name:**",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
@@ -91,12 +92,12 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
 # ------------------------- Animes Click Regex ------------------------- #
 
 @app.on_callback_query(filters.regex(r"anime_click_(.+)"))
-async def inline_hint_anime(_, callback_query):
-    anime = callback_query.data.split("_", 2)[2]
+async def inline_hint_anime(_, query):
+    anime = query.data.split("_", 2)[2]
     bot_username = (await app.get_me()).username
-    await callback_query.answer()
+    await query.answer()
 
-    await callback_query.message.edit(
+    await query.message.edit(
         f"🔍 Tap below to search waifus from **{anime}**:",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton(f"🔎 ᴀʟʟ ᴡᴀɪғᴜs", switch_inline_query_current_chat=anime)],
