@@ -1,6 +1,6 @@
 # ---------------------------------------------------------- #
 
-PHOTO = {
+PHOTOS = {
     "START_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BtplqHQCOjxeRga-VXIGOSD1pkNkwACEw5rG1zpuVSZRvn7c_fYRgEAAwIAA3kAAzoE",
     "TRADE_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BxplqKndhIUfRLtokfiFbQQOssypAACFQ5rG1zpuVQ4K88t4hnJtwEAAwIAA3kAAzoE",
     "GIFT_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B1plqLSsluiaszbAU-My3y4rqPJmAACFg5rG1zpuVR51kyXl77duwEAAwIAA3kAAzoE",
