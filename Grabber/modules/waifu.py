@@ -156,7 +156,7 @@ async def _watcher(client, message):
             caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"])
         )
 
-        await asyncio.sleep(10)
+        await asyncio.sleep(100)
         await msg.delete()
         if spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
             await message.reply_text(
