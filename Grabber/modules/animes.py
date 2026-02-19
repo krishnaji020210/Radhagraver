@@ -108,46 +108,107 @@ async def inline_hint_anime(_, callback_query):
 # ------------------------- Inline Photo Result ------------------------- #
 
 
+# @app.on_inline_query()
+# async def inline_search_anime(_, inline_query):
+#     query = inline_query.query.strip()
+#     all_waifus = await getAllWaifus()
+
+#     results = []
+
+#     waifus_to_show = all_waifus[:50] if not query else [
+#         w for w in all_waifus if query.lower() == w["anime"].lower()
+#     ]
+
+#     if not waifus_to_show:
+#         await inline_query.answer([
+#             InlineQueryResultPhoto(
+#                 photo_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+#                 thumb_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+#                 title="Not Found",
+#                 caption=f"❌ No waifus found in {query}"
+#             )
+#         ], cache_time=1)
+#         return
+
+#     for waifu in waifus_to_show[:50]:
+#         caption = f"👩🏻‍🎤 Name: {waifu['name']}\n📺 Anime: {waifu['anime']}\n🏷️ Rank: {waifu['rank'].capitalize()}"
+#         results.append(
+#             InlineQueryResultPhoto(
+#                 photo_url=waifu["image"],
+#                 thumb_url=waifu["image"],
+#                 title=waifu['name'], 
+#                 caption=caption,
+#                 reply_markup=InlineKeyboardMarkup([
+#                     [InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]
+#                 ])
+#             )
+#         )
+
+#     await inline_query.answer(results, cache_time=1)
+
+
+
+from pyrogram.types import (
+    InlineQueryResultPhoto,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton
+)
+import uuid
+
 @app.on_inline_query()
 async def inline_search_anime(_, inline_query):
-    query = inline_query.query.strip()
+    query = inline_query.query.strip().lower()
     all_waifus = await getAllWaifus()
+
+    # Partial search (better UX)
+    if query:
+        waifus_to_show = [
+            w for w in all_waifus
+            if query in w["anime"].lower()
+        ]
+    else:
+        waifus_to_show = all_waifus[:50]
+
+    if not waifus_to_show:
+        await inline_query.answer(
+            results=[
+                InlineQueryResultPhoto(
+                    id=str(uuid.uuid4()),
+                    photo_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+                    thumb_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
+                    title="No Waifus Found 💔",
+                    caption=f"😢 No waifus found for \"{query}\".\nTry another anime name!"
+                )
+            ],
+            cache_time=1
+        )
+        return
 
     results = []
 
-    waifus_to_show = all_waifus[:50] if not query else [
-        w for w in all_waifus if query.lower() == w["anime"].lower()
-    ]
-
-    if not waifus_to_show:
-        await inline_query.answer([
-            InlineQueryResultPhoto(
-                photo_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
-                thumb_url="https://i.ibb.co/YfZzMx4/sad-anime.jpg",
-                title="Not Found",
-                caption=f"❌ No waifus found in {query}"
-            )
-        ], cache_time=1)
-        return
-
     for waifu in waifus_to_show[:50]:
-        caption = f"👩🏻‍🎤 Name: {waifu['name']}\n📺 Anime: {waifu['anime']}\n🏷️ Rank: {waifu['rank'].capitalize()}"
         results.append(
             InlineQueryResultPhoto(
+                id=str(uuid.uuid4()),  # VERY IMPORTANT
                 photo_url=waifu["image"],
                 thumb_url=waifu["image"],
-                title=waifu['name'], 
-                caption=caption,
+                title=waifu["name"],   # Grid me ye title show hota hai
+                caption=(
+                    f"👩🏻 Name: {waifu['name']}\n"
+                    f"📺 Anime: {waifu['anime']}\n"
+                    f"🏷️ Rank: {waifu['rank'].capitalize()}"
+                ),
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]
+                    [InlineKeyboardButton("❌ Close", callback_data="close_data")]
                 ])
             )
         )
 
-    await inline_query.answer(results, cache_time=1)
-
-
-
+    await inline_query.answer(
+        results=results,
+        cache_time=1,
+        is_gallery=True  # 🔥 This forces gallery layout
+    )
 
 
 
