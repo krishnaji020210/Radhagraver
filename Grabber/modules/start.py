@@ -30,7 +30,7 @@ group_buttons = InlineKeyboardMarkup([
 async def start_(_, message):
     name = message.from_user.mention
     if message.chat.type == enums.ChatType.PRIVATE:
-        await message.reply_photo(photo="https://media.animerealms.org/image/AgACAgUAAx0EboWBewACmKBojCkPUdWBhp3UMe294WDaSqwBlgACJsgxG5W9YVRsYPzdf4h6zQEAAwIAA3kAAzYE",                         
+        await message.reply_photo(photo=script.PHOTOS["START_IMG"],                         
             caption=script.START_TEXT.format(name, BOT_NAME),
             reply_markup=buttons
         )
