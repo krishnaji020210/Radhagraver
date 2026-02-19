@@ -1,5 +1,16 @@
 # ---------------------------------------------------------- #
 
+PHOTO = {
+    "START_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BtplqHQCOjxeRga-VXIGOSD1pkNkwACEw5rG1zpuVSZRvn7c_fYRgEAAwIAA3kAAzoE",
+    "TRADE_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BxplqKndhIUfRLtokfiFbQQOssypAACFQ5rG1zpuVQ4K88t4hnJtwEAAwIAA3kAAzoE",
+    "GIFT_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B1plqLSsluiaszbAU-My3y4rqPJmAACFg5rG1zpuVR51kyXl77duwEAAwIAA3kAAzoE",
+    "ANIMES_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B5plqL28XFtby7ghgSJ1Iubw6L1NgACGA5rG1zpuVS4hx2rZR6-sgEAAwIAA3kAAzoE",
+    "LEADERBOARD_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B9plqMXfT1RGSmDmMSP4UOsFoR8MwACGQ5rG1zpuVSb8zt20PcNlAEAAwIAA3kAAzoE",
+}
+
+
+# ---------------------------------------------------------- #
+
 SPAWN_TEXT = [
     "**💘 ᴀ {rank} ᴡᴀɪғᴜ ʜᴀs ᴀᴘᴘᴇᴀʀᴇᴅ ᴡɪᴛʜ ᴀ ɢʟɪᴍᴍᴇʀ ɪɴ ʜᴇʀ ᴇʏᴇs... /grab ʜᴇʀ ʙᴇғᴏʀᴇ sʜᴇ ᴠᴀɴɪsʜᴇs~**",
     "**💋 ʜᴇʏ ᴅᴀʀʟɪɴɢ... ᴀ {rank} ᴡᴀɪғᴜ ᴊᴜsᴛ ʟᴀɴᴅᴇᴅ ᴡɪᴛʜ ᴀ ғʟɪʀᴛʏ ɢʀɪɴ... /grab ʜᴇʀ ɴᴏᴡ~**",
