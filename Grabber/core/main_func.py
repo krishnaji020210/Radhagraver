@@ -4,7 +4,7 @@ import requests
 
 # --------------------------- Gemini-Response --------------------------- #         
 
-gemini_key = "AIzaSyB1rjWN0smsStTaakoSNaz9JveYTtDkXPY"
+gemini_key = "AIzaSyAfGH4jdV9cNkQH9e4DiuydRhOFXXk3s7s"
 
 async def gemini_response(query, prompt):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
