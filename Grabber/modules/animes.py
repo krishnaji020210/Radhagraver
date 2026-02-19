@@ -26,7 +26,7 @@ async def anime_list(_, message):
 
     keyboard = [row1, row2] + alpha_buttons + [close_btn]
 
-    await message.reply_photo(script.PHOTOS["ANIMED_IMG"],
+    await message.reply_photo(script.PHOTOS["ANIMES_IMG"],
         caption="**📚 Choose starting number or letter of anime name:**",
         reply_markup=InlineKeyboardMarkup(keyboard)
     )
