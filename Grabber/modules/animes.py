@@ -54,7 +54,7 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     ))
 
     if not anime_names:
-        await query.message.edit(f"❌ No animes starting with `{letter}` found.")
+        await query.message.edit(f"😵 No anime found for `{letter}`. ")
         return
 
     per_page = 10
@@ -107,7 +107,7 @@ async def inline_hint_anime(_, callback_query):
 
 # ------------------------- Inline Photo Result ------------------------- #
 
-"""
+
 @app.on_inline_query()
 async def inline_search_anime(_, inline_query):
     query = inline_query.query.strip()
@@ -147,7 +147,7 @@ async def inline_search_anime(_, inline_query):
     await inline_query.answer(results, cache_time=1)
 
 
-"""
+
 
 
 
