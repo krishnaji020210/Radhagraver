@@ -41,20 +41,24 @@ GRAB_TEXT = [
     "**💞 {name} ᴊᴏɪɴᴇᴅ ʏᴏᴜʀ ʜᴀʀᴇᴍ ᴡɪᴛʜ ᴀ ᴡɪɴᴋ... ʏᴏᴜʀ ɢᴀᴍᴇ ɪꜱ sᴛʀᴏɴɢ~**"
 ]
 
-GUIDE_TEXT = """
-Here are all the commands related to the waifu grabber.
+# ---------------------------------------------------------- #
 
-- `/grab`: 
-- `/animes`: 
-- `/mywaifus`: 
-- `/gift`: 
-- `/harem`: 
-- `/spawntime`: 
-- `trade`: 
+GUIDE_TEXT = """
+Here are all the commands related to the waifu system:
+
+- `/grab` : Grab a random waifu from the anime multiverse.
+- `/animes` : View all available anime collections.
+- `/mywaifus` : Check your collected waifus.
+- `/gift` : Send one of your waifus to another user.
+- `/trade` : Trade waifus securely with another user.
+- `/harem` : View your selected waifu lineup.
+- `/leaderboard` : See the global top collectors ranking.
+- `/spawntime` : Set the waifu spawn cooldown.
 """
 
+# ---------------------------------------------------------- #
 START_TEXT = """
 Hello {}!
-I’m {}. Every grab could unlock a rare waifu from the anime multiverse. Build your collection, trade smart, and rise through the ranks.
+I’m **{}**. Every grab could unlock a rare waifu from the anime multiverse. Build your collection, trade smart, and rise through the ranks.
 Your journey to becoming the ultimate collector starts now. 💎🔥
 """
