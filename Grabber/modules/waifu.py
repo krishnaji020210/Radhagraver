@@ -123,7 +123,6 @@ async def watcher(client, message):
     chat_id = message.chat.id
     spawn_count = await settingsdb.get_spawn_time(chat_id)
 
-    # Initialize group state
     if chat_id not in spawn:
         spawn[chat_id] = {
             "count": 0,
@@ -132,21 +131,20 @@ async def watcher(client, message):
             "image": None,
             "anime": None,
             "rank": None,
+            "price": None,
             "spawned": False,
             "grabbed": False,
             "task": None
         }
 
-    # If already spawned → don't increase count
     if spawn[chat_id]["spawned"]:
         return
 
     spawn[chat_id]["count"] += 1
 
-    # Spawn condition
+   
     if spawn[chat_id]["count"] >= spawn_count:
         spawn[chat_id]["count"] = 0  # Reset immediately
-
         waifus = await waifusdb.getAllWaifus()
         if not waifus:
             return
@@ -159,6 +157,7 @@ async def watcher(client, message):
             "image": waifu_data["image"],
             "anime": waifu_data["anime"],
             "rank": waifu_data["rank"],
+            "price": waifu_data["price"],
             "spawned": True,
             "grabbed": False
         })
@@ -214,11 +213,11 @@ async def grab_waifu(_, message):
         name=spawn[chat_id]["name"],
         anime=spawn[chat_id]["anime"],
         image=spawn[chat_id]["image"],
-        rank=spawn[chat_id]["rank"]
+        rank=spawn[chat_id]["rank"],
+        price=spawn[chat_id]["price"]
     )
 
     await message.reply_text(random.choice(script.GRAB_TEXT).format(name=name))
-
     spawn[chat_id]["grabbed"] = True
     spawn[chat_id]["spawned"] = False
 
