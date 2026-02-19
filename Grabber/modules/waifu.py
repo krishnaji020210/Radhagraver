@@ -193,7 +193,7 @@ async def watcher(client, message):
 # ------------------------- Waifu Grab ------------------------- #
 
 @app.on_message(filters.command("grab") & filters.group)
-async def grab_waifu(_, message: Message):
+async def grab_waifu(_, message):
     chat_id = message.chat.id
     user_id = message.from_user.id
 
