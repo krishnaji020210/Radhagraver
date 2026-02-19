@@ -35,8 +35,7 @@ async def start_(_, message):
             reply_markup=buttons
         )
     else:
-        await message.reply_photo(photo="https://graph.org/file/ffbaa6d0fe89bdf98886b-9760febe78f97be25e.jpg",
-            caption=f"Hello everyone! I’m **{BOT_NAME}**, your anime collector companion, here to summon waifus from different universes. Add me to your group and let the collecting, trading, and competition begin!",
+        await message.reply_text(f"Hello everyone! I’m **{BOT_NAME}**, your anime collector companion, here to summon waifus from different universes. Add me to your group and let the collecting, trading, and competition begin!",
             reply_markup=group_buttons
         )
 
