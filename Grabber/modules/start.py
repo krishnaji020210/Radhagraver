@@ -62,7 +62,7 @@ async def guide_regex(_, query):
 @app.on_callback_query(filters.regex(r"guide_"))
 async def masters_regex(_, query):
     await query.message.edit_text(script.MASTER_TEXT, reply_markup=guide_buttons)
-l
+
 @app.on_callback_query(filters.regex(r"back_"))
 async def home_regex(_, query):
     await query.message.edit_text(script.START_TEXT, reply_markup=buttons)
