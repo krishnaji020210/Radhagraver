@@ -39,4 +39,10 @@ async def start_(_, message):
             reply_markup=group_buttons
         )
 
-            
+
+# -------------------------- Regex-Start -------------------------- #
+
+@app.on_callback_query(filters.regex(r"guide_"))
+async def guide_regex(_, query):
+    await query.message.edit_text(script.GUIDE_TEXT, reply_markup=buttons)
+    
