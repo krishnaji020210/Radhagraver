@@ -19,12 +19,9 @@ buttons = InlineKeyboardMarkup([
 
 guide_buttons = InlineKeyboardMarkup([
     [
-        InlineKeyboardButton("Admins", callback_data="admins_")
-    ],
-    [
-        InlineKeyboardButton("Back", callback_data="back_")  
-    ]
-])
+        InlineKeyboardButton("Masters", callback_data="masters_"),
+        InlineKeyboardButton("Back", callback_data="back_")
+    ]])
 
 group_buttons = InlineKeyboardMarkup([
     [
@@ -32,11 +29,18 @@ group_buttons = InlineKeyboardMarkup([
     ]
 ])
 
+master_back = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("Back", callback_data="guide_")
+    ]
+])
+
 
 # -------------------------- Start -------------------------- #
 
 @app.on_message(filters.command("start"))
-async def start_(_, message):
+async def st
+art_(_, message):
     name = message.from_user.mention
     if message.chat.type == enums.ChatType.PRIVATE:
         await message.reply_photo(photo=script.PHOTOS["START_IMG"],                         
@@ -55,7 +59,10 @@ async def start_(_, message):
 async def guide_regex(_, query):
     await query.message.edit_text(script.GUIDE_TEXT, reply_markup=guide_buttons)
     
-
+@app.on_callback_query(filters.regex(r"guide_"))
+async def masters_regex(_, query):
+    await query.message.edit_text(script.MASTER_TEXT, reply_markup=guide_buttons)
+l
 @app.on_callback_query(filters.regex(r"back_"))
 async def home_regex(_, query):
     await query.message.edit_text(script.START_TEXT, reply_markup=buttons)
