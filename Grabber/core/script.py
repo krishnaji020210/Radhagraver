@@ -65,7 +65,7 @@ Here are all the commands related to the waifu system:
 - `/trade` : Trade waifus securely with another user.
 - `/harem` : View your selected waifu lineup.
 - `/leaderboard` : See the global top collectors ranking.
-- `/spawntime` : Set the waifu spawn cooldown.
+- `/changetime` : Set the waifu spawn cooldown.
 """
 
 # ---------------------------------------------------------- #
