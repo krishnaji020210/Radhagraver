@@ -17,6 +17,15 @@ buttons = InlineKeyboardMarkup([
     ]
 ])
 
+guide_buttons = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton("Admins", callback_data="admins_")
+    ],
+    [
+        InlineKeyboardButton("Back", callback_data="back_")  
+    ]
+])
+
 group_buttons = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("Add to Group", url=f"https://t.me/{BOT_USERNAME}?start=true")
@@ -44,5 +53,10 @@ async def start_(_, message):
 
 @app.on_callback_query(filters.regex(r"guide_"))
 async def guide_regex(_, query):
-    await query.message.edit_text(script.GUIDE_TEXT, reply_markup=buttons)
+    await query.message.edit_text(script.GUIDE_TEXT, reply_markup=guide_buttons)
+    
+
+@app.on_callback_query(filters.regex(r"back_"))
+async def home_regex(_, query):
+    await query.message.edit_text(script.START_TEXT, reply_markup=buttons)
     
