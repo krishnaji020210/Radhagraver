@@ -39,8 +39,7 @@ master_back = InlineKeyboardMarkup([
 # -------------------------- Start -------------------------- #
 
 @app.on_message(filters.command("start"))
-async def st
-art_(_, message):
+async def start_(_, message):
     name = message.from_user.mention
     if message.chat.type == enums.ChatType.PRIVATE:
         await message.reply_photo(photo=script.PHOTOS["START_IMG"],                         
