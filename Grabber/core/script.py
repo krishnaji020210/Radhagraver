@@ -69,6 +69,17 @@ Here are all the commands related to the waifu system:
 """
 
 # ---------------------------------------------------------- #
+
+MASTER_TEXT = """
+Here are all the commands related to the waifu system:
+
+- `/addwaifu` : Grab a random waifu from the anime multiverse.
+- `/stats` : View all available anime collections.
+- `/broadcast or /annouce` : Check your collected waifus.
+- `/delete` : Send one of your waifus to another user.
+"""
+
+# ---------------------------------------------------------- #
 START_TEXT = """
 Hello {}!
 
