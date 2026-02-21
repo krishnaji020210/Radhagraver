@@ -16,7 +16,7 @@ async def gift_waifu(_, message):
             waifu_id = message.text.split(None, 1)[1]
             print(waifu_id)
         except IndexError:
-            print(message.text.split(None, 1)[1])
+            print(IndexError)
             return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
 
         receiver_id = message.reply_to_message.from_user.id
