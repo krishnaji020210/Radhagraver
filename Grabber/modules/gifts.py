@@ -16,6 +16,7 @@ async def gift_waifu(_, message):
             waifu_id = message.text.split(None, 1)[1]
             print(waifu_id)
         except IndexError:
+            print(message.text.split(None, 1)[1])
             return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
 
         receiver_id = message.reply_to_message.from_user.id
@@ -35,7 +36,9 @@ async def gift_waifu(_, message):
         except ValueError:
             return await message.reply_text("💡 <b>Usage:</b> <code>/gift user_id waifu_id</code> or reply with <code>/gift waifu_id</code>")
 
-
+    if sender_id == receiver_id:
+        return await message.reply_text("🛑 You can't gift to yourself.")
+    
     waifu_data = await waifusdb.getUserWaifu(sender_id, str(waifu_id))
     if not waifu_data or waifu_data["waifu_id"] != str(waifu_id):
         return await message.reply_text("🛑 <b>This waifu is not in your collection.</b>")
@@ -89,8 +92,8 @@ async def gift_waifu(_, message):
 @app.on_callback_query(filters.regex(r"gift_(accept|reject):(\d+):(\d+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
-    print(query.data)
-    action, sender_id, receiver_id, waifu_id = query.data.split(":")
+    parts = query.data.split("_")[1].split(":")
+    action, sender_id, receiver_id, waifu_id = (parts + [None]*4)[:4]
     
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
@@ -141,8 +144,11 @@ async def trade_waifu(_, message):
         except ValueError:
             return await message.reply_text("💡 <b>Usage:</b> <code>/trade user_id waifu_id</code> or reply with <code>/trade waifu_id</code>")
 
-    waifu_data = await waifusdb.getUserWaifu(sender_id, str(waifu_id))
 
+    if sender_id == receiver_id:
+        return await message.reply_text("🛑 You can't gift to yourself.")
+    
+    waifu_data = await waifusdb.getUserWaifu(sender_id, str(waifu_id))
     if not waifu_data or waifu_data["waifu_id"] != str(waifu_id):
         return await message.reply_text("🛑 <b>This waifu is not in your collection.</b>")
 
@@ -192,7 +198,8 @@ async def trade_waifu(_, message):
 @app.on_callback_query(filters.regex(r"trade_(accept|reject):(\d+):(\d+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
-    action, sender_id, receiver_id, waifu_id = query.data.split(":")
+    parts = query.data.split("_")[1].split(":")
+    action, sender_id, receiver_id, waifu_id = (parts + [None]*4)[:4]
     
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
