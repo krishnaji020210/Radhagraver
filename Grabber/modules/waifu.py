@@ -41,7 +41,7 @@ async def add_waifus(_, message):
     try:
         input1 = await app.listen(user_id=user_id, timeout=30)
     except:
-        return await msg.edit_text("❌ Timeout! You didn't send a photo in time.")
+        return await msg.edit_text("🛑 Timeout! You didn't send a photo in time.")
 
     if input1.photo:
         file_name = f"{user_id}_waifu_thumb.jpg"
@@ -51,14 +51,14 @@ async def add_waifus(_, message):
         await input1.delete()
 
         if not url:
-            return await msg.edit_text("⚠️ Failed to upload the photo. Please try again.")
+            return await msg.edit_text("🛑 Failed to upload the photo. Please try again.")
 
         await msg.edit_text("📝 Now send your waifu's **name**...")
 
         try:
             input2 = await app.listen(user_id=user_id, timeout=30)
         except:
-            return await msg.edit_text("❌ Timeout! You didn't send the name in time.")
+            return await msg.edit_text("🛑 Timeout! You didn't send the name in time.")
 
         name = input2.text.strip()
         await input2.delete()
@@ -68,7 +68,7 @@ async def add_waifus(_, message):
         try:
             input3 = await app.listen(user_id=user_id, timeout=30)
         except:
-            return await msg.edit_text("❌ Timeout! You didn't send the anime name in time.")
+            return await msg.edit_text("🛑 Timeout! You didn't send the anime name in time.")
 
         anime = input3.text.strip()
         await input3.delete()
@@ -78,7 +78,7 @@ async def add_waifus(_, message):
         try:
             input4 = await app.listen(user_id=user_id, timeout=30)
         except:
-            return await msg.edit_text("❌ Timeout! You didn't send the level in time.")
+            return await msg.edit_text("🛑 Timeout! You didn't send the level in time.")
 
         rank = input4.text.strip()
         await input4.delete()
@@ -88,18 +88,20 @@ async def add_waifus(_, message):
         try:
             input5 = await app.listen(user_id=user_id, timeout=30)
         except:
-            return await msg.edit_text("❌ Timeout! You didn't send the Price in time.")
+            return await msg.edit_text("🛑 Timeout! You didn't send the Price in time.")
 
         price = int(input5.text.strip())
         await input4.delete()
 
-        await waifusdb.addWaifu(name, url, anime, rank, price)
+        waifu_data = await waifusdb.addWaifu(name, url, anime, rank, price)
         await msg.delete()
         await message.reply_photo(photo=url,
             caption=f"""
 ✅ Waifu added successfully!
 
 📸 Photo: [Hosted Link]({url})
+
+🧩 ID: {waifu_data["id"]}
 👧 Name: {name}
 🎬 Anime: {anime}
 💠 Rank: {rank}
@@ -107,7 +109,32 @@ async def add_waifus(_, message):
         """)
 
     else:
-        await msg.edit_text("❌ That wasn't a valid photo. Please start again and send a proper waifu image.")
+        await msg.edit_text("🛑 That wasn't a valid photo. Please start again and send a proper waifu image.")
+
+
+
+# ------------------------- Delete Waifu ------------------------- #
+
+@app.on_message(filters.command("delete") & filters.private)
+async def delete_waifu(_, message):
+    if len(message.command) < 2:
+        return await message.reply_text("Usage:\n<code>/delete waifu_id</code>")
+
+    waifu_id = message.command[1].strip()
+    waifu = await waifusdb.getWaifu(waifu_id)
+    if not waifu:
+        return await message.reply_text("🛑 Waifu not found.")
+        
+    deleted = await waifusdb.removeWaifu(waifu_id)
+
+    if deleted:
+        await message.reply_text(
+            f"🗑️ Successfully deleted waifu:\n"
+            f"🆔 <code>{waifu_id}</code>\n"
+            f"👧 Name: {waifu.get('name', 'Unknown')}",
+        )
+    else:
+        await message.reply_text("🛑 Failed to delete waifu.")
 
 
 # ------------------------- Waifu Watcher ------------------------- #
