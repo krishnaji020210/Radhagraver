@@ -46,7 +46,7 @@ async def gift_waifu(_, message):
             [
                 InlineKeyboardButton(
                     "🟢 Accept",
-                    callback_data=f"gift_accept:{sender_id}:{receiver_id}:{waifu_id}",
+                    callback_data=f"gift_accept:{receiver_id}:{sender_id}:{waifu_id}",
                 ),
                 InlineKeyboardButton(
                     "🔴 Decline",
@@ -87,7 +87,7 @@ async def gift_waifu(_, message):
 async def gift_confirm(_, query):
     click_id = query.from_user.id
     parts = query.data.split("_")[1].split(":")
-    action, sender_id, receiver_id, waifu_id = (parts + [None]*4)[:4]
+    action, receiver_id, sender_id, waifu_id = (parts + [None]*4)[:4]
     
     if click_id != int(receiver_id):
         return await query.answer("This is not for you", show_alert=True)
