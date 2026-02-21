@@ -159,10 +159,10 @@ async def trade_waifu(_, message):
     caption = f"""
 <b>🔄 Trade Offer Received!</b>
 
-<b>✦ Waifu:</b> <code>{waifu_name}</code>
-<b>✦ Anime:</b> <code>{waifu_anime}</code>
-<b>✦ Rarity:</b> <code>{(await main_func.rank_definer(waifu_rank))}</code>
-<b>✦ From:</b> {message.from_user.mention}
+<b>⬤ Waifu</b> : <code>{waifu_data['name']}</code>
+<b>⬤ Anime</b> : <code>{waifu_data['anime']}</code>
+<b>⬤ Rarity</b> : <code>{(await main_func.rank_definer(waifu_data['rank']))}</code>
+<b>⬤ From</b> : {message.from_user.mention}
 
 <i>{name}, do you accept this trade?</i>
 """
