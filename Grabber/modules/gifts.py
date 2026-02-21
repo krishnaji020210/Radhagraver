@@ -14,6 +14,7 @@ async def gift_waifu(_, message):
     if message.reply_to_message:
         try:
             waifu_id = message.text.split(None, 1)[1]
+            print(waifu_id)
         except IndexError:
             return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
 
@@ -88,7 +89,7 @@ async def gift_waifu(_, message):
 @app.on_callback_query(filters.regex(r"gift_(accept|reject):(\d+):(\d+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
-    print(query.data.split(":"))
+    print(query.data)
     action, sender_id, receiver_id, waifu_id = query.data.split(":")
     
     if click_id != int(receiver_id):
