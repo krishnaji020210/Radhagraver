@@ -6,6 +6,7 @@ PHOTOS = {
     "GIFT_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B1plqLSsluiaszbAU-My3y4rqPJmAACFg5rG1zpuVR51kyXl77duwEAAwIAA3kAAzoE",
     "ANIMES_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B5plqL28XFtby7ghgSJ1Iubw6L1NgACGA5rG1zpuVS4hx2rZR6-sgEAAwIAA3kAAzoE",
     "LEADERBOARD_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0B9plqMXfT1RGSmDmMSP4UOsFoR8MwACGQ5rG1zpuVSb8zt20PcNlAEAAwIAA3kAAzoE",
+    "HAREM_IMG": "https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0HdpmVvp75yqSGBhbLrZRopVxe6XkAACNg9rG_ZH0VSyCvJEo2gLRAEAAwIAA3kAAzoE",
 }
 
 
