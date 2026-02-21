@@ -11,6 +11,7 @@ async def waifu_chat(_, message):
 
     if not message.text or len(message.command) < 2:
         return await message.reply_text("Hmm? You forgot to add what you wanted to say!\n\nTry again like:\n`/chatwaifu Hi, how are you?`")
+    query = message.text.split(None, 1)[1]
 
     char_prompt = await instructions.generate_char(user_id, "Hinata", name)
     answer = await main_func.gemini_response(query, char_prompt)
