@@ -10,25 +10,23 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 @app.on_message(filters.command("gift"))
 async def gift_waifu(_, message):
     sender_id = message.from_user.id
-    
-    if message.reply_to_message:
-        waifu_id = message.text.split(None, 1)[1]
-        receiver_id = message.reply_to_message.from_user.id
-        name = message.reply_to_message.from_user.mention
+    try:
+        if message.reply_to_message:
+            waifu_id = message.text.split(None, 1)[1]
+            receiver_id = message.reply_to_message.from_user.id
+            name = message.reply_to_message.from_user.mention
 
-    else:
-        try:
+        else:
             _, receiver_id, waifu_id = message.text.split(None, 2)
-
             try:
-                user_data = await app.get_users(receiver_id)
+                user_data = await app.get_users(int(receiver_id))
                 name = user_data.mention
                 receiver_id = user_data.id
             except Exception:
                 return await message.reply_text("User ID Not Found!!")
 
-        except ValueError:
-            return await message.reply_text("💡 <b>Usage:</b> <code>/gift user_id waifu_id</code> or reply with <code>/gift waifu_id</code>")
+    except ValueError:
+        return await message.reply_text("💡 <b>Usage:</b> <code>/gift user_id waifu_id</code> or reply with <code>/gift waifu_id</code>")
 
     if sender_id == receiver_id:
         return await message.reply_text("🛑 You can't gift to yourself.")
@@ -46,7 +44,7 @@ async def gift_waifu(_, message):
             [
                 InlineKeyboardButton(
                     "🟢 Accept",
-                    callback_data=f"gift_accept:{receiver_id}:{sender_id}:{waifu_id}",
+                    callback_data=f"gift_accept:{sender_id}:{receiver_id}:{waifu_id}",
                 ),
                 InlineKeyboardButton(
                     "🔴 Decline",
@@ -76,7 +74,7 @@ async def gift_waifu(_, message):
             await message.reply_photo(photo=script.PHOTOS["GIFT_IMG"], caption=caption, reply_markup=buttons)
 
     except Exception:
-        await message.reply_text("⚠️ <b>Couldn’t send gift. The user may have privacy settings enabled.</b>")
+        await message.reply_text("🛑 <b>Couldn’t send gift. The user may have privacy settings enabled.</b>")
 
 
     
