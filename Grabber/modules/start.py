@@ -61,7 +61,7 @@ async def guide_regex(_, query):
 @app.on_callback_query(filters.regex(r"masters_"))
 async def masters_regex(_, query):
     user_id = query.from_user.id
-    if user_id not in config.OWNERS_ID:
+    if user_id not in config.OWNER_ID:
         return await query.answer("This feature is beyond your authority. Only my masters may use it. 😌",show_alert=True)
     await query.message.edit_text(script.MASTER_TEXT, reply_markup=guide_buttons)
 
