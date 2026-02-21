@@ -1,7 +1,7 @@
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto
 from Grabber import app
-from Grabber.core import main_func
+from Grabber.core import main_func, script
 from Grabber.core.mongo.waifusdb import getUserAllWaifus
 
 PER_PAGE = 10
@@ -39,8 +39,8 @@ def build_nav_buttons(sort_type, user_id, page):
 @app.on_message(filters.command("harem"))
 async def harem_menu(_, message):
     user_id = message.from_user.id
-    await message.reply(
-        "✨ **Select how you want to view your harem:**",
+    await message.reply_photo(photo=script.PHOTOS["HAREM_IMG"],
+        caption="✨ **Select how you want to view your harem:**",
         reply_markup=build_menu_buttons(user_id)
     )
 
