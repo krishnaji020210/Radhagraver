@@ -77,7 +77,7 @@ async def show_anime_page(query: CallbackQuery, letter: str, page: int):
     if end < total:
         nav_row.append(InlineKeyboardButton("ɴᴇxᴛ ﹥", callback_data=f"anime_list_{letter}_{page + 1}"))
 
-    nav_row.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ ☌", callback_data="close_data"))
+    nav_row.append(InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data"))
 
     if nav_row:
         buttons.append(nav_row)
@@ -147,12 +147,12 @@ async def inline_search_anime(_, inline_query):
                 thumb_url=waifu["image"],
                 title=waifu["name"],   
                 caption=(
-                    f"👩🏻 Name: {waifu['name']}\n"
-                    f"📺 Anime: {waifu['anime']}\n"
-                    f"🏷️ Rank: {waifu['rank'].capitalize()}"
+                    f"🧽️ Name: {waifu['name']}\n"
+                    f"🧩 Anime: {waifu['anime']}\n"
+                    f"🎭 Rank: {waifu['rank'].capitalize()}"
                 ),
                 reply_markup=InlineKeyboardMarkup([
-                    [InlineKeyboardButton("☌ ᴄʟᴏsᴇ ☌", callback_data="close_data")]
+                    [InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]
                 ])
             )
         )
