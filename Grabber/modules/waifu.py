@@ -1,4 +1,5 @@
 import random
+from config import SUDO_IDS
 from Grabber.core import script
 import requests, os, asyncio 
 from pyrogram import filters, enums
@@ -31,7 +32,7 @@ def upload_photo(file_path):
 
 # ------------------------- Add Waifu ------------------------- #
 
-@app.on_message(filters.command("addwaifu"))
+@app.on_message(filters.command("addwaifu") & filters.user(SUDO_IDS))
 async def add_waifus(_, message):
     user_id = message.from_user.id
     if message.chat.type != enums.ChatType.PRIVATE:
@@ -115,7 +116,7 @@ async def add_waifus(_, message):
 
 # ------------------------- Delete Waifu ------------------------- #
 
-@app.on_message(filters.command("delete") & filters.private)
+@app.on_message(filters.command("delete") & filters.private & filters.user(SUDO_IDS))
 async def delete_waifu(_, message):
     if len(message.command) < 2:
         return await message.reply_text("Usage:\n<code>/delete waifu_id</code>")
@@ -171,7 +172,7 @@ async def watcher(client, message):
 
    
     if spawn[chat_id]["count"] >= spawn_count:
-        spawn[chat_id]["count"] = 0  # Reset immediately
+        spawn[chat_id]["count"] = 0  
         waifus = await waifusdb.getAllWaifus()
         if not waifus:
             return
@@ -192,7 +193,7 @@ async def watcher(client, message):
         msg = await message.reply_photo(photo=waifu_data["image"], caption=random.choice(script.SPAWN_TEXT).format(rank=waifu_data["rank"]))
 
         async def timeout():
-            await asyncio.sleep(100)
+            await asyncio.sleep(15)
 
             if chat_id in spawn and spawn[chat_id]["spawned"] and not spawn[chat_id]["grabbed"]:
                 try:
@@ -209,7 +210,6 @@ async def watcher(client, message):
                 spawn[chat_id]["spawned"] = False
                 spawn[chat_id]["grabbed"] = False
 
-        # Cancel previous task if exists
         if spawn[chat_id]["task"]:
             spawn[chat_id]["task"].cancel()
 
@@ -231,8 +231,8 @@ async def grab_waifu(_, message):
     if chat_id not in spawn or not spawn[chat_id]["spawned"]:
         return await message.reply_text("No waifu has spawned in this group yet~ Wait for her appearance~ 😚")
 
-    # if spawn[chat_id]["name"].lower() != name.lower():
-    #     return await message.reply_text("Wrong name! Try again 😏")
+    if spawn[chat_id]["grabbed"]:
+        return await message.reply_text("Already grabbed! Try again next time 😏")
 
     await waifusdb.addUser_Waifu(
         user_id=user_id,
