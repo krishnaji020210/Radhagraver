@@ -12,13 +12,7 @@ async def gift_waifu(_, message):
     sender_id = message.from_user.id
     
     if message.reply_to_message:
-        try:
-            waifu_id = message.text.split(None, 1)[1]
-            print(waifu_id)
-        except IndexError:
-            print(IndexError)
-            return await message.reply_text("💡 <b>Reply to someone's message with:</b>\n<code>/gift waifu_id</code>")
-
+        waifu_id = message.text.split(None, 1)[1]
         receiver_id = message.reply_to_message.from_user.id
         name = message.reply_to_message.from_user.mention
 
@@ -93,6 +87,7 @@ async def gift_waifu(_, message):
 async def gift_confirm(_, query):
     click_id = query.from_user.id
     parts = query.data.split("_")[1].split(":")
+    print(parts)
     action, sender_id, receiver_id, waifu_id = (parts + [None]*4)[:4]
     
     if click_id != int(receiver_id):
@@ -110,7 +105,7 @@ async def gift_confirm(_, query):
             f"🎉 <b>Gift Accepted!</b>\n\n"
             f"<i>Now {waifu_data['name']} belongs to {query.from_user.first_name}</i> ❤️"
         )
-    else:
+    elif action == "reject":
         await query.message.edit_text(f"{query.from_user.first_name} does not want to accept your gift. They are not interested in receiving your gift.")
 
 
