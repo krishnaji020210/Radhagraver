@@ -88,6 +88,7 @@ async def gift_waifu(_, message):
 @app.on_callback_query(filters.regex(r"gift_(accept|reject):(\d+):(\d+):(.+)"))
 async def gift_confirm(_, query):
     click_id = query.from_user.id
+    print(query.data.split(":"))
     action, sender_id, receiver_id, waifu_id = query.data.split(":")
     
     if click_id != int(receiver_id):
