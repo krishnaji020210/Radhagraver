@@ -3,23 +3,14 @@ from Grabber import app
 from Grabber.core import main_func
 from Grabber.core.brain import instructions
 
-
+@app.on_message(filters.command("aifu", prefixes=["W", "w"]))
 @app.on_message(filters.command("chatwaifu"))
 async def waifu_chat(_, message):
     user_id = message.chat.id
     name = message.from_user.first_name or "Anon"
 
     if not message.text or len(message.command) < 2:
-        return await message.reply_text(
-            "Hey baby  If you want to talk to me, use:\n\n`/chatwaifu your message here`"
-        )
-
-    try:
-        query = message.text.split(None, 1)[1]
-    except IndexError:
-        return await message.reply_text(
-            "Hmm? You forgot to add what you wanted to say!\n\nTry again like:\n`/chatwaifu Hi, how are you?`"
-        )
+        return await message.reply_text("Hmm? You forgot to add what you wanted to say!\n\nTry again like:\n`/chatwaifu Hi, how are you?`")
 
     char_prompt = await instructions.generate_char(user_id, "Hinata", name)
     answer = await main_func.gemini_response(query, char_prompt)
