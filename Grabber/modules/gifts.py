@@ -81,7 +81,7 @@ async def gift_waifu(_, message):
 # ------------------------ Gift Regex Callback ------------------------ #
 
 @app.on_callback_query(filters.regex(r"gift_(accept|reject):(\d+):(\d+):(.+)"))
-async def gift_confirm(_, query):
+async def gift_regex(_, query):
     click_id = query.from_user.id
     action, sender_id, receiver_id, waifu_id = query.data.split("_")[1].split(":")
     
@@ -108,7 +108,7 @@ async def gift_confirm(_, query):
 # ------------------------ Trade Command ------------------------ #
 
 @app.on_message(filters.command("trade"))
-async def gift_waifu(_, message):
+async def trade_waifu(_, message):
     sender_id = message.from_user.id
     parts = message.text.split()
 
@@ -180,7 +180,7 @@ async def gift_waifu(_, message):
 # ------------------------ Trade Regex Callback ------------------------ #
 
 @app.on_callback_query(filters.regex(r"trade_(accept|reject):(\d+):(\d+):(.+)"))
-async def gift_confirm(_, query):
+async def trade_regex(_, query):
     click_id = query.from_user.id
     action, sender_id, receiver_id, waifu_id = query.data.split("_")[1].split(":")
     
