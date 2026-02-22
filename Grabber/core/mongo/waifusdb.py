@@ -1,11 +1,10 @@
-from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
-from config import MONGO_DB
+from Grabber.core.mongo import database
 
-mongo = MongoCli(MONGO_DB)
-db = mongo.settingsdb
+# --------------------------- Waifu Collection --------------------------- #
+waifu_collection = database.waifus_db  
+user_collection = database.user_waifus
+# --------------------------- Core --------------------------- #
 
-waifu_collection = db.waifus_db  
-user_collection = db.user_waifus
 
 # ------------------------ Add New Waifu ------------------------ #
 
