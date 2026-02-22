@@ -2,6 +2,7 @@ import asyncio, traceback
 from Grabber import app
 from config import OWNER_ID
 from pyrogram import filters
+from Grabber.core.mongo import usersdb, chatsdb
 from pyrogram.errors import FloodWait, InputUserDeactivated, UserIsBlocked, PeerIdInvalid
 
 
@@ -28,8 +29,8 @@ async def broadcast(_, message):
         return await message.reply_text("Reply to a message to broadcast it.")
 
     status_msg = await message.reply("📣 Starting broadcast...")
-    chats = await get_chats() or []
-    users = await get_users() or []
+    chats = await chatsdb.get_all_chats() or []
+    users = await usersdb.get_all_users() or []
 
     stats = {"chats": {"success": 0, "fail": 0}, "users": {"success": 0, "fail": 0}}
 
@@ -70,8 +71,8 @@ async def announce(_, message):
     to_forward_id = message.reply_to_message.id
     from_chat_id = message.chat.id
 
-    chats = await get_chats() or []
-    users = await get_users() or []
+    chats = await chatsdb.get_all_chats() or []
+    users = await usersdb.get_all_users() or []
 
     failed_chats = 0
     failed_users = 0
