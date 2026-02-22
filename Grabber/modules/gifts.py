@@ -23,7 +23,7 @@ async def marry_waifu(_, message):
         return await message.reply_text("🛑 <b>This waifu is not in your collection.</b>")
 
     current = await settingsdb.get_married(user_id) or {}
-    if current:
+    if current and current["divorce"] == False:
         return await message.reply_text(f"💔 <b>You are already married to {current['name']}!</b>\nWaifu ID: {current['code']}\n Use <code>/divorce</code> first.")
 
     await settingsdb.set_married(user_id, waifu_data["name"], waifu_data["waifu_id"])
@@ -38,11 +38,11 @@ async def divorce_waifu(_, message):
     mention = message.from_user.mention
     current = await settingsdb.get_married(user_id) or {}
 
-    if not current:
+    if not current or current["divorce"] == True:
         return await message.reply_text("💔 <b>You are not married yet.</b>")
 
     await settingsdb.set_married(user_id, "", None, True)
-    await message.reply_text(f"💔 <b>It's over...</b>\n\n{mention} divorced <b>{current}</b> 😢")
+    await message.reply_text(f"💔 <b>It's over...</b>\n\n{mention} divorced <b>{current['name']}</b> 😢")
     
 
 
