@@ -18,7 +18,7 @@ async def waifu_chat(_, message):
         
     query = message.text.split(None, 1)[1]
 
-    char_prompt = await instructions.generate_char(user_id, "Hinata", name)
+    char_prompt = await instructions.generate_char(user_id, current['name'], name)
     answer = await main_func.gemini_response(query, char_prompt)
     await instructions.chat_conversation(user_id, query, answer)
     await message.reply_text(answer)
