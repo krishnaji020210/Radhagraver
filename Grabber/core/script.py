@@ -67,6 +67,8 @@ Here are all the commands related to the waifu system:
 - `/harem` : View your selected waifu lineup.
 - `/leaderboard` : See the global top collectors ranking.
 - `/changetime` : Set the waifu spawn cooldown.
+- `/marry` : Marry a waifu from your collection using her ID.
+- `/divorce` : Divorce your currently married waifu.
 """
 
 # ---------------------------------------------------------- #
