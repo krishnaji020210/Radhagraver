@@ -22,10 +22,10 @@ async def get_spawn_time(chat_id: int) -> int:
 
 
 # ----------------------- Add Married Data ----------------------- #
-async def set_married(user_id: int, name: str = "natasha", divorce: str = False) -> None:
+async def set_married(user_id: int, name: str = "natasha", code: str = None, divorce: str = False) -> None:
     await married_collection.update_one(
         {"_id": user_id},
-        {"$set": {"name": name, "divorce", divorce}},
+        {"$set": {"name": name, "code": code,"divorce", divorce}},
         upsert=True
     )
 
