@@ -3,9 +3,10 @@
 <p align="center">
   <img src="https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BtplqHQCOjxeRga-VXIGOSD1pkNkwACEw5rG1zpuVSZRvn7c_fYRgEAAwIAA3kAAzoE" width="260"/>
 </p>
+</pre>
 
 <p align="center">
-A fun and competitive Telegram anime game where you grab random waifus, grow your collection, trade strategically, and rise through the global leaderboard.<br><br>
+A fun and competitive Telegram anime game where you grab random waifus, grow your collection, trade strategically, and rise through the global leaderboard.<br>
 Collect rare characters, build your ultimate harem, and dominate the multiverse — all for pure fun.
 </p>
 
