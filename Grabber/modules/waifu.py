@@ -109,7 +109,7 @@ async def add_waifus(_, message):
 🎬 Anime: {anime}
 💠 Rank: {rank}
 💰 Price: {price}
-        """, replay_markup=keyboard)
+        """, reply_markup=keyboard)
 
     else:
         await msg.edit_text("🛑 That wasn't a valid photo. Please start again and send a proper waifu image.")
