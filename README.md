@@ -67,10 +67,13 @@ pip3 install -r requirements.txt
 Create `.env` file:
 
 ```
-BOT_TOKEN=your_bot_token
-MONGO_URI=your_mongodb_uri
-API_ID=your_api_id
-API_HASH=your_api_hash
+API_ID=
+API_HASH=
+BOT_TOKEN=
+OWNER_ID=
+SUDO_IDS=
+MONGO_DB=
+SUPPORT_CHANNEL=
 ```
 
 Run the bot:
