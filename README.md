@@ -19,7 +19,62 @@ Collect rare characters, build your ultimate harem, and dominate the multiverse 
 </p>
 
 
+<h2 align="center">Deploy on VPS Server</h2>
 
+<p align="center">
+<a href="#vps-deployment">
+  <img src="https://img.shields.io/badge/Deploy%20on%20VPS-000000?style=for-the-badge&logo=linux&logoColor=white" alt="Deploy on VPS">
+</a>
+</p>
+
+---
+
+<h3 align="center" id="vps-deployment">VPS Deployment Guide</h3>
+
+### Update System
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### Install Required Packages
+```bash
+sudo apt install python3 python3-pip git -y
+```
+
+### Clone Repository
+```bash
+git clone https://github.com/Akatsumo/WaifuGrabberBot.git
+cd WaifuGrabberBot
+```
+
+### Install Dependencies
+```bash
+pip3 install -r requirements.txt
+```
+
+### Configure Environment
+Create a `.env` file inside the project folder:
+
+```
+BOT_TOKEN=your_bot_token
+MONGO_URI=your_mongodb_uri
+API_ID=your_api_id
+API_HASH=your_api_hash
+```
+
+### Start The Bot
+```bash
+python3 -m Grabber
+```
+
+For 24/7 uptime:
+```bash
+screen -S waifu
+```
+or
+```bash
+tmux
+```
 
 <h2 align="center">User Commands</h2>
 
@@ -52,4 +107,9 @@ Collect rare characters, build your ultimate harem, and dominate the multiverse 
 
 </p>
 
+<h2 align="center">Final Note</h2>
 
+<p align="center">
+Waifu Grabber Bot isn’t just a project — it’s a growing anime game ecosystem built for communities who love collecting, competing, and creating memorable moments together.<br><br>
+If you enjoy the concept, feel free to fork the repository, improve it, and contribute. Every pull request helps shape a better and stronger multiverse for everyone.
+</p>
