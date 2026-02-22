@@ -97,7 +97,7 @@ async def add_waifus(_, message):
 
         waifu_data = await waifusdb.addWaifu(name, url, anime, rank, price)
         await msg.delete()
-        keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("📂 View Info", callback_data=f"delete_waifu:{waifu_data['_id']}")]])
+        keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("🗑 Delete", callback_data=f"delete_waifu:{waifu_data['_id']}")]])
         await message.reply_photo(photo=url,
             caption=f"""
 ✅ Waifu added successfully!
