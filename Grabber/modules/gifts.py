@@ -26,7 +26,7 @@ async def marry_waifu(_, message):
     if current:
         return await message.reply_text(f"💔 <b>You are already married to {current['name']}!</b>\nWaifu ID: {current['code']}\n Use <code>/divorce</code> first.")
 
-    await settingsdb.set_married(user_id, waifu_data["name"], waifu_code["_id"])
+    await settingsdb.set_married(user_id, waifu_data["name"], waifu_data["_id"])
     await message.reply_text(f"💖 <b>Congratulations!</b>\n\n{mention} is now married to <b>{waifu_data['name']}</b> 💍✨")
 
 
