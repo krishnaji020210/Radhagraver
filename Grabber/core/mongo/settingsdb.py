@@ -1,4 +1,4 @@
-from Restriction.core.mongo import database
+from Grabber.core.mongo import database
 
 # --------------------------- Spawn Collection --------------------------- #
 time_collection = database.spwantime_db
