@@ -1,8 +1,49 @@
 from Grabber import app
 from pyrogram import filters, enums
 from Grabber.core import script, main_func
-from Grabber.core.mongo import waifusdb
+from Grabber.core.mongo import waifusdb, settingsdb
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+
+
+# ------------------------ Marry Command ------------------------ #
+
+@app.on_message(filters.command("marry"))
+async def marry_waifu(_, message):
+    user_id = message.from_user.id
+    mention = message.from_user.mention
+
+    if len(message.command) < 2:
+        return await message.reply_text("💍 <b>Usage:</b>\n<code>/marry waifu_id</code>")
+
+    waifu_id = message.command[1]
+
+    waifu_data = await waifusdb.getUserWaifu(user_id, str(waifu_id))
+    if not waifu_data:
+        return await message.reply_text("🛑 <b>This waifu is not in your collection.</b>")
+
+    current = await settingsdb.get_married(user_id)
+    if current:
+        return await message.reply_text(f"💔 <b>You are already married to {current['name']}!</b>\nWaifu ID: {current['code']}\n Use <code>/divorce</code> first.")
+
+    await settingsdb.set_married(user_id, waifu_data["name"], waifu_code["_id"])
+    await message.reply_text(f"💖 <b>Congratulations!</b>\n\n{mention} is now married to <b>{waifu_data['name']}</b> 💍✨")
+
+
+# ------------------------ Divorce Command ------------------------ #
+
+@app.on_message(filters.command("divorce"))
+async def divorce_waifu(_, message):
+    user_id = message.from_user.id
+    mention = message.from_user.mention
+    current = await settingsdb.get_married(user_id)
+
+    if not current:
+        return await message.reply_text("💔 <b>You are not married yet.</b>")
+
+    await settingsdb.set_married(user_id, "", None, True)
+    await message.reply_text(f"💔 <b>It's over...</b>\n\n{mention} divorced <b>{current}</b> 😢")
+    
 
 
 # ------------------------ Gift Command ------------------------ #
