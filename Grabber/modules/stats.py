@@ -2,7 +2,7 @@ import motor, sys, time
 from Grabber import app
 from config import OWNER_ID
 from pyrogram import filters
-from Grabber.core.mongo import usersdb
+from Grabber.core.mongo import usersdb, waifusdb
 
 
 # --------------------------------------- Chat Watcher --------------------------------------- #
@@ -47,12 +47,14 @@ def time_formatter():
 async def stats(client, message):
     start = time.time()
     users = len(await usersdb.get_all_users())
+    waifus = len(await waifusdb.getAllWaifus())
     ping = round((time.time() - start) * 1000)
     await message.reply_text(f"""
 **Stats of** {(await client.get_me()).mention} :
 
 🏓 **Ping Pong**: {ping}ms
 📊 **Total Users** : `{users}`
+💮 **Total Waifus**: `{waifus}`
 ⚙️ **Bot Uptime** : `{time_formatter()}`
     
 🎨 **Python Version**: `{sys.version.split()[0]}`
