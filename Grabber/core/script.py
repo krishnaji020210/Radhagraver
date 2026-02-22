@@ -69,6 +69,8 @@ Here are all the commands related to the waifu system:
 - `/changetime` : Set the waifu spawn cooldown.
 - `/marry` : Marry a waifu from your collection using her ID.
 - `/divorce` : Divorce your currently married waifu.
+- `/chatwaifu` or `Waifu` : Use the command to start chatting with your waifu.
+- `/clear` : Use the command to clear chatting waifu old data.
 """
 
 # ---------------------------------------------------------- #
