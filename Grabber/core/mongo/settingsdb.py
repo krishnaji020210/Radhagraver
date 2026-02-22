@@ -1,9 +1,9 @@
-from motor.motor_asyncio import AsyncIOMotorClient as MongoCli
-from config import MONGO_DB
+from Restriction.core.mongo import database
 
-mongo = MongoCli(MONGO_DB)
-db = mongo.settingsdb
-time_collection = db.spwantime_db  
+# --------------------------- Spawn Collection --------------------------- #
+time_collection = database.spwantime_db
+# --------------------------- Core --------------------------- #
+
 
 # ----------------------- Change Spawn Time ----------------------- #
 async def change_spawn_time(chat_id: int, count: int = 100) -> None:
