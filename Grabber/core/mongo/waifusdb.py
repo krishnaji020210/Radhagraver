@@ -22,6 +22,7 @@ async def addWaifu(name: str, image: str, anime: str, rank: str, price: int) -> 
     }
 
     await waifu_collection.insert_one(waifu_data)
+    print(waifu_data)
     return waifu_data
 
 
