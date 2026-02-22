@@ -110,6 +110,10 @@ tmux
 | `/harem` | View selected lineup |
 | `/leaderboard` | Global ranking |
 | `/changetime` | Adjust spawn cooldown |
+| - `/marry` : Marry  waifu from your collection |
+| - `/divorce` : Divorce your currently married waifu. |
+| - `/chatwaifu` or `Waifu` :  chatting with your waifu. |
+| - `/clear` :  clear chatting waifu old data. |
 
 ---
 
