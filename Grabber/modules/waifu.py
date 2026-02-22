@@ -5,6 +5,7 @@ import requests, os, asyncio
 from pyrogram import filters, enums
 from Grabber import app
 from Grabber.core.mongo import waifusdb, settingsdb
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 # ------------------------- Image Host ------------------------- #
 
@@ -96,18 +97,19 @@ async def add_waifus(_, message):
 
         waifu_data = await waifusdb.addWaifu(name, url, anime, rank, price)
         await msg.delete()
+        keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("📂 View Info", callback_data=f"delete_waifu:{waifu_data['_id']}")]])
         await message.reply_photo(photo=url,
             caption=f"""
 ✅ Waifu added successfully!
 
 📸 Photo: [Hosted Link]({url})
 
-🧩 ID: {waifu_data["id"]}
+🧩 ID: {waifu_data["_id"]}
 👧 Name: {name}
 🎬 Anime: {anime}
 💠 Rank: {rank}
 💰 Price: {price}
-        """)
+        """, replay_markup=keyboard)
 
     else:
         await msg.edit_text("🛑 That wasn't a valid photo. Please start again and send a proper waifu image.")
@@ -136,6 +138,37 @@ async def delete_waifu(_, message):
         )
     else:
         await message.reply_text("🛑 Failed to delete waifu.")
+
+# ------------------------- Delete Waifu Regex ------------------------- #
+
+@app.on_callback_query(filters.regex(r"^delete_waifu:(\d+)$"))
+async def delete_waifu_callback(_, query):
+    user_id = query.from_user.id
+    
+    if user_id not in SUDO_IDS:
+        return await query.answer("🛑 You are not allowed to delete waifus.", show_alert=True)
+
+    waifu_id = query.matches[0].group(1)
+
+    waifu = await waifusdb.getWaifu(waifu_id)
+    if not waifu:
+        return await query.answer("🛑 Waifu not found.", show_alert=True)
+
+    deleted = await waifusdb.removeWaifu(waifu_id)
+
+    if deleted:
+        await query.answer("🗑 Waifu deleted successfully!", show_alert=True)
+
+        await query.message.edit_caption(
+            caption=f"""
+🗑️ <b>Waifu Deleted</b>
+
+🆔 <code>{waifu_id}</code>
+👧 Name: {waifu.get('name', 'Unknown')}
+"""
+        )
+    else:
+        await query.answer("🛑 Failed to delete waifu.", show_alert=True)
 
 
 # ------------------------- Waifu Watcher ------------------------- #
