@@ -1,164 +1,172 @@
 <p align="center">
-  <img src="https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BtplqHQCOjxeRga-VXIGOSD1pkNkwACEw5rG1zpuVSZRvn7c_fYRgEAAwIAA3kAAzoE" width="300"/>
+  <img src="https://media.animerealms.org/image/AgACAgUAAx0EboWBewAC0BtplqHQCOjxeRga-VXIGOSD1pkNkwACEw5rG1zpuVSZRvn7c_fYRgEAAwIAA3kAAzoE" width="260"/>
 </p>
 
-<h1 align="center">Waifu Grabber Bot</h1>
+<h1 align="center" style="color:#6A0DAD;">Waifu Grabber Bot</h1>
 
 <p align="center">
-An interactive Anime Waifu Collecting Game Bot built for fun, competition, and pure entertainment.
+<b>A Royal Anime Collecting Experience</b><br>
+An interactive Telegram game where you collect, trade and dominate the anime multiverse.
 </p>
 
 <p align="center">
-<a href="https://github.com/Akatsumo/WaifuGrabberBot"><strong>🔗 View Official Repository</strong></a>
+<a href="https://github.com/Akatsumo/WaifuGrabberBot">
+<img src="https://img.shields.io/badge/GitHub-WaifuGrabberBot-6A0DAD?style=for-the-badge&logo=github&logoColor=white">
+</a>
+<a href="#-deploy-on-vps">
+<img src="https://img.shields.io/badge/Deploy-VPS-4B0082?style=for-the-badge">
+</a>
 </p>
 
 ---
 
-## 🎮 About The Bot
+<h2 align="center">About The Project</h2>
 
 <p align="center">
-Waifu Grabber Bot is a Telegram-based anime collection game where users can grab random anime characters from across the multiverse, collect them, trade them, gift them, and compete with others to become the ultimate waifu master.
+Waifu Grabber Bot is a competitive anime collection game designed for entertainment and community engagement.
+Users can grab random waifus, build their collection, trade securely, gift strategically, and compete globally to rise as the ultimate collector.
 <br><br>
-Built purely for entertainment and enjoyment, this bot transforms your group into an engaging anime collector battlefield.
+Crafted with performance, scalability, and gameplay balance in mind.
 </p>
 
 ---
 
-# 👥 User Commands
+<h2 align="center">User Commands</h2>
 
 <p align="center">
 
 | Command | Description |
 |---------|------------|
-| `/grab` | Grab a random waifu from the anime multiverse |
+| `/grab` | Grab a random waifu |
 | `/animes` | View all available anime collections |
-| `/mywaifus` | Check your collected waifus |
-| `/gift` | Send one of your waifus to another user |
-| `/trade` | Trade waifus securely with another user |
-| `/harem` | View your selected waifu lineup |
-| `/leaderboard` | See the global top collectors ranking |
-| `/changetime` | Set the waifu spawn cooldown |
+| `/mywaifus` | View your collection |
+| `/gift` | Gift a waifu to another user |
+| `/trade` | Securely trade waifus |
+| `/harem` | View your selected lineup |
+| `/leaderboard` | Global collectors ranking |
+| `/changetime` | Adjust spawn cooldown |
 
 </p>
 
 ---
 
-# 🛠 Master Commands
+<h2 align="center">Master Commands</h2>
 
 <p align="center">
 
 | Command | Description |
 |---------|------------|
-| `/addwaifu` | Add a waifu into the multiverse |
+| `/addwaifu` | Add waifu to the multiverse |
 | `/stats` | View full bot statistics |
-| `/broadcast` or `/announce` | Send global announcement |
-| `/delete` | Remove a waifu from database |
+| `/broadcast` / `/announce` | Send global announcements |
+| `/delete` | Remove waifu from system |
 
 </p>
 
 ---
 
-# 🚀 Deployment Guide
+<h2 align="center">Deployment</h2>
 
 ---
 
-## 🟣 Deploy on Heroku
+<h3 align="center">Deploy on Heroku</h3>
 
 <p align="center">
 
 1. Fork this repository  
-2. Create a new Heroku App  
-3. Go to **Settings → Config Vars**  
-4. Add required environment variables:
+2. Create Heroku App  
+3. Add Config Vars:
    - `BOT_TOKEN`
    - `MONGO_URI`
    - `API_ID`
    - `API_HASH`
-5. Connect your GitHub repository  
-6. Enable Worker Dyno  
-7. Deploy  
+4. Enable Worker Dyno  
+5. Deploy  
 
 </p>
 
 ---
 
-## 🖥 Deploy on VPS
+<h3 align="center" id="-deploy-on-vps">Deploy on VPS</h3>
 
 <p align="center">
-
-Repository:  
-<a href="https://github.com/Akatsumo/WaifuGrabberBot"><strong>https://github.com/Akatsumo/WaifuGrabberBot</strong></a>
-
+<a href="https://github.com/Akatsumo/WaifuGrabberBot">
+<strong>Click Here to Open Repository for VPS Deployment</strong>
+</a>
 </p>
 
-### Step 1: Update System
+### 1️⃣ Update System
 ```bash
 sudo apt update && sudo apt upgrade -y
 ```
 
-### Step 2: Install Requirements
+### 2️⃣ Install Dependencies
 ```bash
 sudo apt install python3 python3-pip git -y
 ```
 
-### Step 3: Clone Repository
+### 3️⃣ Clone Repository
 ```bash
 git clone https://github.com/Akatsumo/WaifuGrabberBot.git
 cd WaifuGrabberBot
 ```
 
-### Step 4: Install Dependencies
+### 4️⃣ Install Python Requirements
 ```bash
 pip3 install -r requirements.txt
 ```
 
-### Step 5: Create .env File
+### 5️⃣ Configure Environment
+Create `.env` file:
+
 ```
 BOT_TOKEN=your_bot_token
-MONGO_URI=your_mongo_uri
+MONGO_URI=your_mongodb_url
 API_ID=your_api_id
 API_HASH=your_api_hash
 ```
 
-### Step 6: Run Bot
+### 6️⃣ Run The Bot
 ```bash
-python3 -m main
+python3 -m Grabber
 ```
 
 For 24/7 uptime use:
-```
+
+```bash
 screen -S waifu
 ```
 or
-```
+```bash
 tmux
 ```
 
 ---
 
-# 🗄 Database
+<h2 align="center">Core Features</h2>
 
 <p align="center">
-Uses MongoDB to manage users, chats, waifus, trades, and leaderboard data securely and efficiently.
+✔ Random anime character spawning<br>
+✔ Collection & inventory system<br>
+✔ Secure trading engine<br>
+✔ Gift mechanics<br>
+✔ Global leaderboard ranking<br>
+✔ Harem customization<br>
+✔ Cooldown management<br>
+✔ Broadcast system<br>
 </p>
 
 ---
 
-# ⚔ Features
+<h2 align="center">Database</h2>
 
 <p align="center">
-✔ Random anime waifu spawning  
-✔ Collection system  
-✔ Secure trading  
-✔ Gift system  
-✔ Global leaderboard  
-✔ Harem customization  
-✔ Cooldown control  
-✔ Master broadcast system  
+Powered by MongoDB for scalable and efficient storage of users, chats, trades and leaderboard data.
 </p>
 
 ---
 
-<p align="center">
-Built for anime lovers. Play, collect, dominate.
+<p align="center" style="color:#4B0082;">
+Built with precision for anime communities.
+Collect. Trade. Conquer.
 </p>
