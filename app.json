@@ -1,0 +1,56 @@
+{
+  "name": "Waifu Grabber",
+  "description": "A competitive Telegram anime collecting game where players grab random waifus, grow their collection, trade smartly, and rise through the global leaderboard to become the ultimate collector.",
+  "keywords": [
+    "telegram",
+    "telegram-bot",
+    "anime-game",
+    "waifu",
+    "collector-game",
+    "mongodb",
+    "leaderboard"
+  ],
+  "repository": "https://github.com/Akatsumo/WaifuGrabberBot",
+  "success_url": "https://t.me/DevsHubChat",
+  "env": {
+    "API_ID": {
+      "description": "Telegram API ID from my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Telegram API Hash from my.telegram.org",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Bot token from BotFather",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Telegram User ID of the owner (space separated if multiple)",
+      "required": true
+    },
+    "SUDO_IDS": {
+      "description": "Telegram User IDs of sudo users (space separated)",
+      "required": false
+    },
+    "MONGO_DB": {
+      "description": "MongoDB connection URI (MongoDB Atlas recommended)",
+      "required": true
+    },
+    "SUPPORT_CHANNEL": {
+      "description": "Telegram support group/channel link",
+      "required": false
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
