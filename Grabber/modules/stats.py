@@ -2,7 +2,7 @@ import motor, sys, time
 from Grabber import app
 from config import OWNER_ID
 from pyrogram import filters
-from Grabber.core.mongo import usersdb, waifusdb
+from Grabber.core.mongo import usersdb, waifusdb, chatsdb
 
 
 # --------------------------------------- Chat Watcher --------------------------------------- #
@@ -12,10 +12,18 @@ start_time = time.time()
 @app.on_message(group=10)
 async def chat_watcher_func(_, message):
     try:
+        # ---------------- User Save ---------------- #
         if message.from_user:
-           if not await usersdb.is_user_exist(message.from_user.id):
-             await usersdb.add_user(message.from_user.id)
-    except:
+            user_id = message.from_user.id
+            if not await usersdb.is_user_exist(user_id):
+                await usersdb.add_user(user_id)
+
+        # ---------------- Chat Save ---------------- #
+        if message.chat:
+            chat_id = message.chat.id
+            if not await chatsdb.is_chat_exist(chat_id):
+                await chatsdb.add_chat(chat_id)
+    except Exception:
         pass
 
 
