@@ -55,6 +55,7 @@ def time_formatter():
 async def stats(client, message):
     start = time.time()
     users = len(await usersdb.get_all_users())
+    chats = len(await chatsdb.get_all_chats())
     waifus = len(await waifusdb.getAllWaifus())
     ping = round((time.time() - start) * 1000)
     await message.reply_text(f"""
@@ -62,6 +63,7 @@ async def stats(client, message):
 
 🏓 **Ping Pong**: {ping}ms
 📊 **Total Users** : `{users}`
+🌼 **Total Chats**: `{chats}`
 💮 **Total Waifus**: `{waifus}`
 ⚙️ **Bot Uptime** : `{time_formatter()}`
     
