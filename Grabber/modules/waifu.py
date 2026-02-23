@@ -1,5 +1,4 @@
-import random
-from config import SUDO_IDS
+import random, config
 from Grabber.core import script
 import requests, os, asyncio 
 from pyrogram import filters, enums
@@ -33,7 +32,7 @@ def upload_photo(file_path):
 
 # ------------------------- Add Waifu ------------------------- #
 
-@app.on_message(filters.command("addwaifu") & filters.user(SUDO_IDS))
+@app.on_message(filters.command("addwaifu") & filters.user(list(set(config.OWNER_ID + config.SUDO_IDS))))
 async def add_waifus(_, message):
     user_id = message.from_user.id
     if message.chat.type != enums.ChatType.PRIVATE:
@@ -118,7 +117,7 @@ async def add_waifus(_, message):
 
 # ------------------------- Delete Waifu ------------------------- #
 
-@app.on_message(filters.command("delete") & filters.private & filters.user(SUDO_IDS))
+@app.on_message(filters.command("delete") & filters.private & filters.user(list(set(config.OWNER_ID + config.SUDO_IDS))))
 async def delete_waifu(_, message):
     if len(message.command) < 2:
         return await message.reply_text("Usage:\n<code>/delete waifu_id</code>")
@@ -145,7 +144,7 @@ async def delete_waifu(_, message):
 async def delete_waifu_callback(_, query):
     user_id = query.from_user.id
     
-    if user_id not in SUDO_IDS:
+    if user_id not in list(set(config.OWNER_ID + config.SUDO_IDS)):
         return await query.answer("🛑 You are not allowed to delete waifus.", show_alert=True)
 
     waifu_id = query.matches[0].group(1)
