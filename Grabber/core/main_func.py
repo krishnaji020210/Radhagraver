@@ -11,7 +11,7 @@ async def gemini_response(query, prompt):
 
     headers = {
         "Content-Type": "application/json",
-        "X-goog-api-key": gemini_key
+        "X-goog-api-key": config.GEMINI_KEY
     }
 
     data = {
