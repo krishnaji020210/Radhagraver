@@ -31,5 +31,5 @@ async def leaderboard_handler(client, message):
         except:
             name = f"`{user['user_id']}`"
 
-        text += f"{medal} {name} — {user['total_grabs']} grabs\n"
+        text += f"{medal} {name} ⇾ {user['total_grabs']} grabs\n"
     await msg.edit_text(text, reply_markup=buttons)
