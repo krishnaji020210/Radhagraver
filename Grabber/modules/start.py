@@ -66,7 +66,7 @@ async def masters_regex(_, query):
     user_id = query.from_user.id
     if user_id not in list(set(config.OWNER_ID + config.SUDO_IDS)):
         return await query.answer("This feature is beyond your authority. Only my masters may use it. 😌",show_alert=True)
-    await query.message.edit_text(script.MASTER_TEXT, reply_markup=masters_back)
+    await query.message.edit_text(script.MASTER_TEXT, reply_markup=master_back)
 
 @app.on_callback_query(filters.regex(r"back_"))
 async def home_regex(_, query):
