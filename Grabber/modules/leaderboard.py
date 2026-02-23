@@ -4,7 +4,8 @@ from Grabber.core import script
 from Grabber.core.mongo import waifusdb
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-buttons = InlineKeyboardMarkup([[InlineKeyboardButton("Close", callback_data="close_data")]])
+
+buttons = InlineKeyboardMarkup([[InlineKeyboardButton("☌ ᴄʟᴏsᴇ", callback_data="close_data")]])
 
 @app.on_message(filters.command("leaderboard"))
 async def leaderboard_handler(client, message):
