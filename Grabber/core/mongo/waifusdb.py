@@ -141,8 +141,31 @@ async def removeAllUserWaifus(user_id: int) -> bool:
     return result.modified_count > 0
 
 
+# ------------------------ Leaderboard (Top 10 Users) ------------------------ #
 
+async def getLeaderboard(limit: int = 10) -> list:
+    pipeline = [
+        {
+            "$project": {
+                "user_id": "$_id",
+                "total_grabs": {
+                    "$sum": "$waifus.grab_count"
+                }
+            }
+        },
+        {
+            "$sort": {
+                "total_grabs": -1
+            }
+        },
+        {
+            "$limit": limit
+        }
+    ]
 
+    data = await user_collection.aggregate(pipeline).to_list(length=limit)
+    return data
+    
 
 
 
