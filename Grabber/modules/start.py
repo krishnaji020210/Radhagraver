@@ -14,6 +14,9 @@ buttons = InlineKeyboardMarkup([
     [
         InlineKeyboardButton("Support", url=config.SUPPORT_CHANNEL),
         InlineKeyboardButton("Guide", callback_data="guide_")
+    ],
+    [
+        InlineKeyboardButton("🧩 Repo", url="https://github.com/Akatsumo/WaifuGrabberBot")
     ]
 ])
 
