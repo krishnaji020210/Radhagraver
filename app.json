@@ -37,6 +37,10 @@
       "description": "MongoDB connection URI (MongoDB Atlas recommended)",
       "required": true
     },
+    "GENINI_KEY": {
+      "description": "Gemini key (Google Gemini recommended)",
+      "required": true
+    },
     "SUPPORT_CHANNEL": {
       "description": "Telegram support group/channel link",
       "required": false
