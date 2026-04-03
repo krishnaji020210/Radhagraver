@@ -25,7 +25,7 @@ Grab random waifus, grow your collection, trade smartly, and rise through the gl
 ---
 
 <p align="center">
-<a href="https://heroku.com/deploy?template=https://github.com/Akatsumo/WaifuGrabberBot">
+<a href="https://heroku.com/deploy?template=https://github.com/krishnaji020210/Radhagraver.git">
   <img src="https://img.shields.io/badge/Deploy%20to%20Heroku-000000?style=for-the-badge&logo=heroku&logoColor=white">
 </a>
 </p>
