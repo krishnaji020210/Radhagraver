@@ -10,7 +10,7 @@
     "mongodb",
     "leaderboard"
   ],
-  "repository": "https://github.com/Akatsumo/WaifuGrabberBot",
+  "repository": "https://github.com/krishnaji020210/Radhagraver",
   "success_url": "https://t.me/DevsHubChat",
   "env": {
     "API_ID": {
