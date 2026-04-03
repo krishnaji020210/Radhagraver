@@ -16,7 +16,7 @@ buttons = InlineKeyboardMarkup([
         InlineKeyboardButton("Guide", callback_data="guide_")
     ],
     [
-        InlineKeyboardButton("🧩 Repo", url="https://github.com/Akatsumo/WaifuGrabberBot")
+        InlineKeyboardButton("🧩 Repo", url="https://github.com/krishnaji020210/Radhagraver")
     ]
 ])
 
